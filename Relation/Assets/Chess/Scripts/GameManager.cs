@@ -30,7 +30,6 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
@@ -185,6 +184,7 @@ public class GameManager : MonoBehaviour
         pieces[startGridPoint.x, startGridPoint.y] = null;
         pieces[gridPoint.x, gridPoint.y] = piece;
         board.MovePiece(piece, gridPoint);
+        if(piece.GetComponent<Piece>().type == PieceType.Pawn){piece.GetComponent<Pawn>().Moved = true;}
     }
 
     public List<Vector2Int> MovesForPiece(GameObject pieceObject){

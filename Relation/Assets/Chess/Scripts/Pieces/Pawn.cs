@@ -45,6 +45,13 @@ public class Pawn : Piece
             locations.Add(forward);
         }
 
+        if(!Moved){
+            Vector2Int forward2 = new Vector2Int(gridPoint.x, gridPoint.y + forwardDirection * 2);
+            if(GameManager.instance.PieceAtGrid(forward2) == false){
+                locations.Add(forward2);
+            }
+        }
+
         Vector2Int forwardRight = new Vector2Int(gridPoint.x + 1, gridPoint.y + forwardDirection);
         if(GameManager.instance.PieceAtGrid(forwardRight)){
             locations.Add(forwardRight);
