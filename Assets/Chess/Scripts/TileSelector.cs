@@ -30,6 +30,7 @@
  
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TileSelector : MonoBehaviour {
 	public GameObject tileHighlightPrefeb;
@@ -45,7 +46,7 @@ public class TileSelector : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
 
 		RaycastHit hit;
 		
@@ -56,11 +57,11 @@ public class TileSelector : MonoBehaviour {
 			tileHighlight.SetActive(true);
 			tileHighlight.transform.position = Geometry.PointFromGrid(gridPoint);
 
-			if(Input.GetMouseButtonDown(0)){
+			if(Mouse.current.leftButton.wasPressedThisFrame){
 				GameObject seletectedPiece = 
-					GameManager.instance.PieceAtGrid(gridPoint);
-				if(GameManager.instance.DoesPieceBelongToCurrentPlayer(seletectedPiece)){
-					GameManager.instance.SelectPiece(seletectedPiece);
+					ChessManager.Instance.PieceAtGrid(gridPoint);
+				if(ChessManager.Instance.DoesPieceBelongToCurrentPlayer(seletectedPiece)){
+					ChessManager.Instance.SelectPiece(seletectedPiece);
 					ExitState(seletectedPiece);
 				}
 			}

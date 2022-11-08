@@ -42,7 +42,7 @@ public class King : Piece
         foreach(Vector2Int dir in directions){
             Vector2Int nextGridPoint = new Vector2Int(gridPoint.x+dir.x, gridPoint.y+dir.y);
             locations.Add(nextGridPoint);
-            if(GameManager.instance.PieceAtGrid(nextGridPoint)){
+            if(ChessManager.Instance.PieceAtGrid(nextGridPoint)){
                 continue;
             }
         }

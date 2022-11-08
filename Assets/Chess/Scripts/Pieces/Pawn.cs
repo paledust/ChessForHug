@@ -38,27 +38,27 @@ public class Pawn : Piece
     {
         List<Vector2Int> locations = new List<Vector2Int>();
 
-        int forwardDirection = GameManager.instance.currentPlayer.forward;
+        int forwardDirection = ChessManager.Instance.currentPlayer.forward;
 
         Vector2Int forward = new Vector2Int(gridPoint.x, gridPoint.y + forwardDirection);
-        if(GameManager.instance.PieceAtGrid(forward) == false){
+        if(ChessManager.Instance.PieceAtGrid(forward) == false){
             locations.Add(forward);
         }
 
         if(!Moved){
             Vector2Int forward2 = new Vector2Int(gridPoint.x, gridPoint.y + forwardDirection * 2);
-            if(GameManager.instance.PieceAtGrid(forward2) == false){
+            if(ChessManager.Instance.PieceAtGrid(forward2) == false){
                 locations.Add(forward2);
             }
         }
 
         Vector2Int forwardRight = new Vector2Int(gridPoint.x + 1, gridPoint.y + forwardDirection);
-        if(GameManager.instance.PieceAtGrid(forwardRight)){
+        if(ChessManager.Instance.PieceAtGrid(forwardRight)){
             locations.Add(forwardRight);
         }
 
         Vector2Int forwardLeft = new Vector2Int(gridPoint.x - 1, gridPoint.y + forwardDirection);
-        if(GameManager.instance.PieceAtGrid(forwardLeft)){
+        if(ChessManager.Instance.PieceAtGrid(forwardLeft)){
             locations.Add(forwardLeft);
         }
         return locations;

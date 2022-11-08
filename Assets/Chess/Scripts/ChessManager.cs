@@ -30,10 +30,8 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-public class GameManager : MonoBehaviour
+public class ChessManager : Singleton<ChessManager>
 {
-    public static GameManager instance;
-
     public Board board;
 
     public GameObject whiteKing;
@@ -56,11 +54,6 @@ public class GameManager : MonoBehaviour
     private Player black;
     public Player currentPlayer;
     public Player otherPlayer;
-
-    void Awake()
-    {
-        instance = this;
-    }
 
     void Start ()
     {

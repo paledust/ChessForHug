@@ -30,6 +30,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MoveSelector : MonoBehaviour {
 	public GameObject moveLocationPrefab;
@@ -49,7 +50,7 @@ public class MoveSelector : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
 
 		RaycastHit hit;
 		if(Physics.Raycast(ray, out hit)){
@@ -58,15 +59,15 @@ public class MoveSelector : MonoBehaviour {
 
 			tileHightlight.SetActive(true);
 			tileHightlight.transform.position = Geometry.PointFromGrid(gridPoint);
-			if(Input.GetMouseButtonDown(0)){
+			if(Mouse.current.leftButton.wasPressedThisFrame){
 				if(!moveLocations.Contains(gridPoint)) return;
 
-				if(GameManager.instance.PieceAtGrid(gridPoint) == null){
-					GameManager.instance.Move(movingPiece, gridPoint);
+				if(ChessManager.Instance.PieceAtGrid(gridPoint) == null){
+					ChessManager.Instance.Move(movingPiece, gridPoint);
 				}
 				else{
-					GameManager.instance.CapturePieceAt(gridPoint);
-					GameManager.instance.Move(movingPiece, gridPoint);
+					ChessManager.Instance.CapturePieceAt(gridPoint);
+					ChessManager.Instance.Move(movingPiece, gridPoint);
 				}
 				ExitState();
 			}
@@ -75,7 +76,7 @@ public class MoveSelector : MonoBehaviour {
 			tileHightlight.SetActive(false);
 		}
 
-		if(Input.GetMouseButtonDown(1)){
+		if(Mouse.current.rightButton.wasPressedThisFrame){
 			DeselectCurrentPiece();
 		}
 	}
@@ -84,12 +85,12 @@ public class MoveSelector : MonoBehaviour {
 		movingPiece = piece;
 		this.enabled = true;
 
-		moveLocations = GameManager.instance.MovesForPiece(movingPiece);
+		moveLocations = ChessManager.Instance.MovesForPiece(movingPiece);
 		locationHightlights = new List<GameObject>();
 
 		foreach(Vector2Int loc in moveLocations){
 			GameObject hightlight;
-			if(GameManager.instance.PieceAtGrid(loc)){
+			if(ChessManager.Instance.PieceAtGrid(loc)){
 				hightlight = Instantiate(attackLocationPrefab, Geometry.PointFromGrid(loc),
 					Quaternion.identity, gameObject.transform);
 			}
@@ -103,10 +104,10 @@ public class MoveSelector : MonoBehaviour {
 	public void ExitState(){
 		this.enabled = false;
 		tileHightlight.SetActive(false);
-		GameManager.instance.DeselectPiece(movingPiece);
+		ChessManager.Instance.DeselectPiece(movingPiece);
 		movingPiece = null;
 		TileSelector selector = GetComponent<TileSelector>();
-		GameManager.instance.NextPlayer();
+		ChessManager.Instance.NextPlayer();
 		selector.EnterState();
 
 		foreach(GameObject hightlight in locationHightlights){
@@ -116,7 +117,7 @@ public class MoveSelector : MonoBehaviour {
 	protected void DeselectCurrentPiece(){
 		this.enabled = false;
 		tileHightlight.SetActive(false);
-		GameManager.instance.DeselectPiece(movingPiece);
+		ChessManager.Instance.DeselectPiece(movingPiece);
 		movingPiece = null;
 		TileSelector selector = GetComponent<TileSelector>();
 		selector.EnterState();
