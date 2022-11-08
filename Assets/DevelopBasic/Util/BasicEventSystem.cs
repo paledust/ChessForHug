@@ -6,10 +6,10 @@ using UnityEngine;
 //A basic C# Event System
 public static class EventHandler
 {
-    public static event Action<PIECE_TYPE> E_OnCapturePiece;
-    public static void Call_OnCapturePiece(PIECE_TYPE pieceType){E_OnCapturePiece?.Invoke(pieceType);}
-    public static event Action E_OnMovePieceOnly;
-    public static void Call_OnMovePieceOnly(){E_OnMovePieceOnly?.Invoke();}
+    public static event Action<Piece> E_OnCapturePiece;
+    public static void Call_OnCapturePiece(Piece piece){E_OnCapturePiece?.Invoke(piece);}
+    public static event Action<Piece> E_OnMovePieceOnly;
+    public static void Call_OnMovePieceOnly(Piece piece){E_OnMovePieceOnly?.Invoke(piece);}
 }
 
 //A More Strict Event System

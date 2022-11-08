@@ -62,12 +62,13 @@ public class MoveSelector : MonoBehaviour {
 			if(Mouse.current.leftButton.wasPressedThisFrame){
 				if(!moveLocations.Contains(gridPoint)) return;
 
+				var piece = movingPiece.GetComponent<Piece>();
 				if(ChessManager.Instance.PieceAtGrid(gridPoint) == null){
-					EventHandler.Call_OnMovePieceOnly();
+					EventHandler.Call_OnMovePieceOnly(piece);
 					ChessManager.Instance.Move(movingPiece, gridPoint);
 				}
 				else{
-					EventHandler.Call_OnCapturePiece(ChessManager.Instance.PieceAtGrid(gridPoint).GetComponent<Piece>().type);
+					EventHandler.Call_OnCapturePiece(piece);
 					ChessManager.Instance.CapturePieceAt(gridPoint);
 					ChessManager.Instance.Move(movingPiece, gridPoint);
 				}
