@@ -55,8 +55,10 @@ public class ChessManager : Singleton<ChessManager>
     public Player currentPlayer;
     public Player otherPlayer;
 
-    void Start ()
+    protected override void Awake ()
     {
+        base.Awake();
+        
         pieces = new GameObject[8, 8];
 
         white = new Player("white", true);
