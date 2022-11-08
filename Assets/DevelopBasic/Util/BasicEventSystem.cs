@@ -6,11 +6,10 @@ using UnityEngine;
 //A basic C# Event System
 public static class EventHandler
 {
-    //This is a test event and it's calling function
-    public static event Action<float> E_OnTestEvent;
-    public static void Call_OnTestEvent(float data){
-        E_OnTestEvent?.Invoke(data);
-    }
+    public static event Action<PIECE_TYPE> E_OnCapturePiece;
+    public static void Call_OnCapturePiece(PIECE_TYPE pieceType){E_OnCapturePiece?.Invoke(pieceType);}
+    public static event Action E_OnMovePieceOnly;
+    public static void Call_OnMovePieceOnly(){E_OnMovePieceOnly?.Invoke();}
 }
 
 //A More Strict Event System

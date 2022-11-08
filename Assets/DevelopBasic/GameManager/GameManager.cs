@@ -13,6 +13,7 @@ public class GameManager : Singleton<GameManager>
     {
         base.Awake();
         transform.parent = null;
+        mainCam = Camera.main;
         DontDestroyOnLoad(gameObject);
     }
     public void SwitchingScene(string from, string to){
