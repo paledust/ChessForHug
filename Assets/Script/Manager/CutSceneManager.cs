@@ -9,9 +9,12 @@ public class CutSceneManager : MonoBehaviour
 [Header("Camera Zoom Group")]
     [SerializeField] private CinemachineTargetGroup VC_target;
     [SerializeField] private float targetBlendSpeed = 1;
-[Header("Timeline")]
+[Header("Transition timeline")]
     [SerializeField] private PlayableDirector zoomInDirector;
     [SerializeField] private PlayableDirector zoomOutDirector; 
+[Header("Story")]
+    [SerializeField] private GameObject smallStory;
+    [SerializeField] private GameObject bigStory;
     void OnEnable(){
         EventHandler.E_OnCapturePiece  += StartBigCutSceneSequence;
         EventHandler.E_OnMovePieceOnly += StartSmallCutSceneSequence;
@@ -23,11 +26,13 @@ public class CutSceneManager : MonoBehaviour
     void StartBigCutSceneSequence(Piece piece){
         VC_target.m_Targets[1].target = piece.transform;
         zoomOutDirector.Play();
+        bigStory.SetActive(true);
         StartCoroutine(coroutineBigCutSceneSequence());
     }
     void StartSmallCutSceneSequence(Piece piece){
         VC_target.m_Targets[1].target = piece.transform;
         zoomInDirector.Play();
+        smallStory.SetActive(true);
         StartCoroutine(coroutineBigCutSceneSequence());
     }
     IEnumerator coroutineBigCutSceneSequence(){
