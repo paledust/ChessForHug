@@ -845,6 +845,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a9bad1407589a47a114db345098884, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  triggerCutSceneSide: 0
   BoardCam: {fileID: 5574973}
   VC_target: {fileID: 1067505131}
   targetBlendSpeed: 1

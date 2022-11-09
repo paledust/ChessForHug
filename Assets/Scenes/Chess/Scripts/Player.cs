@@ -36,12 +36,12 @@ public class Player
     public List<GameObject> pieces;
     public List<GameObject> capturedPieces;
 
-    public string name;
+    public PLAYER_SIDE side;
     public int forward;
 
-    public Player(string name, bool positiveZMovement)
+    public Player(PLAYER_SIDE side, bool positiveZMovement)
     {
-        this.name = name;
+        this.side = side;
         pieces = new List<GameObject>();
         capturedPieces = new List<GameObject>();
 

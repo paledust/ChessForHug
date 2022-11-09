@@ -61,8 +61,8 @@ public class ChessManager : Singleton<ChessManager>
         
         pieces = new GameObject[8, 8];
 
-        white = new Player("white", true);
-        black = new Player("black", false);
+        white = new Player(PLAYER_SIDE.WHITE, true);
+        black = new Player(PLAYER_SIDE.BLACK, false);
 
         currentPlayer = white;
         otherPlayer = black;
@@ -206,12 +206,12 @@ public class ChessManager : Singleton<ChessManager>
         currentPlayer.capturedPieces.Add(pieceToCapture);
         pieces[gridPoint.x, gridPoint.y] = null;
 
-        Destroy(pieceToCapture);
-
         if(pieceToCapture.GetComponent<Piece>().type == PIECE_TYPE.KING){
-            Debug.Log(currentPlayer.name + "Wins !");
+            Debug.Log(currentPlayer.side + "Wins !");
             Destroy(board.GetComponent<TileSelector>());
             Destroy(board.GetComponent<MoveSelector>());
         }
+
+        Destroy(pieceToCapture);
     }
 }

@@ -6,6 +6,8 @@ using Cinemachine;
 
 public class CutSceneManager : MonoBehaviour
 {
+[Header("Basic")]
+    [SerializeField] private PLAYER_SIDE triggerCutSceneSide = PLAYER_SIDE.WHITE;
 [Header("Camera Zoom Group")]
     [SerializeField] private CinemachineVirtualCamera BoardCam;
     [SerializeField] private CinemachineTargetGroup VC_target;
@@ -17,11 +19,11 @@ public class CutSceneManager : MonoBehaviour
 [Header("Story")]
     [SerializeField] private GameObject smallStory;
     [SerializeField] private GameObject bigStory;
-    void Awake(){
+    void OnEnable(){
         EventHandler.E_OnCapturePiece  += StartBigCutSceneSequence;
         EventHandler.E_OnMovePieceOnly += StartSmallCutSceneSequence;
     }
-    void OnDestroy(){
+    void OnDisable(){
         EventHandler.E_OnCapturePiece  -= StartBigCutSceneSequence;
         EventHandler.E_OnMovePieceOnly -= StartSmallCutSceneSequence;
     }
@@ -36,13 +38,17 @@ public class CutSceneManager : MonoBehaviour
         bigStory.SetActive(false);
         smallStory.SetActive(false);
     }
-    void StartBigCutSceneSequence(Piece piece){
+    void StartBigCutSceneSequence(Piece piece, PLAYER_SIDE side){
+        if(triggerCutSceneSide != side) return;
+
         VC_target.m_Targets[1].target = piece.transform;
         zoomOutDirector.Play();
         bigStory.SetActive(true);
         StartCoroutine(coroutineCameraTargetTransition());
     }
-    void StartSmallCutSceneSequence(Piece piece){
+    void StartSmallCutSceneSequence(Piece piece, PLAYER_SIDE side){
+        if(triggerCutSceneSide != side) return;
+
         VC_target.m_Targets[1].target = piece.transform;
         zoomInDirector.Play();
         smallStory.SetActive(true);
