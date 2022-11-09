@@ -16,6 +16,8 @@ public static class EventHandler
     public static void Call_OnGrabPiece(GameObject piece){E_OnGrabPiece?.Invoke(piece);}
     public static event Action<GameObject> E_OnPutDownPiece;
     public static void Call_OnPutDownPiece(GameObject piece){E_OnPutDownPiece?.Invoke(piece);}
+    public static event Action<GameObject, GameObject> E_OnPiecesHuge;
+    public static void Call_OnPiecesHuge(GameObject huggerPiece, GameObject huggeePiece){E_OnPiecesHuge?.Invoke(huggerPiece, huggeePiece);}
 }
 
 //A More Strict Event System

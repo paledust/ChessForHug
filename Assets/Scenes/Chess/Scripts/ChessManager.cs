@@ -214,4 +214,16 @@ public class ChessManager : Singleton<ChessManager>
 
         Destroy(pieceToCapture);
     }
+    public void HugePieces(Vector2Int gridPoint, GameObject huggerPiece){
+        GameObject huggeePiece = PieceAtGrid(gridPoint);
+        currentPlayer.capturedPieces.Add(huggeePiece);
+        otherPlayer.capturedPieces.Add(huggerPiece);
+        pieces[gridPoint.x, gridPoint.y] = null;
+
+        huggerPiece.transform.position = Geometry.PointFromGrid(gridPoint);
+        huggerPiece.transform.position += new Vector3(0.3f*currentPlayer.forward, 0, 0.3f*otherPlayer.forward);
+        huggeePiece.transform.position += new Vector3(0.3f*otherPlayer.forward, 0, 0.3f*currentPlayer.forward);
+
+        EventHandler.Call_OnPiecesHuge(huggerPiece, huggeePiece);
+    }
 }
