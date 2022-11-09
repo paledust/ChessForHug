@@ -85,6 +85,9 @@ public class MoveSelector : MonoBehaviour {
 	}
 
 	public void EnterState(GameObject piece){
+		EventHandler.Call_OnGrabPiece(piece);
+		piece.SetActive(false);
+
 		movingPiece = piece;
 		this.enabled = true;
 
@@ -105,21 +108,13 @@ public class MoveSelector : MonoBehaviour {
 		}
 	}
 	public void ExitState(){
-		this.enabled = false;
-		tileHightlight.SetActive(false);
-		ChessManager.Instance.DeselectPiece(movingPiece);
-		movingPiece = null;
-		TileSelector selector = GetComponent<TileSelector>();
+		DeselectCurrentPiece();
 		ChessManager.Instance.NextPlayer();
-		selector.EnterState();
-
-		foreach(GameObject hightlight in locationHightlights){
-			Destroy(hightlight);
-		}
 	}
 	protected void DeselectCurrentPiece(){
 		this.enabled = false;
 		tileHightlight.SetActive(false);
+		movingPiece.SetActive(true);
 		ChessManager.Instance.DeselectPiece(movingPiece);
 		movingPiece = null;
 		TileSelector selector = GetComponent<TileSelector>();

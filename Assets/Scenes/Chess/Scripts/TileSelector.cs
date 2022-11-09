@@ -57,9 +57,10 @@ public class TileSelector : MonoBehaviour {
 			tileHighlight.SetActive(true);
 			tileHighlight.transform.position = Geometry.PointFromGrid(gridPoint);
 
+			EventHandler.Call_OnSelectGrid(point);
+
 			if(Mouse.current.leftButton.wasPressedThisFrame){
-				GameObject seletectedPiece = 
-					ChessManager.Instance.PieceAtGrid(gridPoint);
+				GameObject seletectedPiece = ChessManager.Instance.PieceAtGrid(gridPoint);
 				if(ChessManager.Instance.DoesPieceBelongToCurrentPlayer(seletectedPiece)){
 					ChessManager.Instance.SelectPiece(seletectedPiece);
 					ExitState(seletectedPiece);
@@ -72,6 +73,7 @@ public class TileSelector : MonoBehaviour {
 	}
 	public void EnterState(){
 		enabled = true;
+		EventHandler.Call_OnGrabPiece(null);
 	}
 	public void ExitState(GameObject movingPieces){
 		this.enabled = false;

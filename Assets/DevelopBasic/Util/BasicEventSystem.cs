@@ -10,6 +10,12 @@ public static class EventHandler
     public static void Call_OnCapturePiece(Piece piece, PLAYER_SIDE side){E_OnCapturePiece?.Invoke(piece, side);}
     public static event Action<Piece, PLAYER_SIDE> E_OnMovePieceOnly;
     public static void Call_OnMovePieceOnly(Piece piece, PLAYER_SIDE side){E_OnMovePieceOnly?.Invoke(piece, side);}
+    public static event Action<Vector3> E_OnSelectGrid;
+    public static void Call_OnSelectGrid(Vector3 pos){E_OnSelectGrid?.Invoke(pos);}
+    public static event Action<GameObject> E_OnGrabPiece;
+    public static void Call_OnGrabPiece(GameObject piece){E_OnGrabPiece?.Invoke(piece);}
+    public static event Action<GameObject> E_OnPutDownPiece;
+    public static void Call_OnPutDownPiece(GameObject piece){E_OnPutDownPiece?.Invoke(piece);}
 }
 
 //A More Strict Event System
