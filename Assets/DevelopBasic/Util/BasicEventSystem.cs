@@ -14,10 +14,8 @@ public static class EventHandler
     public static void Call_OnSelectGrid(Vector3 pos){E_OnSelectGrid?.Invoke(pos);}
     public static event Action<GameObject> E_OnGrabPiece;
     public static void Call_OnGrabPiece(GameObject piece){E_OnGrabPiece?.Invoke(piece);}
-    public static event Action<GameObject> E_OnPutDownPiece;
-    public static void Call_OnPutDownPiece(GameObject piece){E_OnPutDownPiece?.Invoke(piece);}
-    public static event Action<GameObject, GameObject> E_OnPiecesHuge;
-    public static void Call_OnPiecesHuge(GameObject huggerPiece, GameObject huggeePiece){E_OnPiecesHuge?.Invoke(huggerPiece, huggeePiece);}
+    public static event Action<GameObject, GameObject, Vector2Int> E_OnPiecesHug;
+    public static void Call_OnPiecesHuge(GameObject huggerPiece, GameObject huggeePiece, Vector2Int gridPoint){E_OnPiecesHug?.Invoke(huggerPiece, huggeePiece, gridPoint);}
 }
 
 //A More Strict Event System

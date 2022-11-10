@@ -39,8 +39,6 @@ public class CutSceneManager : MonoBehaviour
         smallStory.SetActive(false);
     }
     void StartBigCutSceneSequence(Piece piece, PLAYER_SIDE side){
-        if(triggerCutSceneSide != side) return;
-
         VC_target.m_Targets[1].target = piece.transform;
         zoomOutDirector.Play();
         bigStory.SetActive(true);

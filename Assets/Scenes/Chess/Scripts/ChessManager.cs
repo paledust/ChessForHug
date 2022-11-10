@@ -224,6 +224,6 @@ public class ChessManager : Singleton<ChessManager>
         huggerPiece.transform.position += new Vector3(0.3f*currentPlayer.forward, 0, 0.3f*otherPlayer.forward);
         huggeePiece.transform.position += new Vector3(0.3f*otherPlayer.forward, 0, 0.3f*currentPlayer.forward);
 
-        EventHandler.Call_OnPiecesHuge(huggerPiece, huggeePiece);
+        EventHandler.Call_OnPiecesHuge(huggerPiece, huggeePiece, gridPoint);
     }
 }

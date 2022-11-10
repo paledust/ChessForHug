@@ -25,7 +25,7 @@ public class Hand : MonoBehaviour{
         else{
             targetPos = piece.transform.position;
             targetPos.y = 0;
-            transform.position = transform.position;
+            transform.position = targetPos;
 
             grabPiece = GameObject.Instantiate(piece, grabTrans.position, grabTrans.rotation);
 
