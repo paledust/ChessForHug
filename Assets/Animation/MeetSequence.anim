@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HugSequence
+  m_Name: MeetSequence
   serializedVersion: 6
   m_Legacy: 1
   m_Compressed: 0
@@ -116,7 +116,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_IsActive
-    path: HugObjs
+    path: MeetObjs
     classID: 1
     script: {fileID: 0}
   m_PPtrCurves: []
@@ -248,7 +248,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_IsActive
-    path: HugObjs
+    path: MeetObjs
     classID: 1
     script: {fileID: 0}
   m_EulerEditorCurves: []

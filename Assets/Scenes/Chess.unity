@@ -186,7 +186,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574972}
-  m_LocalRotation: {x: 0.32626075, y: -0.000000007473027, z: 0.0000000025792963, w: 0.94527984}
+  m_LocalRotation: {x: 0.32626072, y: 0.00000004936347, z: -0.000000017037666, w: 0.94527984}
   m_LocalPosition: {x: 0, y: 12.46, z: -15.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1195,7 +1195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0576a0da2d81ba346990bae44e18fd4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hugGroupPrefab: {fileID: 7709292928933378134, guid: c5b7685e71de9df47882b19bb5427aff,
+  hugGroupPrefab: {fileID: 7709292928933378134, guid: ad40b568c65fa214f836aa1a41e94b10,
     type: 3}
 --- !u!1 &611793840 stripped
 GameObject:
