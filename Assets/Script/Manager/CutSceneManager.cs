@@ -28,15 +28,7 @@ public class CutSceneManager : MonoBehaviour
         EventHandler.E_OnMovePieceOnly -= StartSmallCutSceneSequence;
     }
     public void GoBackFromStory(){
-    //Reverse the camera fov
-        BoardCam.m_Lens.FieldOfView = 25;
-    //Play timeline
-        backFromStoryDirector.Play();
-        VC_target.m_Targets[0].weight = 1;
-        VC_target.m_Targets[1].weight = 0;
-    //Deactive Story
-        bigStory.SetActive(false);
-        smallStory.SetActive(false);
+        StartCoroutine(coroutineBackFromStory());
     }
     void StartBigCutSceneSequence(Piece piece, PLAYER_SIDE side){
         VC_target.m_Targets[1].target = piece.transform;
@@ -59,5 +51,19 @@ public class CutSceneManager : MonoBehaviour
             yield return null;
         }
         VC_target.m_Targets[1].weight = 1;
+    }
+    IEnumerator coroutineBackFromStory(){
+    //Reverse the camera fov
+        BoardCam.m_Lens.FieldOfView = 25;
+    //Play timeline
+        backFromStoryDirector.Play();
+        VC_target.m_Targets[0].weight = 1;
+        VC_target.m_Targets[1].weight = 0;
+    //Deactive Story
+        bigStory.SetActive(false);
+        smallStory.SetActive(false);
+        
+        yield return new WaitForSeconds((float)backFromStoryDirector.duration);
+        EventHandler.Call_OnBackToChessGame();
     }
 }

@@ -63,7 +63,7 @@ public class MoveSelector : MonoBehaviour {
 				if(!moveLocations.Contains(gridPoint)) return;
 
 				var piece = movingPiece.GetComponent<Piece>();
-				ChessManager.Instance.MakeMove(movingPiece, gridPoint);
+				ChessManager.Instance.MakeMoves(movingPiece, gridPoint);
 
 				ExitState();
 			}

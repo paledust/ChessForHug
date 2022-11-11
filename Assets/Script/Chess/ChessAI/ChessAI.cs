@@ -14,7 +14,7 @@ public class ChessAI : MonoBehaviour
     }
     void MakeRandomMove(){
         var rnd = Random.Range(0, moves.Count);
-        ChessManager.Instance.MakeMove(ChessManager.Instance.PieceAtGrid(moves[rnd].from), moves[rnd].to);
+        ChessManager.Instance.MakeMoves(ChessManager.Instance.PieceAtGrid(moves[rnd].from), moves[rnd].to);
     }
 //This will evaluate the board and check which move has the best score
     void MakeHighestScoreMove(){
@@ -27,14 +27,14 @@ public class ChessAI : MonoBehaviour
         Moves bestMove  = null;
         float bestScore = Mathf.NegativeInfinity;
         for(int i=0; i<possibleMoves.Length; i++){
-            ChessManager.Instance.MakeMove(possibleMoves[i]);
+            ChessManager.Instance.MakeMoves(possibleMoves[i]);
             float score = ChessManager.Instance.EvaluateBoard(ChessManager.Instance.currentPlayer);
             if(score > bestScore){
                 bestMove = possibleMoves[i];
             }
-            ChessManager.Instance.UndoMove();
+            ChessManager.Instance.UndoMoves();
         }
-        ChessManager.Instance.MakeMove(ChessManager.Instance.PieceAtGrid(bestMove.from), bestMove.to);
+        ChessManager.Instance.MakeMoves(ChessManager.Instance.PieceAtGrid(bestMove.from), bestMove.to);
     }
     void GetMoves(){
         moves.Clear();

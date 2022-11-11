@@ -111,11 +111,13 @@ public class ChessManager : Singleton<ChessManager>
         }
     }
 
-    public void AddPiece(GameObject prefab, Player player, int col, int row){
+    public GameObject AddPiece(GameObject prefab, Player player, int col, int row){
         GameObject pieceObject = board.AddPiece(prefab, col, row);
     //We need to do this test, because we also want to add neutral piece on board, which doesn't belong to any player.
         if(player!=null) player.pieces.Add(pieceObject);
         pieces[col, row] = pieceObject;
+
+        return pieceObject;
     }
 
     public void SelectPieceAtGrid(Vector2Int gridPoint){
@@ -141,6 +143,7 @@ public class ChessManager : Singleton<ChessManager>
                 piece = PieceAtGrid(new Vector2Int(x, y))?.GetComponent<Piece>();
                 if(piece != null){
                     value += Service.PieceValueDict[piece.type] * (player.pieces.Contains(piece.gameObject)?1:-1);
+                    if(piece.type == PIECE_TYPE.NEUTRAL){value += (piece as Neutral).extraValue;}
                 }
             }
         }
@@ -183,6 +186,13 @@ public class ChessManager : Singleton<ChessManager>
 
         return true;
     }
+    void PauseChessGameBeforeEndTurn(){
+        EventHandler.E_OnBackToChessGame += ResumeChessGameBeforeEndTurn;
+    }
+    void ResumeChessGameBeforeEndTurn(){
+        EventHandler.E_OnBackToChessGame -= ResumeChessGameBeforeEndTurn;
+        NextPlayer();
+    }
 
     public bool DoesPieceBelongToCurrentPlayer(GameObject piece){
         return currentPlayer.pieces.Contains(piece);
@@ -218,30 +228,31 @@ public class ChessManager : Singleton<ChessManager>
     public void EndTurn(){
         if(lastTurnMoveType == MOVE_TYPE.CAPTURE){
             Moves lastTurnMove = moveStack.Peek();
-            EventHandler.Call_OnPiecesHuge(lastTurnMove.movePieces, lastTurnMove.takenPieces, lastTurnMove.to);
+            EventHandler.Call_OnPiecesHug(lastTurnMove.movePieces, lastTurnMove.takenPieces, lastTurnMove.to);
+            PauseChessGameBeforeEndTurn();
         }
         else{
 			// EventHandler.Call_OnMovePieceOnly(piece, ChessManager.Instance.currentPlayer.side);
+            NextPlayer();
         }
-        NextPlayer();
     }
-    public void MakeMove(Moves move){
+    public void MakeMoves(Moves move){
         moveStack.Push(move);
         move.Excute();
     }
-    public void MakeMove(GameObject piece, Vector2Int gridPoint){
+    public void MakeMoves(GameObject piece, Vector2Int gridPoint){
         if(piece.GetComponent<Piece>().type == PIECE_TYPE.PAWN){
-            MakeMove(new PawnMoves(GridForPiece(piece), gridPoint));
+            MakeMoves(new PawnMoves(GridForPiece(piece), gridPoint));
         }
         else{
-            MakeMove(new Moves(GridForPiece(piece), gridPoint));
+            MakeMoves(new Moves(GridForPiece(piece), gridPoint));
         }
     }
-    public void UndoMove(){
+    public void UndoMoves(){
         moveStack.Pop().Undo();
     }
 //Pieces Move rule
-    public void Move(GameObject piece, Vector2Int gridPoint){
+    public void MovePiece(GameObject piece, Vector2Int gridPoint){
         Vector2Int startGridPoint = GridForPiece(piece);
         pieces[startGridPoint.x, startGridPoint.y] = null;
 
@@ -249,12 +260,6 @@ public class ChessManager : Singleton<ChessManager>
         board.MovePiece(piece, gridPoint);
 
         lastTurnMoveType = MOVE_TYPE.MOVE;
-    }
-    public void UndoHugMove(GameObject movePiece, GameObject takenPiece, Vector2Int from, Vector2Int to){
-        pieces[to.x, to.y] = takenPiece;
-        board.MovePiece(takenPiece, to);
-        pieces[from.x, from.y] = movePiece;
-        board.MovePiece(movePiece, from);
     }
     public void HugPieces(GameObject piece, Vector2Int gridPoint){
         Vector2Int startGridPoint = GridForPiece(piece);
@@ -267,13 +272,21 @@ public class ChessManager : Singleton<ChessManager>
         otherPlayer.pieces.Remove(otherPiece);
 
         pieces[gridPoint.x, gridPoint.y] = null;
-        AddPiece(neutralPiece, null, gridPoint.x, gridPoint.y);
+        GameObject temp = AddPiece(neutralPiece, null, gridPoint.x, gridPoint.y);
+        Debug.Log(temp.GetComponent<Neutral>()==null);
+        temp.GetComponent<Neutral>().extraValue = Service.PieceValueDict[otherPiece.GetComponent<Piece>().type];
 
         piece.transform.position = Geometry.PointFromGrid(gridPoint);
         piece.transform.position += new Vector3(0.3f*currentPlayer.forward, 0, 0.3f*otherPlayer.forward);
         otherPiece.transform.position += new Vector3(0.3f*otherPlayer.forward, 0, 0.3f*currentPlayer.forward);
 
         lastTurnMoveType = MOVE_TYPE.CAPTURE;
+    }
+    public void UndoHugMove(GameObject movePiece, GameObject takenPiece, Vector2Int from, Vector2Int to){
+        pieces[to.x, to.y] = takenPiece;
+        board.MovePiece(takenPiece, to);
+        pieces[from.x, from.y] = movePiece;
+        board.MovePiece(movePiece, from);
     }
     public void PromotePawn(GameObject pawn){
         Destroy(pawn.GetComponent<Pawn>());

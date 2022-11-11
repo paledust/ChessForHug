@@ -57,8 +57,6 @@ public class TileSelector : MonoBehaviour {
 			tileHighlight.SetActive(true);
 			tileHighlight.transform.position = Geometry.PointFromGrid(gridPoint);
 
-			EventHandler.Call_OnSelectGrid(point);
-
 			if(Mouse.current.leftButton.wasPressedThisFrame){
 				GameObject seletectedPiece = ChessManager.Instance.PieceAtGrid(gridPoint);
 				if(ChessManager.Instance.DoesPieceBelongToCurrentPlayer(seletectedPiece)){

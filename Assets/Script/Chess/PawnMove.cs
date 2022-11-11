@@ -23,7 +23,7 @@ public class PawnMoves: Moves{
     public override void Undo()
     {
         if(takenPieces == null){
-            ChessManager.Instance.Move(movePieces, from);
+            ChessManager.Instance.MovePiece(movePieces, from);
             if(promotion) ChessManager.Instance.UndoPawnPromote(movePieces);
         }
         else{
@@ -45,7 +45,7 @@ public class PawnMoves: Moves{
     }
     public override void Excute(){
         if(takenPieces == null){
-            ChessManager.Instance.Move(movePieces, to);
+            ChessManager.Instance.MovePiece(movePieces, to);
             if(promotion) ChessManager.Instance.PromotePawn(movePieces);
         }
         else{

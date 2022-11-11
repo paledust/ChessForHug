@@ -34,7 +34,7 @@ public class Board : MonoBehaviour
 {
     public Material defaultMaterial;
     public Material selectedMaterial;
-
+    [SerializeField] private MeshCollider m_collider;
     public GameObject AddPiece(GameObject piece, int col, int row)
     {
         Vector2Int gridPoint = Geometry.GridPoint(col, row);

@@ -15,7 +15,7 @@ public class Moves{
     }
     public virtual void Undo(){
         if(takenPieces == null){
-            ChessManager.Instance.Move(movePieces, from);
+            ChessManager.Instance.MovePiece(movePieces, from);
         }
         else{
             GameObject.Destroy(ChessManager.Instance.PieceAtGrid(to));
@@ -34,7 +34,7 @@ public class Moves{
     }
     public virtual void Excute(){
         if(takenPieces == null){
-            ChessManager.Instance.Move(movePieces, to);
+            ChessManager.Instance.MovePiece(movePieces, to);
         }
         else{
             ChessManager.Instance.HugPieces(movePieces, to);
