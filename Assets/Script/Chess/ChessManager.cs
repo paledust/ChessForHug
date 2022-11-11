@@ -39,6 +39,8 @@ public class ChessManager : Singleton<ChessManager>
 [Header("Game")]
     [SerializeField] private GameObject chessPlayer;
     [SerializeField] private ChessAI chessAI;
+[Header("Special Piece")]
+    public GameObject neutralPiece;
 [Header("Pieces")]
     public GameObject whiteKing;
     public GameObject whiteQueen;
@@ -110,7 +112,8 @@ public class ChessManager : Singleton<ChessManager>
     public void AddPiece(GameObject prefab, Player player, int col, int row)
     {
         GameObject pieceObject = board.AddPiece(prefab, col, row);
-        player.pieces.Add(pieceObject);
+    //We need to do this test, because we also want to add neutral piece on board, which doesn't belong to any player.
+        if(player!=null) player.pieces.Add(pieceObject);
         pieces[col, row] = pieceObject;
     }
 
@@ -219,8 +222,7 @@ public class ChessManager : Singleton<ChessManager>
             HugPieces(piece, gridPoint);
         }
     }
-    private void Move(GameObject piece, Vector2Int gridPoint)
-    {
+    private void Move(GameObject piece, Vector2Int gridPoint){
         Vector2Int startGridPoint = GridForPiece(piece);
         pieces[startGridPoint.x, startGridPoint.y] = null;
         pieces[gridPoint.x, gridPoint.y] = piece;
@@ -242,17 +244,21 @@ public class ChessManager : Singleton<ChessManager>
         Destroy(pieceToCapture);
     }
     private void HugPieces(GameObject piece, Vector2Int gridPoint){
+        Vector2Int startGridPoint = GridForPiece(piece);
+        pieces[startGridPoint.x, startGridPoint.y] = null;
+
         GameObject otherPiece = PieceAtGrid(gridPoint);
         currentPlayer.capturedPieces.Add(otherPiece);
         currentPlayer.pieces.Remove(piece);
         otherPlayer.capturedPieces.Add(piece);
         otherPlayer.pieces.Remove(otherPiece);
+
         pieces[gridPoint.x, gridPoint.y] = null;
+        AddPiece(neutralPiece, null, gridPoint.x, gridPoint.y);
 
         piece.transform.position = Geometry.PointFromGrid(gridPoint);
         piece.transform.position += new Vector3(0.3f*currentPlayer.forward, 0, 0.3f*otherPlayer.forward);
         otherPiece.transform.position += new Vector3(0.3f*otherPlayer.forward, 0, 0.3f*currentPlayer.forward);
-        Debug.Log(piece.transform.position);
 
         EventHandler.Call_OnPiecesHuge(piece, otherPiece, gridPoint);
     }

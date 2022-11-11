@@ -24,8 +24,5 @@ public class MeetManager : MonoBehaviour
 
         yield return new WaitForSeconds(hugGroupAnime.clip.length);
         EventHandler.Call_OnCapturePiece(huggerPiece.GetComponent<Piece>(), ChessManager.Instance.currentPlayer.side);
-
-        Destroy(huggerPiece);
-        Destroy(huggeePiece);
     }
 }

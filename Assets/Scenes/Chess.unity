@@ -1124,6 +1124,8 @@ MonoBehaviour:
   board: {fileID: 892110090}
   chessPlayer: {fileID: 692533035}
   chessAI: {fileID: 1748560194}
+  neutralPiece: {fileID: 591307314258031880, guid: 955b740753236384aafe03117884e2ce,
+    type: 3}
   whiteKing: {fileID: 1097184490271986, guid: 286f8291ea775409f91f3dcc8dc0e06c, type: 3}
   whiteQueen: {fileID: 1108025435085622, guid: 348ae07a400ab45c5afcbe22039e9d5e, type: 3}
   whiteBishop: {fileID: 1877345029257820, guid: 27727deede5194cdba8c2ebab33ecaab,
