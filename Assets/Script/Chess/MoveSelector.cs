@@ -63,14 +63,8 @@ public class MoveSelector : MonoBehaviour {
 				if(!moveLocations.Contains(gridPoint)) return;
 
 				var piece = movingPiece.GetComponent<Piece>();
-				if(ChessManager.Instance.PieceAtGrid(gridPoint) == null){
-					// EventHandler.Call_OnMovePieceOnly(piece, ChessManager.Instance.currentPlayer.side);
-					ChessManager.Instance.Move(movingPiece, gridPoint);
-				}
-				else{
-					// EventHandler.Call_OnCapturePiece(piece, ChessManager.Instance.currentPlayer.side);
-					ChessManager.Instance.HugePieces(gridPoint, movingPiece);
-				}
+				ChessManager.Instance.MakeMove(movingPiece, gridPoint);
+
 				ExitState();
 			}
 		}

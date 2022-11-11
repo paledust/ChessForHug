@@ -186,7 +186,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574972}
-  m_LocalRotation: {x: 0.32626072, y: 0.00000004936347, z: -0.000000017037666, w: 0.94527984}
+  m_LocalRotation: {x: 0.32626075, y: -0.000000007473027, z: 0.0000000025792963, w: 0.94527984}
   m_LocalPosition: {x: 0, y: 12.46, z: -15.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -225,7 +225,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 3d844526a63a31c4a8a7270ca41acc26,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3d844526a63a31c4a8a7270ca41acc26,
         type: 3}
@@ -1119,7 +1119,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0467ea60d08c74bf09df7bda660533e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  white_Control: 1
+  black_Control: 0
   board: {fileID: 892110090}
+  chessPlayer: {fileID: 692533035}
+  chessAI: {fileID: 1748560194}
   whiteKing: {fileID: 1097184490271986, guid: 286f8291ea775409f91f3dcc8dc0e06c, type: 3}
   whiteQueen: {fileID: 1108025435085622, guid: 348ae07a400ab45c5afcbe22039e9d5e, type: 3}
   whiteBishop: {fileID: 1877345029257820, guid: 27727deede5194cdba8c2ebab33ecaab,
@@ -1162,7 +1166,7 @@ GameObject:
   - component: {fileID: 529051767}
   - component: {fileID: 529051768}
   m_Layer: 0
-  m_Name: HugManager
+  m_Name: MeetManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1195,7 +1199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0576a0da2d81ba346990bae44e18fd4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hugGroupPrefab: {fileID: 7709292928933378134, guid: ad40b568c65fa214f836aa1a41e94b10,
+  hugGroupPrefab: {fileID: 4871585066686592610, guid: 2b5a28b24804ffe438751626004a9ddf,
     type: 3}
 --- !u!1 &611793840 stripped
 GameObject:
@@ -1291,6 +1295,71 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &692533035
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 692533036}
+  - component: {fileID: 692533038}
+  - component: {fileID: 692533037}
+  m_Layer: 0
+  m_Name: ChessPlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &692533036
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 692533035}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &692533037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 692533035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e8326b7f6dcec24b8104e84c95074d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveLocationPrefab: {fileID: 1555274435638532, guid: 4cb3dfa64c6fa4774b49468d68a0845b,
+    type: 3}
+  tileHightlightPrefab: {fileID: 1333511979136996, guid: e860aff6f484c47d7b713cbebd3ee5d3,
+    type: 3}
+  attackLocationPrefab: {fileID: 1341371675672656, guid: c4a2ba9f320f1459996f001bc0387b40,
+    type: 3}
+--- !u!114 &692533038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 692533035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6af00c4c0c0d9d4aa484fb5280b8af9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileHighlightPrefeb: {fileID: 1333511979136996, guid: e860aff6f484c47d7b713cbebd3ee5d3,
+    type: 3}
 --- !u!1 &702677344
 GameObject:
   m_ObjectHideFlags: 0
@@ -1390,8 +1459,6 @@ GameObject:
   m_Component:
   - component: {fileID: 892110089}
   - component: {fileID: 892110090}
-  - component: {fileID: 892110091}
-  - component: {fileID: 892110092}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -1429,38 +1496,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultMaterial: {fileID: 2100000, guid: 99ee945a86ab04e10975e2b882047aeb, type: 2}
   selectedMaterial: {fileID: 2100000, guid: 147201814546747499f9305e63c9f218, type: 2}
---- !u!114 &892110091
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 892110088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6af00c4c0c0d9d4aa484fb5280b8af9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tileHighlightPrefeb: {fileID: 1333511979136996, guid: e860aff6f484c47d7b713cbebd3ee5d3,
-    type: 3}
---- !u!114 &892110092
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 892110088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e8326b7f6dcec24b8104e84c95074d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveLocationPrefab: {fileID: 1555274435638532, guid: 4cb3dfa64c6fa4774b49468d68a0845b,
-    type: 3}
-  tileHightlightPrefab: {fileID: 1333511979136996, guid: e860aff6f484c47d7b713cbebd3ee5d3,
-    type: 3}
-  attackLocationPrefab: {fileID: 1341371675672656, guid: c4a2ba9f320f1459996f001bc0387b40,
-    type: 3}
 --- !u!1 &974926188
 GameObject:
   m_ObjectHideFlags: 0
@@ -3006,6 +3041,51 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &1748560192
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1748560193}
+  - component: {fileID: 1748560194}
+  m_Layer: 0
+  m_Name: ChessAI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1748560193
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1748560192}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.549242, y: 7.7929974, z: -5.611195}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1748560194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1748560192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cf93e550f7984747830b1dd5b0c5455, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveDelay: 1
 --- !u!1 &1768842494
 GameObject:
   m_ObjectHideFlags: 0

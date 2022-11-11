@@ -38,20 +38,26 @@ public class Player
 
     public PLAYER_SIDE side;
     public int forward;
+    public int buttomLine;
 
-    public Player(PLAYER_SIDE side, bool positiveZMovement)
+    public bool IsAI;
+
+    public Player(PLAYER_SIDE side, bool positiveZMovement, bool isAI)
     {
         this.side = side;
+        this.IsAI = isAI;
         pieces = new List<GameObject>();
         capturedPieces = new List<GameObject>();
 
         if (positiveZMovement == true)
         {
             this.forward = 1;
+            this.buttomLine = 8;
         }
         else
         {
             this.forward = -1;
+            this.buttomLine = 0;
         }
     }
 }

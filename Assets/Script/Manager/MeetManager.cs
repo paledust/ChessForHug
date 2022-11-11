@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HugManager : MonoBehaviour
+public class MeetManager : MonoBehaviour
 {
     [SerializeField] private GameObject hugGroupPrefab;
     void OnEnable(){

@@ -32,8 +32,14 @@ using System.Collections.Generic;
 using UnityEngine;
 public class ChessManager : Singleton<ChessManager>
 {
+[Header("Board Configuration")]
+    [SerializeField] private CONTROL_TYPE white_Control;
+    [SerializeField] private CONTROL_TYPE black_Control;
     public Board board;
-
+[Header("Game")]
+    [SerializeField] private GameObject chessPlayer;
+    [SerializeField] private ChessAI chessAI;
+[Header("Pieces")]
     public GameObject whiteKing;
     public GameObject whiteQueen;
     public GameObject whiteBishop;
@@ -61,8 +67,8 @@ public class ChessManager : Singleton<ChessManager>
         
         pieces = new GameObject[8, 8];
 
-        white = new Player(PLAYER_SIDE.WHITE, true);
-        black = new Player(PLAYER_SIDE.BLACK, false);
+        white = new Player(PLAYER_SIDE.WHITE, true, white_Control == CONTROL_TYPE.AI);
+        black = new Player(PLAYER_SIDE.BLACK, false, black_Control == CONTROL_TYPE.AI);
 
         currentPlayer = white;
         otherPlayer = black;
@@ -173,24 +179,17 @@ public class ChessManager : Singleton<ChessManager>
         return currentPlayer.pieces.Contains(piece);
     }
 
-    public void Move(GameObject piece, Vector2Int gridPoint)
-    {
-        Vector2Int startGridPoint = GridForPiece(piece);
-        pieces[startGridPoint.x, startGridPoint.y] = null;
-        pieces[gridPoint.x, gridPoint.y] = piece;
-        board.MovePiece(piece, gridPoint);
-        if(piece.GetComponent<Piece>().type == PIECE_TYPE.PAWN){piece.GetComponent<Pawn>().Moved = true;}
-    }
 
+    public void CheckLegalMove(ref List<Vector2Int> moveLocations){
+        moveLocations.RemoveAll(tile => tile.x < 0 || tile.x > 7 || tile.y < 0 || tile.y > 7);
+        moveLocations.RemoveAll(tile => FriendlyPieceAt(tile));
+    }
     public List<Vector2Int> MovesForPiece(GameObject pieceObject){
         Piece piece = pieceObject.GetComponent<Piece>();
         Vector2Int gridPoint = GridForPiece(pieceObject);
 
         var locations = piece.MoveLocations(gridPoint);
-
-        locations.RemoveAll(tile => tile.x < 0 || tile.x > 7 || tile.y < 0 || tile.y > 7);
-
-        locations.RemoveAll(tile => FriendlyPieceAt(tile));
+        CheckLegalMove(ref locations);
 
         return locations;
     }
@@ -198,10 +197,38 @@ public class ChessManager : Singleton<ChessManager>
         Player tempPlayer = currentPlayer;
         currentPlayer = otherPlayer;
         otherPlayer = tempPlayer;
+
+        if(currentPlayer.IsAI){
+            chessPlayer.SetActive(false);
+            chessAI.MakeMove();
+            NextPlayer();
+        }
+        else{
+            chessPlayer.SetActive(true);
+        }
     }
 
-    //Will Be Modified
-    public void CapturePieceAt(Vector2Int gridPoint){
+//Pieces Move rule
+    public void MakeMove(GameObject piece, Vector2Int gridPoint){
+        if(PieceAtGrid(gridPoint) == null){
+			// EventHandler.Call_OnMovePieceOnly(piece, ChessManager.Instance.currentPlayer.side);
+            Move(piece, gridPoint);
+        }
+        else{
+            // CapturePieceAt(gridPoint);
+            HugPieces(piece, gridPoint);
+        }
+    }
+    private void Move(GameObject piece, Vector2Int gridPoint)
+    {
+        Vector2Int startGridPoint = GridForPiece(piece);
+        pieces[startGridPoint.x, startGridPoint.y] = null;
+        pieces[gridPoint.x, gridPoint.y] = piece;
+        board.MovePiece(piece, gridPoint);
+        if(piece.GetComponent<Piece>().type == PIECE_TYPE.PAWN){piece.GetComponent<Pawn>().Moved = true;}
+        if(gridPoint.y == currentPlayer.buttomLine && piece.GetComponent<Piece>().type == PIECE_TYPE.PAWN){piece.GetComponent<Pawn>().Promotion = true;}
+    }
+    private void CapturePieceAt(Vector2Int gridPoint){
         GameObject pieceToCapture = PieceAtGrid(gridPoint);
         currentPlayer.capturedPieces.Add(pieceToCapture);
         pieces[gridPoint.x, gridPoint.y] = null;
@@ -214,16 +241,19 @@ public class ChessManager : Singleton<ChessManager>
 
         Destroy(pieceToCapture);
     }
-    public void HugePieces(Vector2Int gridPoint, GameObject huggerPiece){
-        GameObject huggeePiece = PieceAtGrid(gridPoint);
-        currentPlayer.capturedPieces.Add(huggeePiece);
-        otherPlayer.capturedPieces.Add(huggerPiece);
+    private void HugPieces(GameObject piece, Vector2Int gridPoint){
+        GameObject otherPiece = PieceAtGrid(gridPoint);
+        currentPlayer.capturedPieces.Add(otherPiece);
+        currentPlayer.pieces.Remove(piece);
+        otherPlayer.capturedPieces.Add(piece);
+        otherPlayer.pieces.Remove(otherPiece);
         pieces[gridPoint.x, gridPoint.y] = null;
 
-        huggerPiece.transform.position = Geometry.PointFromGrid(gridPoint);
-        huggerPiece.transform.position += new Vector3(0.3f*currentPlayer.forward, 0, 0.3f*otherPlayer.forward);
-        huggeePiece.transform.position += new Vector3(0.3f*otherPlayer.forward, 0, 0.3f*currentPlayer.forward);
+        piece.transform.position = Geometry.PointFromGrid(gridPoint);
+        piece.transform.position += new Vector3(0.3f*currentPlayer.forward, 0, 0.3f*otherPlayer.forward);
+        otherPiece.transform.position += new Vector3(0.3f*otherPlayer.forward, 0, 0.3f*currentPlayer.forward);
+        Debug.Log(piece.transform.position);
 
-        EventHandler.Call_OnPiecesHuge(huggerPiece, huggeePiece, gridPoint);
+        EventHandler.Call_OnPiecesHuge(piece, otherPiece, gridPoint);
     }
 }
