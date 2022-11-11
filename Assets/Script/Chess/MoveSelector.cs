@@ -102,7 +102,7 @@ public class MoveSelector : MonoBehaviour {
 	}
 	public void ExitState(){
 		DeselectCurrentPiece();
-		ChessManager.Instance.NextPlayer();
+		ChessManager.Instance.EndTurn();
 	}
 	protected void DeselectCurrentPiece(){
 		this.enabled = false;

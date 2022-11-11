@@ -7,15 +7,34 @@ public class ChessAI : MonoBehaviour
 {
     [SerializeField] private float moveDelay = 1f;   
     private List<Moves> moves = new List<Moves>();
-    public async void MakeMove(){
+    public async Task MakeMove(){
         GetMoves();
         await Task.Delay(Mathf.FloorToInt(moveDelay*1000));
-        MakeRandomMove();
+        MakeHighestScoreMove();
     }
     void MakeRandomMove(){
         var rnd = Random.Range(0, moves.Count);
-        Debug.Log($"{ChessManager.Instance.PieceAtGrid(moves[rnd].from).name} move to {moves[rnd].to}.");
         ChessManager.Instance.MakeMove(ChessManager.Instance.PieceAtGrid(moves[rnd].from), moves[rnd].to);
+    }
+//This will evaluate the board and check which move has the best score
+    void MakeHighestScoreMove(){
+    //Shuffle the moves, so the same move isn't always picked on ties
+        Moves[] possibleMoves = moves.ToArray();
+        Service.Shuffle<Moves>(ref possibleMoves);
+
+        if(possibleMoves.Length == 0) return;
+
+        Moves bestMove  = null;
+        float bestScore = Mathf.NegativeInfinity;
+        for(int i=0; i<possibleMoves.Length; i++){
+            ChessManager.Instance.MakeMove(possibleMoves[i]);
+            float score = ChessManager.Instance.EvaluateBoard(ChessManager.Instance.currentPlayer);
+            if(score > bestScore){
+                bestMove = possibleMoves[i];
+            }
+            ChessManager.Instance.UndoMove();
+        }
+        ChessManager.Instance.MakeMove(ChessManager.Instance.PieceAtGrid(bestMove.from), bestMove.to);
     }
     void GetMoves(){
         moves.Clear();

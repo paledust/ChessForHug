@@ -8,6 +8,15 @@ public static class Service
 #region Parameter
     public static string TestString = "This is a test string, to show how you can use string in service.";
     public static LayerMask InteractableLayer = 1 << LayerMask.NameToLayer("Interactable"); //TO Do: Name whatever the interactable layer should be
+    public static Dictionary<PIECE_TYPE, int> PieceValueDict = new Dictionary<PIECE_TYPE, int>(){
+        {PIECE_TYPE.PAWN, 100},
+        {PIECE_TYPE.KNIGHT, 350},
+        {PIECE_TYPE.BISHOP, 350},
+        {PIECE_TYPE.ROOK, 525},
+        {PIECE_TYPE.QUEEN, 1000},
+        {PIECE_TYPE.KING, 10000},
+        {PIECE_TYPE.NEUTRAL, 0}
+    };
 #endregion
 #region HelpFunction
     /// <summary>
@@ -31,6 +40,15 @@ public static class Service
         }
 
         return MatchObjects.ToArray ();
+    }
+    public static void Shuffle<T>(ref T[] elements){
+        var rnd = new System.Random();
+        for(int i=0; i<elements.Length; i++){
+            int index = rnd.Next(i+1);
+            T tmp = elements[i];
+            elements[i] = elements[index];
+            elements[index] = tmp;
+        }
     }
 #endregion
 }

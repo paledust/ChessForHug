@@ -63,9 +63,12 @@ public class ChessManager : Singleton<ChessManager>
     public Player currentPlayer;
     public Player otherPlayer;
 
-    protected override void Awake ()
-    {
+    private MOVE_TYPE lastTurnMoveType;
+    private Stack<Moves> moveStack;
+    protected override void Awake (){
         base.Awake();
+
+        moveStack = new Stack<Moves>();
         
         pieces = new GameObject[8, 8];
 
@@ -78,8 +81,7 @@ public class ChessManager : Singleton<ChessManager>
         InitialSetup();
     }
 
-    private void InitialSetup()
-    {
+    private void InitialSetup(){
         AddPiece(whiteRook, white, 0, 0);
         AddPiece(whiteKnight, white, 1, 0);
         AddPiece(whiteBishop, white, 2, 0);
@@ -109,16 +111,14 @@ public class ChessManager : Singleton<ChessManager>
         }
     }
 
-    public void AddPiece(GameObject prefab, Player player, int col, int row)
-    {
+    public void AddPiece(GameObject prefab, Player player, int col, int row){
         GameObject pieceObject = board.AddPiece(prefab, col, row);
     //We need to do this test, because we also want to add neutral piece on board, which doesn't belong to any player.
         if(player!=null) player.pieces.Add(pieceObject);
         pieces[col, row] = pieceObject;
     }
 
-    public void SelectPieceAtGrid(Vector2Int gridPoint)
-    {
+    public void SelectPieceAtGrid(Vector2Int gridPoint){
         GameObject selectedPiece = pieces[gridPoint.x, gridPoint.y];
         if (selectedPiece)
         {
@@ -126,18 +126,27 @@ public class ChessManager : Singleton<ChessManager>
         }
     }
 
-    public void SelectPiece(GameObject piece)
-    {
+    public void SelectPiece(GameObject piece){
         board.SelectPiece(piece);
     }
 
-    public void DeselectPiece(GameObject piece)
-    {
+    public void DeselectPiece(GameObject piece){
         board.DeselectPiece(piece);
     }
-
-    public GameObject PieceAtGrid(Vector2Int gridPoint)
-    {
+    public int EvaluateBoard(Player player){
+        int value = 0;
+        Piece piece = null;
+        for(int x=0; x<8; x++){
+            for(int y=0; y<8; y++){
+                piece = PieceAtGrid(new Vector2Int(x, y))?.GetComponent<Piece>();
+                if(piece != null){
+                    value += Service.PieceValueDict[piece.type] * (player.pieces.Contains(piece.gameObject)?1:-1);
+                }
+            }
+        }
+        return value;
+    }
+    public GameObject PieceAtGrid(Vector2Int gridPoint){
         if (gridPoint.x > 7 || gridPoint.y > 7 || gridPoint.x < 0 || gridPoint.y < 0)
         {
             return null;
@@ -145,8 +154,7 @@ public class ChessManager : Singleton<ChessManager>
         return pieces[gridPoint.x, gridPoint.y];
     }
 
-    public Vector2Int GridForPiece(GameObject piece)
-    {
+    public Vector2Int GridForPiece(GameObject piece){
         for (int i = 0; i < 8; i++) 
         {
             for (int j = 0; j < 8; j++)
@@ -161,8 +169,7 @@ public class ChessManager : Singleton<ChessManager>
         return new Vector2Int(-1, -1);
     }
 
-    public bool FriendlyPieceAt(Vector2Int gridPoint)
-    {
+    public bool FriendlyPieceAt(Vector2Int gridPoint){
         GameObject piece = PieceAtGrid(gridPoint);
 
         if (piece == null) {
@@ -177,11 +184,9 @@ public class ChessManager : Singleton<ChessManager>
         return true;
     }
 
-    public bool DoesPieceBelongToCurrentPlayer(GameObject piece)
-    {
+    public bool DoesPieceBelongToCurrentPlayer(GameObject piece){
         return currentPlayer.pieces.Contains(piece);
     }
-
 
     public void CheckLegalMove(ref List<Vector2Int> moveLocations){
         moveLocations.RemoveAll(tile => tile.x < 0 || tile.x > 7 || tile.y < 0 || tile.y > 7);
@@ -196,54 +201,62 @@ public class ChessManager : Singleton<ChessManager>
 
         return locations;
     }
-    public void NextPlayer(){
+    public async void NextPlayer(){
         Player tempPlayer = currentPlayer;
         currentPlayer = otherPlayer;
         otherPlayer = tempPlayer;
 
         if(currentPlayer.IsAI){
             chessPlayer.SetActive(false);
-            chessAI.MakeMove();
-            NextPlayer();
+            await chessAI.MakeMove();
+            EndTurn();
         }
         else{
             chessPlayer.SetActive(true);
         }
     }
-
-//Pieces Move rule
-    public void MakeMove(GameObject piece, Vector2Int gridPoint){
-        if(PieceAtGrid(gridPoint) == null){
-			// EventHandler.Call_OnMovePieceOnly(piece, ChessManager.Instance.currentPlayer.side);
-            Move(piece, gridPoint);
+    public void EndTurn(){
+        if(lastTurnMoveType == MOVE_TYPE.CAPTURE){
+            Moves lastTurnMove = moveStack.Peek();
+            EventHandler.Call_OnPiecesHuge(lastTurnMove.movePieces, lastTurnMove.takenPieces, lastTurnMove.to);
         }
         else{
-            // CapturePieceAt(gridPoint);
-            HugPieces(piece, gridPoint);
+			// EventHandler.Call_OnMovePieceOnly(piece, ChessManager.Instance.currentPlayer.side);
+        }
+        NextPlayer();
+    }
+    public void MakeMove(Moves move){
+        moveStack.Push(move);
+        move.Excute();
+    }
+    public void MakeMove(GameObject piece, Vector2Int gridPoint){
+        if(piece.GetComponent<Piece>().type == PIECE_TYPE.PAWN){
+            MakeMove(new PawnMoves(GridForPiece(piece), gridPoint));
+        }
+        else{
+            MakeMove(new Moves(GridForPiece(piece), gridPoint));
         }
     }
-    private void Move(GameObject piece, Vector2Int gridPoint){
+    public void UndoMove(){
+        moveStack.Pop().Undo();
+    }
+//Pieces Move rule
+    public void Move(GameObject piece, Vector2Int gridPoint){
         Vector2Int startGridPoint = GridForPiece(piece);
         pieces[startGridPoint.x, startGridPoint.y] = null;
+
         pieces[gridPoint.x, gridPoint.y] = piece;
         board.MovePiece(piece, gridPoint);
-        if(piece.GetComponent<Piece>().type == PIECE_TYPE.PAWN){piece.GetComponent<Pawn>().Moved = true;}
-        if(gridPoint.y == currentPlayer.buttomLine && piece.GetComponent<Piece>().type == PIECE_TYPE.PAWN){piece.GetComponent<Pawn>().Promotion = true;}
-    }
-    private void CapturePieceAt(Vector2Int gridPoint){
-        GameObject pieceToCapture = PieceAtGrid(gridPoint);
-        currentPlayer.capturedPieces.Add(pieceToCapture);
-        pieces[gridPoint.x, gridPoint.y] = null;
 
-        if(pieceToCapture.GetComponent<Piece>().type == PIECE_TYPE.KING){
-            Debug.Log(currentPlayer.side + "Wins !");
-            Destroy(board.GetComponent<TileSelector>());
-            Destroy(board.GetComponent<MoveSelector>());
-        }
-
-        Destroy(pieceToCapture);
+        lastTurnMoveType = MOVE_TYPE.MOVE;
     }
-    private void HugPieces(GameObject piece, Vector2Int gridPoint){
+    public void UndoHugMove(GameObject movePiece, GameObject takenPiece, Vector2Int from, Vector2Int to){
+        pieces[to.x, to.y] = takenPiece;
+        board.MovePiece(takenPiece, to);
+        pieces[from.x, from.y] = movePiece;
+        board.MovePiece(movePiece, from);
+    }
+    public void HugPieces(GameObject piece, Vector2Int gridPoint){
         Vector2Int startGridPoint = GridForPiece(piece);
         pieces[startGridPoint.x, startGridPoint.y] = null;
 
@@ -260,6 +273,16 @@ public class ChessManager : Singleton<ChessManager>
         piece.transform.position += new Vector3(0.3f*currentPlayer.forward, 0, 0.3f*otherPlayer.forward);
         otherPiece.transform.position += new Vector3(0.3f*otherPlayer.forward, 0, 0.3f*currentPlayer.forward);
 
-        EventHandler.Call_OnPiecesHuge(piece, otherPiece, gridPoint);
+        lastTurnMoveType = MOVE_TYPE.CAPTURE;
+    }
+    public void PromotePawn(GameObject pawn){
+        Destroy(pawn.GetComponent<Pawn>());
+        pawn.GetComponentInChildren<MeshFilter>().mesh = whiteQueen.GetComponentInChildren<MeshFilter>().mesh;
+        pawn.AddComponent<Queen>().type = PIECE_TYPE.QUEEN;
+    }
+    public void UndoPawnPromote(GameObject pawn){
+        Destroy(pawn.GetComponent<Queen>());
+        pawn.GetComponentInChildren<MeshFilter>().mesh = whitePawn.GetComponentInChildren<MeshFilter>().mesh;
+        pawn.AddComponent<Pawn>().type = PIECE_TYPE.PAWN;        
     }
 }

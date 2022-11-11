@@ -1,21 +1,30 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Moves{
-    public Vector2Int from;
-    public Vector2Int to;
-    public GameObject takenPieces;
-    public GameObject movePieces;
-    public Moves(Vector2Int _from, Vector2Int _to){
-        this.from = _from;
-        this.to   = _to;
+public class PawnMoves: Moves{
+    public bool firstMove;
+    public bool promotion;
+    public PawnMoves(Vector2Int _from, Vector2Int _to):base(_from, _to){
+        if(!movePieces.GetComponent<Pawn>().Moved){
+            firstMove = true;
+        }
+        else{
+            firstMove = false;
+        }
 
-        movePieces = ChessManager.Instance.PieceAtGrid(_from);
-        takenPieces= ChessManager.Instance.PieceAtGrid(_to);
+        if(takenPieces == null && to.y == ChessManager.Instance.currentPlayer.buttomLine){
+            promotion = true;
+        }
+        else{
+            promotion = false;
+        }
     }
-    public virtual void Undo(){
+    public override void Undo()
+    {
         if(takenPieces == null){
             ChessManager.Instance.Move(movePieces, from);
+            if(promotion) ChessManager.Instance.UndoPawnPromote(movePieces);
         }
         else{
             GameObject.Destroy(ChessManager.Instance.PieceAtGrid(to));
@@ -28,16 +37,20 @@ public class Moves{
 
             takenPieces.SetActive(true);
             movePieces.SetActive(true);
-            
+
             ChessManager.Instance.UndoHugMove(movePieces, takenPieces, from, to);
         }
+
+        if(firstMove){movePieces.GetComponent<Pawn>().Moved = false;}
     }
-    public virtual void Excute(){
+    public override void Excute(){
         if(takenPieces == null){
             ChessManager.Instance.Move(movePieces, to);
+            if(promotion) ChessManager.Instance.PromotePawn(movePieces);
         }
         else{
             ChessManager.Instance.HugPieces(movePieces, to);
         }
+        if(firstMove){movePieces.GetComponent<Pawn>().Moved = true;}
     }
 }

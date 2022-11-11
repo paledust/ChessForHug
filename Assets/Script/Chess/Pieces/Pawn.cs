@@ -34,55 +34,30 @@ using UnityEngine;
 public class Pawn : Piece
 {
     public bool Moved = false;
-    public bool Promotion = false;
     public override List<Vector2Int> MoveLocations(Vector2Int gridPoint)
     {
-    //Normal Pawn Movement before reaching bottom line
-        if(!Promotion){
-            List<Vector2Int> locations = new List<Vector2Int>();
+        List<Vector2Int> locations = new List<Vector2Int>();
 
-            int forwardDirection = ChessManager.Instance.currentPlayer.forward;
-
-            Vector2Int forward = new Vector2Int(gridPoint.x, gridPoint.y + forwardDirection);
-            if(ChessManager.Instance.PieceAtGrid(forward) == false){
-                locations.Add(forward);
-            }
-
-            if(!Moved){
-                Vector2Int forward2 = new Vector2Int(gridPoint.x, gridPoint.y + forwardDirection * 2);
-                if(ChessManager.Instance.PieceAtGrid(forward2) == false){
-                    locations.Add(forward2);
-                }
-            }
-
-            Vector2Int forwardRight = new Vector2Int(gridPoint.x + 1, gridPoint.y + forwardDirection);
-            if(ChessManager.Instance.PieceAtGrid(forwardRight)){
-                locations.Add(forwardRight);
-            }
-
-            Vector2Int forwardLeft = new Vector2Int(gridPoint.x - 1, gridPoint.y + forwardDirection);
-            if(ChessManager.Instance.PieceAtGrid(forwardLeft)){
-                locations.Add(forwardLeft);
-            }
-            return locations;
+        int forwardDirection = ChessManager.Instance.currentPlayer.forward;
+        Vector2Int forward = new Vector2Int(gridPoint.x, gridPoint.y + forwardDirection);
+        if(ChessManager.Instance.PieceAtGrid(forward) == false){
+            locations.Add(forward);
         }
-    //Queen movement After reaching bottom line
-        else{
-            List<Vector2Int> locations = new List<Vector2Int>();
-            List<Vector2Int> directions = new List<Vector2Int>(BishopDirections);
-            directions.AddRange(RookDirections);
-
-            foreach(Vector2Int dir in directions){
-                for(int i = 1; i<8;i++){
-                    Vector2Int nextGridPoint = new Vector2Int(gridPoint.x + i * dir.x, gridPoint.y + i * dir.y);
-                    locations.Add(nextGridPoint);
-                    if(ChessManager.Instance.PieceAtGrid(nextGridPoint)){
-                        break;
-                    }
-                }
+        if(!Moved){
+            Vector2Int forward2 = new Vector2Int(gridPoint.x, gridPoint.y + forwardDirection * 2);
+            if(ChessManager.Instance.PieceAtGrid(forward2) == false){
+                locations.Add(forward2);
             }
-            
-            return locations;
         }
+
+        Vector2Int forwardRight = new Vector2Int(gridPoint.x + 1, gridPoint.y + forwardDirection);
+        if(ChessManager.Instance.PieceAtGrid(forwardRight)){
+            locations.Add(forwardRight);
+        }
+        Vector2Int forwardLeft = new Vector2Int(gridPoint.x - 1, gridPoint.y + forwardDirection);
+        if(ChessManager.Instance.PieceAtGrid(forwardLeft)){
+            locations.Add(forwardLeft);
+        }
+        return locations;
     }
 }

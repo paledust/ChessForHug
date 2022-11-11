@@ -6,4 +6,5 @@ using UnityEngine;
 public enum PIECE_TYPE {KING, QUEEN, BISHOP, KNIGHT, ROOK, PAWN, NEUTRAL};
 public enum PLAYER_SIDE{WHITE, BLACK};
 public enum CONTROL_TYPE{AI, PLAYER};
+public enum MOVE_TYPE{MOVE, CAPTURE}
 #endregion
