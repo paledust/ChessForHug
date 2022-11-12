@@ -1119,6 +1119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0467ea60d08c74bf09df7bda660533e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boardLayout_File: {fileID: 4900000, guid: d7e905d8b7717df4e84fb4a099876de3, type: 3}
+  layoutInfo: {fileID: 11400000, guid: 64617a1459533054090e7f1d14e5487d, type: 2}
   white_Control: 1
   black_Control: 0
   board: {fileID: 892110090}

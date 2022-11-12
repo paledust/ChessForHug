@@ -32,7 +32,10 @@ using System.Collections.Generic;
 using UnityEngine;
 public class ChessManager : Singleton<ChessManager>
 {
-[Header("Board Configuration")]
+[Header("Layout")]
+    [SerializeField] private TextAsset boardLayout_File;
+    [SerializeField] private LayoutInfo_SO layoutInfo;
+[Header("Game Configuration")]
     [SerializeField] private CONTROL_TYPE white_Control;
     [SerializeField] private CONTROL_TYPE black_Control;
     public Board board;
@@ -78,10 +81,30 @@ public class ChessManager : Singleton<ChessManager>
         currentPlayer = white;
         otherPlayer = black;
 
-        InitialSetup();
+        CreateBoardLayout();
+    }
+    private void CreateBoardLayout(){
+        if(boardLayout_File == null){
+            defaultSetUp();
+        }
+        else{
+            SetUp(boardLayout_File);
+        }
     }
 
-    private void InitialSetup(){
+    private void SetUp(TextAsset layoutText){
+        string[] lines = layoutText.text.Split('\n');
+
+        for(int i=0; i<lines.Length; i++){
+            for(int j=0; j<lines[i].Length; j++){
+                LayoutInfo info = layoutInfo.GetInfoByKey(lines[i][j]);
+                if(info == null) continue;
+
+                AddPiece(info.prefab, info.side == PLAYER_SIDE.WHITE?white:black, j, 7-i);
+            }
+        }
+    }
+    private void defaultSetUp(){
         AddPiece(whiteRook, white, 0, 0);
         AddPiece(whiteKnight, white, 1, 0);
         AddPiece(whiteBishop, white, 2, 0);

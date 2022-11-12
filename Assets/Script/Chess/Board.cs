@@ -43,11 +43,6 @@ public class Board : MonoBehaviour
         return newPiece;
     }
 
-    public void RemovePiece(GameObject piece)
-    {
-        Destroy(piece);
-    }
-
     public void MovePiece(GameObject piece, Vector2Int gridPoint)
     {
         piece.transform.position = Geometry.PointFromGrid(gridPoint);
