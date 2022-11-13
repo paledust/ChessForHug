@@ -1,8 +1,8 @@
-rnbqkbnr
-ppxppppp
-xxxxxxxx
-xxpxxxxx
 xxxxxxxx
 xxxxxxxx
-PPPPPPPP
-RNBQKBNR
+xxxxxxxx
+xxxKxxxx
+xxBxxxxx
+xxxxxxpx
+xxxxxxxk
+xxxxxRxx

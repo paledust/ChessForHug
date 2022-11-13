@@ -24,7 +24,7 @@ public class PawnMoves: Moves{
     {
         if(takenPieces == null){
             ChessManager.Instance.MovePiece(movePieces, from);
-            if(promotion) ChessManager.Instance.UndoPawnPromote(movePieces);
+            if(promotion) ChessManager.Instance.UndoPawnPromote(movePieces, ChessManager.Instance.currentPlayer.side);
         }
         else{
             GameObject.Destroy(ChessManager.Instance.PieceAtGrid(to));
@@ -46,7 +46,7 @@ public class PawnMoves: Moves{
     public override void Excute(){
         if(takenPieces == null){
             ChessManager.Instance.MovePiece(movePieces, to);
-            if(promotion) ChessManager.Instance.PromotePawn(movePieces);
+            if(promotion) ChessManager.Instance.PromotePawn(movePieces, ChessManager.Instance.currentPlayer.side);
         }
         else{
             ChessManager.Instance.HugPieces(movePieces, to);

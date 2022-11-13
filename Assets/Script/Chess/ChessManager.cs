@@ -319,14 +319,14 @@ public class ChessManager : Singleton<ChessManager>
         pieces[from.x, from.y] = movePiece;
         board.MovePiece(movePiece, from);
     }
-    public void PromotePawn(GameObject pawn){
+    public void PromotePawn(GameObject pawn, PLAYER_SIDE side){
         Destroy(pawn.GetComponent<Pawn>());
-        pawn.GetComponentInChildren<MeshFilter>().mesh = whiteQueen.GetComponentInChildren<MeshFilter>().mesh;
+        pawn.GetComponentInChildren<MeshFilter>().sharedMesh = ((side==PLAYER_SIDE.WHITE)?whiteQueen:blackQueen).GetComponentInChildren<MeshFilter>().sharedMesh;
         pawn.AddComponent<Queen>().type = PIECE_TYPE.QUEEN;
     }
-    public void UndoPawnPromote(GameObject pawn){
+    public void UndoPawnPromote(GameObject pawn, PLAYER_SIDE side){
         Destroy(pawn.GetComponent<Queen>());
-        pawn.GetComponentInChildren<MeshFilter>().mesh = whitePawn.GetComponentInChildren<MeshFilter>().mesh;
+        pawn.GetComponentInChildren<MeshFilter>().sharedMesh = ((side==PLAYER_SIDE.WHITE)?whitePawn:blackPawn).GetComponentInChildren<MeshFilter>().sharedMesh;
         pawn.AddComponent<Pawn>().type = PIECE_TYPE.PAWN;        
     }
 }
