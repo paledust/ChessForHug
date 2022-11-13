@@ -139,6 +139,14 @@ public class ChessManager : Singleton<ChessManager>
     //We need to do this test, because we also want to add neutral piece on board, which doesn't belong to any player.
         if(player!=null) player.pieces.Add(pieceObject);
         pieces[col, row] = pieceObject;
+        if(pieceObject.GetComponent<Pawn>()){
+        //When place down pawn, check if the pawn is at the start position and set its moved value
+            bool isMoved = false;
+            if(player.side == PLAYER_SIDE.WHITE) isMoved = row != 1;
+            else isMoved = row != 6;
+
+            pieceObject.GetComponent<Pawn>().Moved = isMoved;
+        }
 
         return pieceObject;
     }

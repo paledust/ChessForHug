@@ -1,7 +1,7 @@
 rnbqkbnr
-pppppppp
+ppxppppp
 xxxxxxxx
-xxxxxxxx
+xxpxxxxx
 xxxxxxxx
 xxxxxxxx
 PPPPPPPP
