@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7da7ef804e50b694abf4bd5bd0a081d2, type: 3}
   m_Name: AudioInfo_SO
   m_EditorClassIdentifier: 
-  audio_info_list:
-  - audio_name: amb_forest
-    audio_clip: {fileID: 8300000, guid: 2d801f7ce3e343a4d82c4b3b27ca2898, type: 3}
-  - audio_name: amb_ocean
-    audio_clip: {fileID: 8300000, guid: b9fc8a70601799e4d9f6d0c728d145f1, type: 3}
-  - audio_name: amb_snow
-    audio_clip: {fileID: 8300000, guid: d7445bb1af7114443992337de28abcd6, type: 3}
+  bgm_info_list: []
+  amb_info_list: []
+  sfx_info_list:
+  - audio_name: sfx_bell
+    audio_clip: {fileID: 8300000, guid: 2ee6aed874b061447874a094fe59dd05, type: 3}

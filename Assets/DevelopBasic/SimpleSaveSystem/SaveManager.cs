@@ -8,125 +8,152 @@ using Newtonsoft.Json;
 using UnityEngine;
 
 namespace SimpleSaveSystem{
-    public class SaveManager : Singleton<SaveManager>{
-        public const string SAVEFILE_NAME = "save.json";
+    public enum Serializer{Json, Binary}
+    public static class SaveManager{
         public const string SAVEFILE_DIRECTOR = "/saves/";
-        protected override void Awake(){
-            base.Awake();
-            transform.parent = null;
-            DontDestroyOnLoad(gameObject);
+        public const string GLOBALFILE_NAME = "Global.sav";
+        public const string SAVEFILE_NAME = "Data.sav";
+        public static GlobalSaveData globalSaveData;
+        public static void CleanGameState(){
+            string folderPath = Application.persistentDataPath + SAVEFILE_DIRECTOR;
+            string filePath = folderPath + SAVEFILE_NAME;
+
+            if(File.Exists(filePath)){
+                File.Delete(filePath);
+            }
         }
-        /// <summary>
-        /// 1.Capture the state
-        /// 2.Save the progress into file
-        /// </summary>
-        public static void SaveGame(){
-            string path = Application.persistentDataPath + SAVEFILE_DIRECTOR;
-            Dictionary<System.Guid, object> progress = new Dictionary<System.Guid, object>();
-            CaptureState(progress);
-            Save(path, progress);
+        public static void SaveGameState(){
+            string folderPath = Application.persistentDataPath + SAVEFILE_DIRECTOR;
+
+        //To save, we first Load
+            var saveData = Load<Dictionary<System.Guid, object>>(folderPath, SAVEFILE_NAME, Serializer.Binary);
+            if(saveData == null) saveData = new Dictionary<System.Guid, object>();
+
+        //Capture State
+            ISaveable[] saveables = Service.FindComponentsOfTypeIncludingDisable<ISaveable>();
+            foreach(var saveable in saveables){
+                saveData[saveable.guid] = saveable.CaptureState();
+            }
+            Debug.Log($"{saveables.Length} saveables in scene are saved.");
+
+        //Save to file
+            Save(folderPath, SAVEFILE_NAME, saveData, Serializer.Binary);
+
+        //Save Global
+            Save(folderPath, GLOBALFILE_NAME, globalSaveData, Serializer.Json);
         }
-        /// <summary>
-        /// 1.Load the Game Progress from the path
-        /// 2.Restore the state into saveable behavior
-        /// </summary>
-        public static void LoadGame(){
+
+        public static void LoadGameState(){
             string path = Application.persistentDataPath + SAVEFILE_DIRECTOR;
-            var progress = Load(path);
-            if(progress == null){
+            var saveData = Load<Dictionary<System.Guid, object>>(path, SAVEFILE_NAME, Serializer.Binary);
+            if(saveData == null){
                 Debug.LogWarning("No Valid Save Data");
                 return;
             }
-            RestoreState(progress);
-        }
-    #region Save and Load Tool Function
-        /// <summary>
-        /// return the deserialized progress data from the path
-        /// </summary>
-        static Dictionary<System.Guid, object> Load(string path){
-            if(!File.Exists(path+SAVEFILE_NAME)){
-                return null;
-            }
-            try{
-                //TO DO: 1.Read the file from the path; 2.Deserialize the file into Dictionary<System.Guid, object>; 3.Return the Dictionary
-                // example code using Json -- TO DO: Might want to replace with Newtonsoft.Json
-                var save = DeserializeData(File.ReadAllText(path+SAVEFILE_NAME));
-                return save;
-            }
-            catch{
-                Debug.LogErrorFormat("Failed to load file at {0}", path+SAVEFILE_NAME);
-                return null;
-            }
-        }
-        /// <summary>
-        /// Write the serialized progress data into the path
-        /// </summary>
-        static void Save(string path, object saveData){
-            if(!Directory.Exists(path)){
-                Directory.CreateDirectory(path);
-            }
-            //TO DO: 1.Serialize the save data; 2.Write the save Data into the file.
-            // example code using Json -- TO DO: Might want to replace with Newtonsoft.Json
-            File.WriteAllText(path+SAVEFILE_NAME, SerializeData(saveData));
-        }
-        /// <summary>
-        /// Restore the state of every "SaveableBehavior" in the current active scene from the save progress
-        /// </summary>
-        static void RestoreState(Dictionary<System.Guid, object> progress){
+
             ISaveable[] saveables = Service.FindComponentsOfTypeIncludingDisable<ISaveable>();
             foreach(ISaveable saveable in saveables){
-                if(progress.TryGetValue(saveable.guid, out object value)){
+                if(saveData.TryGetValue(saveable.guid, out var value)){
                     saveable.RestoreState(value);
                 }
             }
+            Debug.Log($"{saveables.Length} saveables in scene are loaded.");
         }
-        /// <summary>
-        /// Capture the state of every "ISaveable" in the current active scene into save progress
-        /// </summary>
-        static void CaptureState(Dictionary<System.Guid, object> progress){
-            ISaveable[] saveables = Service.FindComponentsOfTypeIncludingDisable<ISaveable>();
-            foreach(var saveable in saveables){
-                progress[saveable.guid] = saveable.CaptureState();
+        
+        public static void Initialize(){
+            string folderPath = Application.persistentDataPath + SAVEFILE_DIRECTOR;
+            string globalFilePath = Application.persistentDataPath + SAVEFILE_DIRECTOR + GLOBALFILE_NAME;
+
+        // Create save folder if not found
+            if(!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
+
+        // Create global save file if not found
+            if(!File.Exists(globalFilePath)){
+                globalSaveData = new GlobalSaveData();
+                Save(folderPath, GLOBALFILE_NAME, globalSaveData, Serializer.Json);
             }
+            else{
+                globalSaveData = Load<GlobalSaveData>(folderPath, GLOBALFILE_NAME, Serializer.Json);
+                if(globalSaveData==null) globalSaveData = new GlobalSaveData();
+            }
+        }
+    #region Save and Load File
+        static void Save<T>(string folderPath, string fileName, T saveData, Serializer serializer){
+            if(!Directory.Exists(folderPath)){
+                Directory.CreateDirectory(folderPath);
+            }
+            SerializeData<T>(folderPath+fileName, saveData, serializer);
+        }
+        static T Load<T>(string folderPath, string fileName, Serializer serializer){
+            if(!File.Exists(folderPath+fileName)){
+                return default(T);
+            }
+
+            var data = DeserializeData<T>(folderPath+fileName, serializer);
+            return data;
         }
     #endregion
 
     #region Serialization
-        /// <summary>
-        /// Deserialized Json data into Dictionary
-        /// </summary>
-        /// <param name="saveData"></param>
-        /// <returns></returns>
-        static Dictionary<System.Guid, object> DeserializeData(string saveData){
-            return JsonConvert.DeserializeObject<Dictionary<System.Guid, object>>(saveData);
+        static void SerializeData<T>(string filePath, T saveData, Serializer serializer){
+            switch(serializer){
+                case Serializer.Json:
+                    string data = JsonConvert.SerializeObject(saveData);
+                    File.WriteAllText(filePath, data);
+                    break;
+                default:
+                    FileStream file = File.Open(filePath, FileMode.Create);
+                    BinaryFormatter formatter = GetBinaryFormatter();
+                    formatter.Serialize(file, saveData);
+                    file.Close();
+                    break;
+            }
         }
-        /// <summary>
-        /// Serialized the save data into Json format
-        /// </summary>
-        /// <param name="saveData"></param>
-        /// <returns></returns>
-        static string SerializeData(object saveData){
-            return JsonConvert.SerializeObject(saveData);
+        static T DeserializeData<T>(string filePath, Serializer serializer){
+            switch(serializer){
+                case Serializer.Json:
+                    string saveData = File.ReadAllText(filePath);
+
+                    try{
+                        return JsonConvert.DeserializeObject<T>(saveData);
+                    }
+                    catch{
+                        Debug.LogError("Save File Corrupted");
+                        return default(T);
+                    }
+                default:
+                    FileStream file = File.Open(filePath, FileMode.Open);
+                    BinaryFormatter formatter = GetBinaryFormatter();
+
+                    T data;
+                    try{
+                        data = (T)formatter.Deserialize(file);
+                    }
+                    catch{
+                        Debug.LogError("Save File Corrupted");
+                        data = default(T);
+                    }
+                    file.Close();
+
+                    return data;
+            }
         }
-        /// <summary>
-        /// Serialized the save data in Binary format
-        /// </summary>
-        /// <param name="file"></param>
-        /// <param name="saveData"></param>
-        static void SerializeData(FileStream file, object saveData){
-            BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(file, saveData);
-        }
-        /// <summary>
-        /// Deserialize the save file from Binary format
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        static object DeserializeData(FileStream file){
-            BinaryFormatter formatter = new BinaryFormatter();
-            return formatter.Deserialize(file);
-        } 
     #endregion
+        // Formerly in SerializationManager - moved here to be shared by all Platform objects
+        static BinaryFormatter GetBinaryFormatter()
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            SurrogateSelector selector = new SurrogateSelector();
+            Vector3SerializationSurrogate vector3Surrogate = new Vector3SerializationSurrogate();
+            QuaternionSerializationSurrogate quaternionSurrogate = new QuaternionSerializationSurrogate();
+
+            selector.AddSurrogate(typeof(Vector3), new StreamingContext(StreamingContextStates.All), vector3Surrogate);
+            selector.AddSurrogate(typeof(Quaternion), new StreamingContext(StreamingContextStates.All), quaternionSurrogate);
+
+            formatter.SurrogateSelector = selector;
+
+            return formatter;
+        }
     }
 }
-

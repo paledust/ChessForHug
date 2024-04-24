@@ -6,6 +6,13 @@ using UnityEngine;
 //A basic C# Event System
 public static class EventHandler
 {
+#region Game Basic
+    public static event Action E_BeforeUnloadScene;
+    public static void Call_BeforeUnloadScene()=>E_BeforeUnloadScene?.Invoke();
+    public static event Action E_AfterLoadScene;
+    public static void Call_AfterLoadScene()=>E_AfterLoadScene?.Invoke();
+#endregion
+#region Chess Event
     public static event Action<Piece, PLAYER_SIDE> E_OnCapturePiece;
     public static void Call_OnCapturePiece(Piece piece, PLAYER_SIDE side){E_OnCapturePiece?.Invoke(piece, side);}
     public static event Action<Piece, PLAYER_SIDE> E_OnMovePieceOnly;
@@ -16,6 +23,7 @@ public static class EventHandler
     public static void Call_OnPiecesHug(GameObject huggerPiece, GameObject huggeePiece, Vector2Int gridPoint){E_OnPiecesHug?.Invoke(huggerPiece, huggeePiece, gridPoint);}
     public static event Action E_OnBackToChessGame;
     public static void Call_OnBackToChessGame(){E_OnBackToChessGame?.Invoke();}
+#endregion
 }
 
 //A More Strict Event System
