@@ -6,7 +6,7 @@ using UnityEngine;
 public static class Service
 {
 #region Parameter
-    public static string TestString = "This is a test string, to show how you can use string in service.";
+    public const string debugTag = "Debug";
     public static LayerMask InteractableLayer = 1 << LayerMask.NameToLayer("Interactable"); //TO Do: Name whatever the interactable layer should be
     public static Dictionary<PIECE_TYPE, int> PieceValueDict = new Dictionary<PIECE_TYPE, int>(){
         {PIECE_TYPE.PAWN, 100},
@@ -18,6 +18,7 @@ public static class Service
         {PIECE_TYPE.NEUTRAL, 0}
     };
 #endregion
+
 #region HelpFunction
     /// <summary>
     /// Return a list of all active and inactive objects of T type in loaded scenes.

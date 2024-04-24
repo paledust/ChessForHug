@@ -129,7 +129,7 @@ MonoBehaviour:
   BlackScreenCanvasGroup: {fileID: 4562222128510109114}
   transitionDuration: 0.5
   loadInitSceneFromGameManager: 0
-  InitScene: Village
+  InitScene: Chess
   isDemo: 1
   isTesting: 1
   demoText: {fileID: 6073298263620526879}
