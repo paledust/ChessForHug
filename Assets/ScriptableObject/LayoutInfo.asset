@@ -30,7 +30,7 @@ MonoBehaviour:
     prefab: {fileID: 1747904550817830, guid: fff2331e5321f4f49ab37c84b68ba184, type: 3}
     side: 1
   - key: 78
-    prefab: {fileID: 1097184490271986, guid: 286f8291ea775409f91f3dcc8dc0e06c, type: 3}
+    prefab: {fileID: 1486526489832934, guid: 3768577674528430691fecf5a4660eb2, type: 3}
     side: 0
   - key: 112
     prefab: {fileID: 1795645163035938, guid: 455e0d5008a5e426a96c3987ea4f82b6, type: 3}
@@ -49,8 +49,4 @@ MonoBehaviour:
     side: 1
   - key: 82
     prefab: {fileID: 1125735659761782, guid: eafb872984133466d8325974f39dd911, type: 3}
-    side: 0
-  neutralPieceInfo:
-    key: 72
-    prefab: {fileID: 0}
     side: 0
