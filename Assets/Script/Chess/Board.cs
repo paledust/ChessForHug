@@ -32,9 +32,6 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    public Material defaultMaterial;
-    public Material selectedMaterial;
-    [SerializeField] private MeshCollider m_collider;
     public GameObject AddPiece(GameObject piece, int col, int row)
     {
         Vector2Int gridPoint = Geometry.GridPoint(col, row);
@@ -50,13 +47,11 @@ public class Board : MonoBehaviour
 
     public void SelectPiece(GameObject piece)
     {
-        MeshRenderer renderers = piece.GetComponentInChildren<MeshRenderer>();
-        renderers.material = selectedMaterial;
+
     }
 
     public void DeselectPiece(GameObject piece)
     {
-        MeshRenderer renderers = piece.GetComponentInChildren<MeshRenderer>();
-        renderers.material = defaultMaterial;
+
     }
 }

@@ -30,6 +30,11 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class ChessManager : Singleton<ChessManager>
 {
 [Header("Layout")]
@@ -60,6 +65,7 @@ public class ChessManager : Singleton<ChessManager>
     public GameObject blackPawn;
 
     private GameObject[,] pieces;
+    private TileData[,] tileDatas;
 
     private Player white;
     private Player black;
@@ -68,12 +74,21 @@ public class ChessManager : Singleton<ChessManager>
 
     private MOVE_TYPE lastTurnMoveType;
     private Stack<Moves> moveStack;
+    private const string DEFAULT_SETUP = "rnbkqbnr\n"+
+                                         "pppppppp\n"+
+                                         "xxxxxxxx\n"+
+                                         "xxxxxxxx\n"+
+                                         "xxxxxxxx\n"+
+                                         "xxxxxxxx\n"+
+                                         "PPPPPPPP\n"+
+                                         "RNBKQBNR\n";
     protected override void Awake (){
         base.Awake();
 
         moveStack = new Stack<Moves>();
         
         pieces = new GameObject[8, 8];
+        tileDatas = new TileData[8, 8];
 
         white = new Player(PLAYER_SIDE.WHITE, true, white_Control == CONTROL_TYPE.AI);
         black = new Player(PLAYER_SIDE.BLACK, false, black_Control == CONTROL_TYPE.AI);
@@ -81,19 +96,24 @@ public class ChessManager : Singleton<ChessManager>
         currentPlayer = white;
         otherPlayer = black;
 
-        CreateBoardLayout();
-    }
-    private void CreateBoardLayout(){
+    //Generate Board
         if(boardLayout_File == null){
-            defaultSetUp();
+            SetUp(DEFAULT_SETUP);
         }
         else{
-            SetUp(boardLayout_File);
+            SetUp(boardLayout_File.text);
+        }
+    //Generate Tile Data
+        for(int i=0; i<8; i++){
+            for(int j=0; j<8; j++){
+                tileDatas[i,j] = new TileData();
+                tileDatas[i,j].RND_TileData();
+            }
         }
     }
 
-    private void SetUp(TextAsset layoutText){
-        string[] lines = layoutText.text.Split('\n');
+    private void SetUp(string layoutText){
+        string[] lines = layoutText.Split('\n');
 
         for(int i=0; i<lines.Length; i++){
             for(int j=0; j<lines[i].Length; j++){
@@ -102,35 +122,6 @@ public class ChessManager : Singleton<ChessManager>
 
                 AddPiece(info.prefab, info.side == PLAYER_SIDE.WHITE?white:black, j, 7-i);
             }
-        }
-    }
-    private void defaultSetUp(){
-        AddPiece(whiteRook, white, 0, 0);
-        AddPiece(whiteKnight, white, 1, 0);
-        AddPiece(whiteBishop, white, 2, 0);
-        AddPiece(whiteQueen, white, 3, 0);
-        AddPiece(whiteKing, white, 4, 0);
-        AddPiece(whiteBishop, white, 5, 0);
-        AddPiece(whiteKnight, white, 6, 0);
-        AddPiece(whiteRook, white, 7, 0);
-
-        for (int i = 0; i < 8; i++)
-        {
-            AddPiece(whitePawn, white, i, 1);
-        }
-
-        AddPiece(blackRook, black, 0, 7);
-        AddPiece(blackKnight, black, 1, 7);
-        AddPiece(blackBishop, black, 2, 7);
-        AddPiece(blackQueen, black, 3, 7);
-        AddPiece(blackKing, black, 4, 7);
-        AddPiece(blackBishop, black, 5, 7);
-        AddPiece(blackKnight, black, 6, 7);
-        AddPiece(blackRook, black, 7, 7);
-
-        for (int i = 0; i < 8; i++)
-        {
-            AddPiece(blackPawn, black, i, 6);
         }
     }
 
@@ -224,7 +215,9 @@ public class ChessManager : Singleton<ChessManager>
         EventHandler.E_OnBackToChessGame -= ResumeChessGameBeforeEndTurn;
         NextPlayer();
     }
-
+    public TileData GetTileData(Vector2Int gridPoint){
+        return tileDatas[gridPoint.x, gridPoint.y];
+    }
     public bool DoesPieceBelongToCurrentPlayer(GameObject piece){
         return currentPlayer.pieces.Contains(piece);
     }
@@ -328,4 +321,19 @@ public class ChessManager : Singleton<ChessManager>
         pawn.GetComponentInChildren<MeshFilter>().sharedMesh = ((side==PLAYER_SIDE.WHITE)?whitePawn:blackPawn).GetComponentInChildren<MeshFilter>().sharedMesh;
         pawn.AddComponent<Pawn>().type = PIECE_TYPE.PAWN;        
     }
+#if UNITY_EDITOR
+    void OnDrawGizmos(){
+        if(UnityEditor.EditorApplication.isPlaying){
+            TileData data = new TileData();
+            for(int i=0; i<8; i++){
+                for(int j=0; j<8; j++){
+                    data = tileDatas[i,j];
+                    Handles.Label(Geometry.PointFromGrid(new Vector2Int(i,j)),$"Env:{data.environment}\n"+
+                                                                              $"Rel:{data.relationship}\n"+
+                                                                              $"Mom:{data.moment}");
+                }
+            }
+        }
+    }
+#endif
 }
