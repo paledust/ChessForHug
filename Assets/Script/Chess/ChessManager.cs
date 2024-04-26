@@ -304,7 +304,6 @@ public class ChessManager : Singleton<ChessManager>
 
         pieces[gridPoint.x, gridPoint.y] = null;
         GameObject temp = AddPiece(neutralPiece, null, gridPoint.x, gridPoint.y);
-        Debug.Log(temp.GetComponent<Neutral>()==null);
         temp.GetComponent<Neutral>().extraValue = Service.PieceValueDict[otherPiece.GetComponent<Piece>().type];
 
         piece.transform.position = Geometry.PointFromGrid(gridPoint);

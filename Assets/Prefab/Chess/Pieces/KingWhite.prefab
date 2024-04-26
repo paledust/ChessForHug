@@ -45,8 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad4419d682374d0cbb0a1eb6d1994f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PieceValue: 10000
   type: 0
+  personData:
+    Age: 66
+    gender: 1
 --- !u!1 &1704396138873048
 GameObject:
   m_ObjectHideFlags: 0

@@ -128,5 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a80239f8d0914c9cb07dd15d315b344, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PieceValue: 525
   type: 4
+  personData:
+    Age: 6
+    gender: 0
