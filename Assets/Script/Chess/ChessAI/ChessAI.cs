@@ -36,8 +36,6 @@ public class ChessAI : MonoBehaviour
             }
             ChessManager.Instance.UndoMoves();
         }
-        Debug.Log(bestScore);
-        Debug.Log(bestMove.movePieces + bestMove.takenPieces?.ToString() + bestMove.to.ToString());
         ChessManager.Instance.MakeMoves(ChessManager.Instance.PieceAtGrid(bestMove.from), bestMove.to);
     }
     void GetMoves(){

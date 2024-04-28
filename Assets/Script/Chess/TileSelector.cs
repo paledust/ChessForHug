@@ -73,6 +73,7 @@ public class TileSelector : MonoBehaviour {
 			if(Mouse.current.leftButton.wasPressedThisFrame){
 				GameObject seletectedPiece = chessManager.PieceAtGrid(gridPoint);
 				if(chessManager.DoesPieceBelongToCurrentPlayer(seletectedPiece)){
+					EventHandler.Call_UI_HideData(seletectedPiece.transform);
 					chessManager.SelectPiece(seletectedPiece);
 					ExitState(seletectedPiece);
 				}
