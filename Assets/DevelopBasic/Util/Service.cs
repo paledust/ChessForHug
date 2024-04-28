@@ -10,11 +10,11 @@ public static class Service
     public static LayerMask InteractableLayer = 1 << LayerMask.NameToLayer("Interactable"); //TO Do: Name whatever the interactable layer should be
     public static Dictionary<PIECE_TYPE, int> PieceValueDict = new Dictionary<PIECE_TYPE, int>(){
         {PIECE_TYPE.PAWN, 100},
-        {PIECE_TYPE.KNIGHT, 350},
-        {PIECE_TYPE.BISHOP, 350},
-        {PIECE_TYPE.ROOK, 525},
-        {PIECE_TYPE.QUEEN, 1000},
-        {PIECE_TYPE.KING, 10000},
+        {PIECE_TYPE.KNIGHT, 100},
+        {PIECE_TYPE.BISHOP, 100},
+        {PIECE_TYPE.ROOK, 100},
+        {PIECE_TYPE.QUEEN, 100},
+        {PIECE_TYPE.KING, 100},
         {PIECE_TYPE.NEUTRAL, 0}
     };
 #endregion

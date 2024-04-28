@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class ChessAI : MonoBehaviour
 {
@@ -30,10 +31,13 @@ public class ChessAI : MonoBehaviour
             ChessManager.Instance.MakeMoves(possibleMoves[i]);
             float score = ChessManager.Instance.EvaluateBoard(ChessManager.Instance.currentPlayer);
             if(score > bestScore){
+                bestScore = score;
                 bestMove = possibleMoves[i];
             }
             ChessManager.Instance.UndoMoves();
         }
+        Debug.Log(bestScore);
+        Debug.Log(bestMove.movePieces + bestMove.takenPieces?.ToString() + bestMove.to.ToString());
         ChessManager.Instance.MakeMoves(ChessManager.Instance.PieceAtGrid(bestMove.from), bestMove.to);
     }
     void GetMoves(){

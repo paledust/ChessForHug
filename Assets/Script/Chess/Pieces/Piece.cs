@@ -4,7 +4,6 @@ using UnityEngine;
 [System.Serializable]
 public struct PersonData{
     public int Age;
-    public GENDER gender;
     public const int BABY_AGE = 5;
     public const int YOUTH_AGE = 12;
     public const int TEEN_AGE = 18;

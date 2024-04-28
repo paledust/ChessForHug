@@ -149,6 +149,11 @@ public class ChessManager : Singleton<ChessManager>
             board.SelectPiece(selectedPiece);
         }
     }
+    public Piece GetPieceAtGrid(Vector2Int gridPoint){
+        var piece = pieces[gridPoint.x, gridPoint.y];
+        if(piece==null) return null;
+        else return piece.GetComponent<Piece>();
+    }
 
     public void SelectPiece(GameObject piece){
         board.SelectPiece(piece);

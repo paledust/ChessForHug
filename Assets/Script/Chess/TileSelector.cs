@@ -35,9 +35,12 @@ using UnityEngine.InputSystem;
 public class TileSelector : MonoBehaviour {
 	public GameObject tileHighlightPrefeb;
 	private GameObject tileHighlight;
-
+	private Vector2Int hoverGridPoint;
+	private ChessManager chessManager;
 	// Use this for initialization
 	void Start () {
+		chessManager = ChessManager.Instance;
+		hoverGridPoint = new Vector2Int(1,1)*-1;
 		Vector2Int gridPoint = Geometry.GridPoint(0,0);
 		Vector3 point = Geometry.PointFromGrid(gridPoint);
 		tileHighlight = Instantiate(tileHighlightPrefeb, point, Quaternion.identity, gameObject.transform);
@@ -53,14 +56,24 @@ public class TileSelector : MonoBehaviour {
 		if(Physics.Raycast(ray, out hit)){
 			Vector3 point = hit.point;
 			Vector2Int gridPoint = Geometry.GridFromPoint(point);
+			if(hoverGridPoint != gridPoint){
+				tileHighlight.SetActive(true);
+				tileHighlight.transform.position = Geometry.PointFromGrid(gridPoint);
 
-			tileHighlight.SetActive(true);
-			tileHighlight.transform.position = Geometry.PointFromGrid(gridPoint);
+				if(Geometry.ValidPoint(hoverGridPoint)){
+					var lastPiece = chessManager.GetPieceAtGrid(hoverGridPoint);
+					if(lastPiece!=null) EventHandler.Call_UI_HideData(lastPiece.transform);
+				}
+
+				var piece = chessManager.GetPieceAtGrid(gridPoint);
+				if(piece!=null) EventHandler.Call_UI_ShowData(piece.personData.Age, 300, piece.transform);
+				hoverGridPoint = gridPoint;
+			}
 
 			if(Mouse.current.leftButton.wasPressedThisFrame){
-				GameObject seletectedPiece = ChessManager.Instance.PieceAtGrid(gridPoint);
-				if(ChessManager.Instance.DoesPieceBelongToCurrentPlayer(seletectedPiece)){
-					ChessManager.Instance.SelectPiece(seletectedPiece);
+				GameObject seletectedPiece = chessManager.PieceAtGrid(gridPoint);
+				if(chessManager.DoesPieceBelongToCurrentPlayer(seletectedPiece)){
+					chessManager.SelectPiece(seletectedPiece);
 					ExitState(seletectedPiece);
 				}
 			}

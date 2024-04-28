@@ -44,10 +44,16 @@ public class Geometry
         return new Vector2Int(col, row);
     }
 
+    static public bool ValidPoint(Vector2Int gridPoint){
+        return (gridPoint.x>=0 && gridPoint.x<=7) && (gridPoint.y>=0 && gridPoint.y<=7);
+    }
+
     static public Vector2Int GridFromPoint(Vector3 point)
     {
         int col = Mathf.FloorToInt(4.0f + point.x);
         int row = Mathf.FloorToInt(4.0f + point.z);
+        if (col==8) col=7;
+        if (row==8) row=7;
         return new Vector2Int(col, row);
     }
 }

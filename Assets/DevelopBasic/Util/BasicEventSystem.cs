@@ -12,6 +12,16 @@ public static class EventHandler
     public static event Action E_AfterLoadScene;
     public static void Call_AfterLoadScene()=>E_AfterLoadScene?.Invoke();
 #endregion
+
+#region UI Event
+    public static event Action<string, float, Transform> E_UI_ShowData;
+    public static event Action<int, float, Transform> E_UI_ShowNum;
+    public static void Call_UI_ShowData(string data, float height, Transform root)=>E_UI_ShowData?.Invoke(data, height, root);
+    public static void Call_UI_ShowData(int data, float height, Transform root)=>E_UI_ShowNum?.Invoke(data, height, root);
+    public static event Action<Transform> E_UI_HideData;
+    public static void Call_UI_HideData(Transform root)=>E_UI_HideData?.Invoke(root);
+#endregion
+
 #region Chess Event
     public static event Action<Piece, PLAYER_SIDE> E_OnCapturePiece;
     public static void Call_OnCapturePiece(Piece piece, PLAYER_SIDE side){E_OnCapturePiece?.Invoke(piece, side);}
