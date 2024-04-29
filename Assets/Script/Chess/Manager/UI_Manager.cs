@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 public class UI_Manager : MonoBehaviour
@@ -8,16 +9,29 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private RectTransform dataDisplayerGroup;
     [SerializeField] private Button Back_Button;
     [SerializeField] private GameObject dataDisplayerPrefab;
+[Header("Description")]
+    [SerializeField] private TextMeshProUGUI description;
     private Dictionary<Transform, UI_DataDisplayer> dataDisplayer_Dict = new Dictionary<Transform, UI_DataDisplayer>();
     void OnEnable(){
         EventHandler.E_UI_ShowData += ShowData;
         EventHandler.E_UI_ShowNum  += ShowNum;
         EventHandler.E_UI_HideData += HideData;
+        EventHandler.E_UI_ShowDescrip += ShowDescription;
     }
     void OnDisable(){
         EventHandler.E_UI_ShowData -= ShowData;
         EventHandler.E_UI_ShowNum  -= ShowNum;
         EventHandler.E_UI_HideData -= HideData;
+        EventHandler.E_UI_ShowDescrip -= ShowDescription;
+    }
+    public void ShowDescription(string content){
+        if(content==string.Empty){
+        //Fade away if content is empty
+
+        }
+        else{
+
+        }
     }
     public void ShowData(string content, float height, Transform root){
         if(!dataDisplayer_Dict.ContainsKey(root)){
