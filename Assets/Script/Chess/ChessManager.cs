@@ -334,7 +334,6 @@ public class ChessManager : Singleton<ChessManager>
                 for(int j=0; j<8; j++){
                     data = tileDatas[i,j];
                     Handles.Label(Geometry.PointFromGrid(new Vector2Int(i,j)),$"Env:{data.environment}\n"+
-                                                                              $"Rel:{data.relationship}\n"+
                                                                               $"Mom:{data.moment}");
                 }
             }

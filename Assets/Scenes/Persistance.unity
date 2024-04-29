@@ -701,6 +701,7 @@ MonoBehaviour:
   Back_Button: {fileID: 1741104076}
   dataDisplayerPrefab: {fileID: 7371137290293304090, guid: 83d8abeda94615948879ad2c86be8b75,
     type: 3}
+  descriptionWriter: {fileID: 1905253537}
 --- !u!1 &1662856920
 GameObject:
   m_ObjectHideFlags: 0

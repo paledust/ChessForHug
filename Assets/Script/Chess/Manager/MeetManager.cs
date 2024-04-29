@@ -5,6 +5,7 @@ using UnityEngine;
 public class MeetManager : MonoBehaviour
 {
     [SerializeField] private GameObject hugGroupPrefab;
+    [SerializeField] private HugEventScript_SO hugEventScript_SO;
     void OnEnable(){
         EventHandler.E_OnPiecesHug += StartPiecesHugSequence;
     }
@@ -12,6 +13,12 @@ public class MeetManager : MonoBehaviour
         EventHandler.E_OnPiecesHug -= StartPiecesHugSequence;
     }
     void StartPiecesHugSequence(GameObject huggerPiece, GameObject huggeePiece, Vector2Int gridPoint){
+        int huggerAge = huggerPiece.GetComponent<Piece>().personData.Age;
+        int huggeeAge = huggeePiece.GetComponent<Piece>().personData.Age;
+        var contex = ChessManager.Instance.GetTileData(gridPoint);
+
+        var hugData = hugEventScript_SO.GetHugData(new HugCondition(){env = contex.environment, moment = contex.moment}, huggerAge, huggeeAge);
+        EventHandler.Call_UI_ShowDescrip(hugData.script.text);
         StartCoroutine(coroutinePiecesHugSeguence(huggerPiece, huggeePiece, gridPoint));
     }
     IEnumerator coroutinePiecesHugSeguence(GameObject huggerPiece, GameObject huggeePiece,Vector2Int gridPoint){
@@ -28,7 +35,8 @@ public class MeetManager : MonoBehaviour
         var pieceDataHugger = huggerPiece.GetComponent<Piece>().personData;
         var pieceDataHuggee = huggeePiece.GetComponent<Piece>().personData;
         var context = ChessManager.Instance.GetTileData(gridPoint);
-
-        Debug.Log($"Hugger:{pieceDataHugger.Age} and Huggee:{pieceDataHuggee.Age} are {context.relationship},\nthey hugged At {context.environment} for {context.moment}.");
+        
+        EventHandler.Call_OnBackToChessGame();
+        Debug.Log($"Hugger:{pieceDataHugger.Age} and Huggee:{pieceDataHuggee.Age},\nthey hugged At {context.environment} for {context.moment}.");
     }
 }

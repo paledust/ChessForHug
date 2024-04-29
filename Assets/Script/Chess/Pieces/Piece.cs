@@ -17,6 +17,15 @@ public struct PersonData{
     public bool IsMiddle{get{return Age<=MIDDLE_AGE && Age>GROWN_AGE;}}
     public bool IsOld{get{return Age<=OLD_AGE && Age>MIDDLE_AGE;}}
     public bool IsMiracle{get{return Age>OLD_AGE;}}
+    public static GENERATION GetGeneration(int age){
+        if(age<=BABY_AGE) return GENERATION.BABY;
+        else if(age<=YOUTH_AGE) return GENERATION.YOUTH;
+        else if(age<=TEEN_AGE) return GENERATION.TEEN;
+        else if(age<=GROWN_AGE) return GENERATION.GROWN;
+        else if(age<=MIDDLE_AGE) return GENERATION.MIDDLE;
+        else if(age<=OLD_AGE) return GENERATION.OLD;
+        else return GENERATION.MIRACLE; 
+    }
 }
 public abstract class Piece : MonoBehaviour
 {

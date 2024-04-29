@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Febucci.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +11,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private Button Back_Button;
     [SerializeField] private GameObject dataDisplayerPrefab;
 [Header("Description")]
-    [SerializeField] private TextMeshProUGUI description;
+    [SerializeField] private TypewriterByCharacter descriptionWriter;
     private Dictionary<Transform, UI_DataDisplayer> dataDisplayer_Dict = new Dictionary<Transform, UI_DataDisplayer>();
     void OnEnable(){
         EventHandler.E_UI_ShowData += ShowData;
@@ -27,10 +28,10 @@ public class UI_Manager : MonoBehaviour
     public void ShowDescription(string content){
         if(content==string.Empty){
         //Fade away if content is empty
-
+            descriptionWriter.StartDisappearingText();
         }
         else{
-
+            descriptionWriter.ShowText(content);
         }
     }
     public void ShowData(string content, float height, Transform root){
