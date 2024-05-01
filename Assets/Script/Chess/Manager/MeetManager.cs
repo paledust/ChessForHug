@@ -17,7 +17,7 @@ public class MeetManager : MonoBehaviour
         int huggeeAge = huggeePiece.GetComponent<Piece>().personData.Age;
         var contex = ChessManager.Instance.GetTileData(gridPoint);
 
-        var hugData = hugEventScript_SO.GetHugData(new HugCondition(){env = contex.environment, moment = contex.moment}, huggerAge, huggeeAge);
+        var hugData = hugEventScript_SO.GetHugData(new HugCondition(){env = contex.environment, moment = contex.moment}, PersonData.GetGeneration(huggerAge), PersonData.GetGeneration(huggeeAge));
         EventHandler.Call_UI_ShowDescrip(hugData.script.text);
         StartCoroutine(coroutinePiecesHugSeguence(huggerPiece, huggeePiece, gridPoint));
     }

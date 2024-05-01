@@ -13,50 +13,70 @@ MonoBehaviour:
   m_Name: Hug Event Script_SO
   m_EditorClassIdentifier: 
   defaultHug:
-    Hug1Age: 0
-    Hug2Age: 0
+    Hug1Gen: 0
+    Hug2Gen: 0
     rel: 4
     script: {fileID: 4900000, guid: 492c33d2924ccd84bb4bd3dd7eb40749, type: 3}
   hugGroupList:
   - hugCondition:
-      env: 0
+      env: 1
+      moment: 1
+    hugDatas:
+    - Hug1Gen: 0
+      Hug2Gen: 0
+      rel: 1
+      script: {fileID: 4900000, guid: af89a175538dffc4794ffd4fe9343c89, type: 3}
+    - Hug1Gen: 0
+      Hug2Gen: 1
+      rel: 1
+      script: {fileID: 4900000, guid: abccb7cb8256d304e8af2cc2eccfcb7d, type: 3}
+    - Hug1Gen: 0
+      Hug2Gen: 2
+      rel: 2
+      script: {fileID: 4900000, guid: b4c2e95f461e34847954848539266b3b, type: 3}
+    - Hug1Gen: 0
+      Hug2Gen: 3
+      rel: 1
+      script: {fileID: 4900000, guid: 1b84bc1e0a740ad46bad8f4047bedc43, type: 3}
+    - Hug1Gen: 0
+      Hug2Gen: 4
+      rel: 2
+      script: {fileID: 4900000, guid: 44750ba4722231d48b292966f5a5a2ea, type: 3}
+    - Hug1Gen: 0
+      Hug2Gen: 5
+      rel: 2
+      script: {fileID: 4900000, guid: 7c27a8456038b344cbdc4831db9fad53, type: 3}
+    - Hug1Gen: 1
+      Hug2Gen: 1
+      rel: 0
+      script: {fileID: 4900000, guid: 51ba2e9e104f9e64398db9247d25a53a, type: 3}
+    - Hug1Gen: 1
+      Hug2Gen: 2
+      rel: 1
+      script: {fileID: 4900000, guid: f6444d9934eb4ce41b05f8d7c0a53000, type: 3}
+    - Hug1Gen: 1
+      Hug2Gen: 3
+      rel: 0
+      script: {fileID: 4900000, guid: fbd9012f722a7c14c828a196d29e3726, type: 3}
+    - Hug1Gen: 1
+      Hug2Gen: 4
+      rel: 0
+      script: {fileID: 4900000, guid: af89a175538dffc4794ffd4fe9343c89, type: 3}
+    - Hug1Gen: 1
+      Hug2Gen: 5
+      rel: 0
+      script: {fileID: 4900000, guid: af89a175538dffc4794ffd4fe9343c89, type: 3}
+  - hugCondition:
+      env: 1
       moment: 0
     hugDatas: []
   - hugCondition:
-      env: 0
-      moment: 1
-    hugDatas: []
-  - hugCondition:
-      env: 0
-      moment: 2
-    hugDatas: []
-  - hugCondition:
-      env: 0
-      moment: 3
-    hugDatas: []
-  - hugCondition:
-      env: 0
-      moment: 5
-    hugDatas: []
-  - hugCondition:
-      env: 1
-      moment: 0
-    hugDatas: []
-  - hugCondition:
-      env: 1
-      moment: 1
-    hugDatas: []
-  - hugCondition:
       env: 1
       moment: 2
     hugDatas: []
   - hugCondition:
       env: 1
       moment: 3
-    hugDatas: []
-  - hugCondition:
-      env: 1
-      moment: 5
     hugDatas: []
   - hugCondition:
       env: 2
@@ -75,10 +95,6 @@ MonoBehaviour:
       moment: 3
     hugDatas: []
   - hugCondition:
-      env: 2
-      moment: 5
-    hugDatas: []
-  - hugCondition:
       env: 3
       moment: 0
     hugDatas: []
@@ -95,10 +111,6 @@ MonoBehaviour:
       moment: 3
     hugDatas: []
   - hugCondition:
-      env: 3
-      moment: 5
-    hugDatas: []
-  - hugCondition:
       env: 4
       moment: 0
     hugDatas: []
@@ -113,12 +125,4 @@ MonoBehaviour:
   - hugCondition:
       env: 4
       moment: 3
-    hugDatas: []
-  - hugCondition:
-      env: 4
-      moment: 5
-    hugDatas: []
-  - hugCondition:
-      env: 4
-      moment: 5
     hugDatas: []

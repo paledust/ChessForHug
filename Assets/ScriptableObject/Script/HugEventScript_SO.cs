@@ -7,11 +7,11 @@ public class HugEventScript_SO : ScriptableObject
 {
     public HugData defaultHug;
     public List<HugGroupInfo> hugGroupList;
-    public HugData GetHugData(HugCondition condition, int huggerAge, int huggeeAge){
+    public HugData GetHugData(HugCondition condition, GENERATION huggerGen, GENERATION huggeegen){
         var groupInfo = hugGroupList.Find(x=>x.hugCondition.Match(condition));
         if(groupInfo == null) return defaultHug;
 
-        var data = groupInfo.hugDatas.Find(x=>(x.Hug1Age == huggerAge && x.Hug2Age==huggeeAge) || (x.Hug1Age==huggeeAge && x.Hug2Age==huggerAge));
+        var data = groupInfo.hugDatas.Find(x=>(x.Hug1Gen == huggerGen && x.Hug2Gen==huggeegen) || (x.Hug1Gen==huggeegen && x.Hug2Gen==huggerGen));
         if(data == null) return defaultHug;
         else return data;
     }
@@ -24,8 +24,8 @@ public class HugEventScript_SO : ScriptableObject
 }
 [System.Serializable]
 public class HugData{
-    public int Hug1Age;
-    public int Hug2Age;
+    public GENERATION Hug1Gen;
+    public GENERATION Hug2Gen;
     public CONTEXT_RELATION rel;
     public TextAsset script;
 }
@@ -37,5 +37,3 @@ public struct HugCondition{
         return condition.env == this.env && condition.moment == this.moment;
     }
 }
-        // flag = flag && ((condition.Hug1Age == this.Hug1Age && condition.Hug1Age == this.Hug2Age) 
-        //             || (condition.Hug1Age == this.Hug2Age && condition.Hug2Age == this.Hug1Age));
