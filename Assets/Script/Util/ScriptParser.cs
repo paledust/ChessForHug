@@ -14,7 +14,7 @@ public static class ScriptParser
         result = result.Replace(LF,"\n");
         result = result.Replace(CR, string.Empty);
 
-        return result;
+        return result+"\n";
     }
 
     public static string ParseMomentScript(TextAsset textFile){return ParseMomentScript(textFile.text);}
@@ -24,7 +24,7 @@ public static class ScriptParser
         result = result.Replace(LF,"\n");
         result = result.Replace(CR, string.Empty);
         
-        return result;
+        return result+"\n";
     }
 
     public static HugData ParseGenerationScript(TextAsset textFile){return ParseGenerationScript(textFile.text);}
@@ -32,7 +32,7 @@ public static class ScriptParser
         string[] lines = data.Split('\n');
         string result = lines[Random.Range(0, lines.Length)];
         result = result.Replace(LF,"\n");
-        result = result.Replace(CR, string.Empty);
+        result = result.Replace(CR, string.Empty)+"\n";
 
         return new HugData(){rel=CONTEXT_RELATION.FRIEND,script=result};
     }

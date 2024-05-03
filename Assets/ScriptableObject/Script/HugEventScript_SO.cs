@@ -13,7 +13,7 @@ public class HugEventScript_SO : ScriptableObject
         HugData personScript = ScriptParser.ParseGenerationScript(generationsScriptDatas.Find(x=>x.IsMatch(huggerGen, huggeegen)).genScript);
         string envScript = ScriptParser.ParseEnvironmentScript(environmentScriptDatas.Find(x=>x.environment == condition.env).envScript);
         string momScript = ScriptParser.ParseMomentScript(momentScriptDatas.Find(x=>x.moment == condition.moment).momScript);
-        personScript.script = envScript + personScript + momScript;
+        personScript.script = envScript + personScript.script + momScript;
 
         return personScript;
     }
