@@ -66,7 +66,7 @@ public class TileSelector : MonoBehaviour {
 				}
 
 				var piece = chessManager.GetPieceAtGrid(gridPoint);
-				if(piece!=null) EventHandler.Call_UI_ShowData(piece.personData.Age, 300, piece.transform);
+				if(piece!=null) EventHandler.Call_UI_ShowData(piece.personData.Age, 220, piece.transform);
 				hoverGridPoint = gridPoint;
 			}
 

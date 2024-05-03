@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UI_DataDisplayer : MonoBehaviour
 {
-    public RectTransform rectTrans;
+    [SerializeField] private RectTransform rectTrans;
 [Header("Line")]
     [SerializeField] private RectTransform lineTrans;
     [SerializeField] private TextMeshProUGUI dataText;
@@ -20,10 +20,10 @@ public class UI_DataDisplayer : MonoBehaviour
     {
         mainCam = Camera.main;
         canvas.alpha = 0;
-        lineTrans.sizeDelta = new Vector2(1, 200);
+        lineTrans.sizeDelta = new Vector2(1, 100);
     }
     void Update(){
-        Vector3 pos = mainCam.WorldToScreenPoint(displayRoot.position);
+        Vector3 pos = mainCam.WorldToScreenPoint(displayRoot.position+Vector3.up);
         pos.z = 0;
         rectTrans.position = pos;
     }
@@ -42,7 +42,7 @@ public class UI_DataDisplayer : MonoBehaviour
     public void HideData()=>displayer.Excute(coroutineFadeOut(fadeOutTime));
     void Initialize(Transform root){
         if(displayer==null) displayer = new CoroutineExcuter(this);
-        lineTrans.sizeDelta = new Vector2(1, 200);
+        lineTrans.sizeDelta = new Vector2(1, 100);
         mainCam = Camera.main;
         displayRoot = root;        
     }
@@ -64,7 +64,7 @@ public class UI_DataDisplayer : MonoBehaviour
         yield return new WaitForLoop(duration, (t)=>{
             canvas.alpha = Mathf.Lerp(initAlpha, 1, EasingFunc.Easing.SmoothInOut(Mathf.Clamp01(t*2)));
             lineTrans.sizeDelta = Vector2.Lerp(initSize, targetSize, EasingFunc.Easing.SmoothInOut(t));
-            dataText.text = Mathf.CeilToInt(Mathf.Lerp(0, num, EasingFunc.Easing.QuadEaseOut(t))+0.5f).ToString();
+            dataText.text = Mathf.CeilToInt(Mathf.Lerp(0, num, EasingFunc.Easing.QuadEaseOut(t))+0.5f).ToString()+"<size=28>岁";
         });
     }
     IEnumerator coroutineFadeOut(float duration){
