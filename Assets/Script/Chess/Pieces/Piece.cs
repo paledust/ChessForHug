@@ -6,7 +6,7 @@ public struct PersonData{
     public int Age;
     public const int BABY_AGE = 5;
     public const int YOUTH_AGE = 12;
-    public const int TEEN_AGE = 18;
+    public const int TEEN_AGE = 20;
     public const int GROWN_AGE = 40;
     public const int MIDDLE_AGE = 68;
     public bool IsBaby{get{return Age<=BABY_AGE;}}
