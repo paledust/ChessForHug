@@ -5,35 +5,45 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Chess/HugEventScript_SO")]
 public class HugEventScript_SO : ScriptableObject
 {
-    public HugData defaultHug;
-    public List<HugGroupInfo> hugGroupList;
+    public List<EnvironmentScriptData> environmentScriptDatas;
+    public List<MomentScriptData> momentScriptDatas;
+    public List<GenerationsScriptData> generationsScriptDatas;
+
     public HugData GetHugData(HugCondition condition, GENERATION huggerGen, GENERATION huggeegen){
-        var groupInfo = hugGroupList.Find(x=>x.hugCondition.Match(condition));
-        if(groupInfo == null) return defaultHug;
+        HugData personScript = ScriptParser.ParseGenerationScript(generationsScriptDatas.Find(x=>x.IsMatch(huggerGen, huggeegen)).genScript);
+        string envScript = ScriptParser.ParseEnvironmentScript(environmentScriptDatas.Find(x=>x.environment == condition.env).envScript);
+        string momScript = ScriptParser.ParseMomentScript(momentScriptDatas.Find(x=>x.moment == condition.moment).momScript);
+        personScript.script = envScript + personScript + momScript;
 
-        var data = groupInfo.hugDatas.Find(x=>(x.Hug1Gen == huggerGen && x.Hug2Gen==huggeegen) || (x.Hug1Gen==huggeegen && x.Hug2Gen==huggerGen));
-        if(data == null) return defaultHug;
-        else return data;
-    }
-
-    [System.Serializable]
-    public class HugGroupInfo{
-        public HugCondition hugCondition;
-        public List<HugData> hugDatas;
+        return personScript;
     }
 }
 [System.Serializable]
 public class HugData{
-    public GENERATION Hug1Gen;
-    public GENERATION Hug2Gen;
     public CONTEXT_RELATION rel;
-    public TextAsset script;
+    public string script;
 }
 [System.Serializable]
 public struct HugCondition{
     public CONTEXT_ENVIRONMENT env;
     public CONTEXT_MOMENT moment;
-    public bool Match(HugCondition condition){
-        return condition.env == this.env && condition.moment == this.moment;
+}
+[System.Serializable]
+public struct GenerationsScriptData{
+    public GENERATION huggerGen;
+    public GENERATION huggeeGen;
+    public TextAsset genScript;
+    public bool IsMatch(GENERATION _huggerGen, GENERATION _huggeeGen){
+        return (huggerGen == _huggerGen && huggeeGen == _huggeeGen) || (huggerGen == _huggeeGen && huggeeGen == _huggerGen);
     }
+}
+[System.Serializable]
+public struct EnvironmentScriptData{
+    public CONTEXT_ENVIRONMENT environment;
+    public TextAsset envScript;
+}
+[System.Serializable]
+public struct MomentScriptData{
+    public CONTEXT_MOMENT moment;
+    public TextAsset momScript;
 }

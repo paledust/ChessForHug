@@ -12,117 +12,85 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38f2ea3d0b8281444b13ff72effc04cd, type: 3}
   m_Name: Hug Event Script_SO
   m_EditorClassIdentifier: 
-  defaultHug:
-    Hug1Gen: 0
-    Hug2Gen: 0
-    rel: 4
-    script: {fileID: 4900000, guid: 492c33d2924ccd84bb4bd3dd7eb40749, type: 3}
-  hugGroupList:
-  - hugCondition:
-      env: 1
-      moment: 1
-    hugDatas:
-    - Hug1Gen: 0
-      Hug2Gen: 0
-      rel: 1
-      script: {fileID: 4900000, guid: af89a175538dffc4794ffd4fe9343c89, type: 3}
-    - Hug1Gen: 0
-      Hug2Gen: 1
-      rel: 1
-      script: {fileID: 4900000, guid: abccb7cb8256d304e8af2cc2eccfcb7d, type: 3}
-    - Hug1Gen: 0
-      Hug2Gen: 2
-      rel: 2
-      script: {fileID: 4900000, guid: b4c2e95f461e34847954848539266b3b, type: 3}
-    - Hug1Gen: 0
-      Hug2Gen: 3
-      rel: 1
-      script: {fileID: 4900000, guid: 1b84bc1e0a740ad46bad8f4047bedc43, type: 3}
-    - Hug1Gen: 0
-      Hug2Gen: 4
-      rel: 2
-      script: {fileID: 4900000, guid: 44750ba4722231d48b292966f5a5a2ea, type: 3}
-    - Hug1Gen: 0
-      Hug2Gen: 5
-      rel: 2
-      script: {fileID: 4900000, guid: 7c27a8456038b344cbdc4831db9fad53, type: 3}
-    - Hug1Gen: 1
-      Hug2Gen: 1
-      rel: 0
-      script: {fileID: 4900000, guid: 51ba2e9e104f9e64398db9247d25a53a, type: 3}
-    - Hug1Gen: 1
-      Hug2Gen: 2
-      rel: 1
-      script: {fileID: 4900000, guid: f6444d9934eb4ce41b05f8d7c0a53000, type: 3}
-    - Hug1Gen: 1
-      Hug2Gen: 3
-      rel: 0
-      script: {fileID: 4900000, guid: fbd9012f722a7c14c828a196d29e3726, type: 3}
-    - Hug1Gen: 1
-      Hug2Gen: 4
-      rel: 0
-      script: {fileID: 4900000, guid: af89a175538dffc4794ffd4fe9343c89, type: 3}
-    - Hug1Gen: 1
-      Hug2Gen: 5
-      rel: 0
-      script: {fileID: 4900000, guid: af89a175538dffc4794ffd4fe9343c89, type: 3}
-  - hugCondition:
-      env: 1
-      moment: 0
-    hugDatas: []
-  - hugCondition:
-      env: 1
-      moment: 2
-    hugDatas: []
-  - hugCondition:
-      env: 1
-      moment: 3
-    hugDatas: []
-  - hugCondition:
-      env: 2
-      moment: 0
-    hugDatas: []
-  - hugCondition:
-      env: 2
-      moment: 1
-    hugDatas: []
-  - hugCondition:
-      env: 2
-      moment: 2
-    hugDatas: []
-  - hugCondition:
-      env: 2
-      moment: 3
-    hugDatas: []
-  - hugCondition:
-      env: 3
-      moment: 0
-    hugDatas: []
-  - hugCondition:
-      env: 3
-      moment: 1
-    hugDatas: []
-  - hugCondition:
-      env: 3
-      moment: 2
-    hugDatas: []
-  - hugCondition:
-      env: 3
-      moment: 3
-    hugDatas: []
-  - hugCondition:
-      env: 4
-      moment: 0
-    hugDatas: []
-  - hugCondition:
-      env: 4
-      moment: 1
-    hugDatas: []
-  - hugCondition:
-      env: 4
-      moment: 2
-    hugDatas: []
-  - hugCondition:
-      env: 4
-      moment: 3
-    hugDatas: []
+  environmentScriptDatas:
+  - environment: 1
+    envScript: {fileID: 4900000, guid: 39d5287d19b6ea64c955594d4949e6e0, type: 3}
+  - environment: 2
+    envScript: {fileID: 4900000, guid: e49aa39f4e1f5a349824438fb8ef661c, type: 3}
+  - environment: 3
+    envScript: {fileID: 4900000, guid: 003535b5fe9161641b67fcbe1047a3b2, type: 3}
+  - environment: 4
+    envScript: {fileID: 4900000, guid: 2a3f1b7d1fdbee0469b369675aa61271, type: 3}
+  momentScriptDatas:
+  - moment: 0
+    momScript: {fileID: 4900000, guid: 932b074a360d52744885ef96d9eef165, type: 3}
+  - moment: 1
+    momScript: {fileID: 4900000, guid: 507c841fb887a914f86534c0b54c06d9, type: 3}
+  - moment: 2
+    momScript: {fileID: 4900000, guid: 5423c79a7765c5e48a98c1fba34d98bf, type: 3}
+  - moment: 3
+    momScript: {fileID: 4900000, guid: 17ab12f9c2ac41a4d9d4dc0dbcd5770d, type: 3}
+  generationsScriptDatas:
+  - huggerGen: 0
+    huggeeGen: 0
+    genScript: {fileID: 4900000, guid: 159dd3008d891ae42a2fbf281d4ce952, type: 3}
+  - huggerGen: 0
+    huggeeGen: 1
+    genScript: {fileID: 4900000, guid: be7fef1c5826d6d4fa09c3b4747ea5c0, type: 3}
+  - huggerGen: 0
+    huggeeGen: 2
+    genScript: {fileID: 4900000, guid: 0c483a44db41b4249a163654727ccfee, type: 3}
+  - huggerGen: 0
+    huggeeGen: 3
+    genScript: {fileID: 4900000, guid: b7b843239b5908848a174bbfcd331ae0, type: 3}
+  - huggerGen: 0
+    huggeeGen: 4
+    genScript: {fileID: 4900000, guid: f299d96b81279e845bc6eeab459e3f7c, type: 3}
+  - huggerGen: 0
+    huggeeGen: 5
+    genScript: {fileID: 4900000, guid: 48decffda5e86d3409933ebbe1c16aff, type: 3}
+  - huggerGen: 1
+    huggeeGen: 1
+    genScript: {fileID: 4900000, guid: b2c36f4f2d3cc5b46b8f4601f46557b7, type: 3}
+  - huggerGen: 1
+    huggeeGen: 2
+    genScript: {fileID: 4900000, guid: b563bfff969abf449ae4e4facaec80c5, type: 3}
+  - huggerGen: 1
+    huggeeGen: 3
+    genScript: {fileID: 4900000, guid: c21cee2b86cf0574b81a672ad56b93da, type: 3}
+  - huggerGen: 1
+    huggeeGen: 4
+    genScript: {fileID: 4900000, guid: 3dea8e60097013b48b4b1e7542c60d99, type: 3}
+  - huggerGen: 1
+    huggeeGen: 5
+    genScript: {fileID: 4900000, guid: 6b3e6392cc8984046a49e718e90be6b1, type: 3}
+  - huggerGen: 2
+    huggeeGen: 2
+    genScript: {fileID: 4900000, guid: 31470e85de1d70e4090c4b11fd4016a4, type: 3}
+  - huggerGen: 2
+    huggeeGen: 3
+    genScript: {fileID: 4900000, guid: 602acc0d1a9d4a9428e633acdcbce696, type: 3}
+  - huggerGen: 2
+    huggeeGen: 4
+    genScript: {fileID: 4900000, guid: 958f36be1771f9441ab4a53d42bedee5, type: 3}
+  - huggerGen: 2
+    huggeeGen: 5
+    genScript: {fileID: 4900000, guid: 8bb99ac21a3f5c04e864212c11e1e91e, type: 3}
+  - huggerGen: 3
+    huggeeGen: 3
+    genScript: {fileID: 4900000, guid: d769cc3d11999d148b61101108d55864, type: 3}
+  - huggerGen: 3
+    huggeeGen: 4
+    genScript: {fileID: 4900000, guid: 2dad08bae31538a4590b710bec20af6a, type: 3}
+  - huggerGen: 3
+    huggeeGen: 5
+    genScript: {fileID: 4900000, guid: 7be3c6f5048131547be9145bccf9b3a5, type: 3}
+  - huggerGen: 4
+    huggeeGen: 4
+    genScript: {fileID: 4900000, guid: a58dd9adc46368f418bd3582f866d293, type: 3}
+  - huggerGen: 4
+    huggeeGen: 5
+    genScript: {fileID: 4900000, guid: ae080fbf77ab7664cba506ac1336540d, type: 3}
+  - huggerGen: 5
+    huggeeGen: 5
+    genScript: {fileID: 4900000, guid: 9da0032d7142ee042ad81fd5276de654, type: 3}
