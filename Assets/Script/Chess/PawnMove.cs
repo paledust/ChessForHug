@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PawnMoves: Moves{
     public bool firstMove;
-    public bool promotion;
+    // public bool promotion;
     public PawnMoves(Vector2Int _from, Vector2Int _to):base(_from, _to){
         if(!movePieces.GetComponent<Pawn>().Moved){
             firstMove = true;
@@ -13,18 +13,18 @@ public class PawnMoves: Moves{
             firstMove = false;
         }
 
-        if(takenPieces == null && to.y == ChessManager.Instance.currentPlayer.buttomLine){
-            promotion = true;
-        }
-        else{
-            promotion = false;
-        }
+        // if(takenPieces == null && to.y == ChessManager.Instance.currentPlayer.buttomLine){
+        //     promotion = true;
+        // }
+        // else{
+        //     promotion = false;
+        // }
     }
     public override void Undo()
     {
         if(takenPieces == null){
             ChessManager.Instance.MovePiece(movePieces, from);
-            if(promotion) ChessManager.Instance.UndoPawnPromote(movePieces, ChessManager.Instance.currentPlayer.side);
+            // if(promotion) ChessManager.Instance.UndoPawnPromote(movePieces, ChessManager.Instance.currentPlayer.side);
         }
         else{
             GameObject.Destroy(ChessManager.Instance.PieceAtGrid(to));
@@ -46,7 +46,7 @@ public class PawnMoves: Moves{
     public override void Excute(){
         if(takenPieces == null){
             ChessManager.Instance.MovePiece(movePieces, to);
-            if(promotion) ChessManager.Instance.PromotePawn(movePieces, ChessManager.Instance.currentPlayer.side);
+            // if(promotion) ChessManager.Instance.PromotePawn(movePieces, ChessManager.Instance.currentPlayer.side);
         }
         else{
             ChessManager.Instance.HugPieces(movePieces, to);

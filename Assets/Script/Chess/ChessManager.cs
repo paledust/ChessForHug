@@ -49,20 +49,6 @@ public class ChessManager : Singleton<ChessManager>
     [SerializeField] private ChessAI chessAI;
 [Header("Special Piece")]
     public GameObject neutralPiece;
-[Header("Pieces")]
-    public GameObject whiteKing;
-    public GameObject whiteQueen;
-    public GameObject whiteBishop;
-    public GameObject whiteKnight;
-    public GameObject whiteRook;
-    public GameObject whitePawn;
-
-    public GameObject blackKing;
-    public GameObject blackQueen;
-    public GameObject blackBishop;
-    public GameObject blackKnight;
-    public GameObject blackRook;
-    public GameObject blackPawn;
 
     private GameObject[,] pieces;
     private TileData[,] tileDatas;
@@ -97,12 +83,11 @@ public class ChessManager : Singleton<ChessManager>
         otherPlayer = black;
 
     //Generate Board
-        if(boardLayout_File == null){
+        if(boardLayout_File == null)
             SetUp(DEFAULT_SETUP);
-        }
-        else{
+        else
             SetUp(boardLayout_File.text);
-        }
+        
     //Generate Tile Data
         for(int i=0; i<8; i++){
             for(int j=0; j<8; j++){
@@ -147,9 +132,7 @@ public class ChessManager : Singleton<ChessManager>
     public void SelectPieceAtGrid(Vector2Int gridPoint){
         GameObject selectedPiece = pieces[gridPoint.x, gridPoint.y];
         if (selectedPiece)
-        {
             board.SelectPiece(selectedPiece);
-        }
     }
     public Piece GetPieceAtGrid(Vector2Int gridPoint){
         var piece = pieces[gridPoint.x, gridPoint.y];
@@ -318,16 +301,16 @@ public class ChessManager : Singleton<ChessManager>
         pieces[from.x, from.y] = movePiece;
         board.MovePiece(movePiece, from);
     }
-    public void PromotePawn(GameObject pawn, PLAYER_SIDE side){
-        Destroy(pawn.GetComponent<Pawn>());
-        pawn.GetComponentInChildren<MeshFilter>().sharedMesh = ((side==PLAYER_SIDE.WHITE)?whiteQueen:blackQueen).GetComponentInChildren<MeshFilter>().sharedMesh;
-        pawn.AddComponent<Queen>().type = PIECE_TYPE.QUEEN;
-    }
-    public void UndoPawnPromote(GameObject pawn, PLAYER_SIDE side){
-        Destroy(pawn.GetComponent<Queen>());
-        pawn.GetComponentInChildren<MeshFilter>().sharedMesh = ((side==PLAYER_SIDE.WHITE)?whitePawn:blackPawn).GetComponentInChildren<MeshFilter>().sharedMesh;
-        pawn.AddComponent<Pawn>().type = PIECE_TYPE.PAWN;        
-    }
+    // public void PromotePawn(GameObject pawn, PLAYER_SIDE side){
+    //     Destroy(pawn.GetComponent<Pawn>());
+    //     pawn.GetComponentInChildren<MeshFilter>().sharedMesh = ((side==PLAYER_SIDE.WHITE)?whiteQueen:blackQueen).GetComponentInChildren<MeshFilter>().sharedMesh;
+    //     pawn.AddComponent<Queen>().type = PIECE_TYPE.QUEEN;
+    // }
+    // public void UndoPawnPromote(GameObject pawn, PLAYER_SIDE side){
+    //     Destroy(pawn.GetComponent<Queen>());
+    //     pawn.GetComponentInChildren<MeshFilter>().sharedMesh = ((side==PLAYER_SIDE.WHITE)?whitePawn:blackPawn).GetComponentInChildren<MeshFilter>().sharedMesh;
+    //     pawn.AddComponent<Pawn>().type = PIECE_TYPE.PAWN;        
+    // }
 #if UNITY_EDITOR
     void OnDrawGizmos(){
         if(UnityEditor.EditorApplication.isPlaying){
