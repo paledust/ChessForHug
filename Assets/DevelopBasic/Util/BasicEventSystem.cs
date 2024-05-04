@@ -20,6 +20,8 @@ public static class EventHandler
     public static void Call_UI_ShowData(int data, float height, Transform root)=>E_UI_ShowNum?.Invoke(data, height, root);
     public static event Action<Transform> E_UI_HideData;
     public static void Call_UI_HideData(Transform root)=>E_UI_HideData?.Invoke(root);
+    public static event Action<Transform> E_UI_CleanDisplayer;
+    public static void Call_UI_CleanDisplayer(Transform root)=>E_UI_CleanDisplayer?.Invoke(root);
     public static event Action<string> E_UI_ShowDescrip;
     public static void Call_UI_ShowDescrip(string content)=>E_UI_ShowDescrip?.Invoke(content);
 #endregion

@@ -186,7 +186,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574972}
-  m_LocalRotation: {x: 0.2752327, y: -0.36530733, z: 0.11400513, w: 0.88192993}
+  m_LocalRotation: {x: 0.2752327, y: -0.3653073, z: 0.11400512, w: 0.88192993}
   m_LocalPosition: {x: 13.6, y: 15, z: -13.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -691,26 +691,12 @@ MonoBehaviour:
   white_Control: 1
   black_Control: 0
   board: {fileID: 892110090}
+  AgeUpAmount: 5
+  AgeUpTurn: 10
   chessPlayer: {fileID: 692533035}
   chessAI: {fileID: 1748560194}
   neutralPiece: {fileID: 591307314258031880, guid: 955b740753236384aafe03117884e2ce,
     type: 3}
-  whiteKing: {fileID: 1097184490271986, guid: 286f8291ea775409f91f3dcc8dc0e06c, type: 3}
-  whiteQueen: {fileID: 1108025435085622, guid: 348ae07a400ab45c5afcbe22039e9d5e, type: 3}
-  whiteBishop: {fileID: 1877345029257820, guid: 27727deede5194cdba8c2ebab33ecaab,
-    type: 3}
-  whiteKnight: {fileID: 1486526489832934, guid: 3768577674528430691fecf5a4660eb2,
-    type: 3}
-  whiteRook: {fileID: 1125735659761782, guid: eafb872984133466d8325974f39dd911, type: 3}
-  whitePawn: {fileID: 1716508534991360, guid: e8b76efea0e604eb5afd123b073ea8fd, type: 3}
-  blackKing: {fileID: 1953080492828278, guid: 53ab43e1f4f674178b234d7ca733a67b, type: 3}
-  blackQueen: {fileID: 1749751664417286, guid: ab99aa115f3ec44a99e16326ecb700b2, type: 3}
-  blackBishop: {fileID: 1821828046532228, guid: 9fbaf3c5b38c8464f9df18844447db85,
-    type: 3}
-  blackKnight: {fileID: 1747904550817830, guid: fff2331e5321f4f49ab37c84b68ba184,
-    type: 3}
-  blackRook: {fileID: 1218684493727980, guid: c13dffa2e41e349c78351ec06686dc75, type: 3}
-  blackPawn: {fileID: 1795645163035938, guid: 455e0d5008a5e426a96c3987ea4f82b6, type: 3}
 --- !u!4 &516697439
 Transform:
   m_ObjectHideFlags: 0
@@ -1961,7 +1947,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1668271432}
-  m_LocalRotation: {x: 0.2752327, y: -0.36530733, z: 0.11400513, w: 0.88192993}
+  m_LocalRotation: {x: 0.2752327, y: -0.3653073, z: 0.11400512, w: 0.88192993}
   m_LocalPosition: {x: 13.6, y: 15, z: -13.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

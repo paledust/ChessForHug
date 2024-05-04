@@ -17,12 +17,14 @@ public class UI_Manager : MonoBehaviour
         EventHandler.E_UI_ShowData += ShowData;
         EventHandler.E_UI_ShowNum  += ShowNum;
         EventHandler.E_UI_HideData += HideData;
+        EventHandler.E_UI_CleanDisplayer += CleanDataDisplayer;
         EventHandler.E_UI_ShowDescrip += ShowDescription;
     }
     void OnDisable(){
         EventHandler.E_UI_ShowData -= ShowData;
         EventHandler.E_UI_ShowNum  -= ShowNum;
         EventHandler.E_UI_HideData -= HideData;
+        EventHandler.E_UI_CleanDisplayer -= CleanDataDisplayer;
         EventHandler.E_UI_ShowDescrip -= ShowDescription;
     }
     public void ShowDescription(string content){
@@ -52,6 +54,13 @@ public class UI_Manager : MonoBehaviour
         if(dataDisplayer_Dict.ContainsKey(root)){
             dataDisplayer_Dict[root].HideData();
         }
+    }
+    public void CleanDataDisplayer(Transform root){
+        if(dataDisplayer_Dict.ContainsKey(root)){
+            var displayer = dataDisplayer_Dict[root];
+            dataDisplayer_Dict.Remove(root);
+            Destroy(displayer);
+        }        
     }
     public void FadeOutBackButton()=>StartCoroutine(coroutineSwitchBackButton(false));
     public void FadeInBackButton()=>StartCoroutine(coroutineSwitchBackButton(true));

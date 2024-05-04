@@ -46,7 +46,7 @@ public class ChessManager : Singleton<ChessManager>
     public Board board;
 [Header("Game")]
     [SerializeField] private int AgeUpAmount = 5;
-    [SerializeField] private int AgeUpMove = 3;
+    [SerializeField] private int AgeUpTurn = 6;
     [SerializeField] private GameObject chessPlayer;
     [SerializeField] private ChessAI chessAI;
 [Header("Special Piece")]
@@ -63,7 +63,7 @@ public class ChessManager : Singleton<ChessManager>
     private MOVE_TYPE lastTurnMoveType;
     private Stack<Moves> moveStack;
 
-    private int MoveCount = 0;
+    private int TurnCount = 0;
 
     public static readonly Dictionary<GENERATION, char> generationToPieceChar_Dict = new Dictionary<GENERATION, char>(){
         {GENERATION.BABY, 'P'}, {GENERATION.YOUTH, 'R'}, {GENERATION.TEEN, 'Q'},
@@ -154,6 +154,7 @@ public class ChessManager : Singleton<ChessManager>
 
             var player = playerSide==PLAYER_SIDE.WHITE?white:black;
             player.pieces.Remove(piece.gameObject);
+            EventHandler.Call_UI_CleanDisplayer(piece.transform);
             Destroy(piece.gameObject);
 
             GameObject newPiece = AddPiece(piecePrefab, player, gridPoint.x, gridPoint.y);
@@ -234,7 +235,7 @@ public class ChessManager : Singleton<ChessManager>
     }
     void ResumeChessGameBeforeEndTurn(){
         EventHandler.E_OnBackToChessGame -= ResumeChessGameBeforeEndTurn;
-        NextPlayer();
+        NextTurn();
     }
     public TileData GetTileData(Vector2Int gridPoint){
         return tileDatas[gridPoint.x, gridPoint.y];
@@ -256,7 +257,22 @@ public class ChessManager : Singleton<ChessManager>
 
         return locations;
     }
-    public async void NextPlayer(){
+    public async void NextTurn(){
+    //Add Turn Count and Age Up Pieces
+        TurnCount ++;
+        if(TurnCount>=AgeUpTurn){
+            TurnCount = 0;
+            for(int x=0; x<8; x++){
+                for(int y=0; y<8; y++){
+                    if(pieces[x,y]!=null){
+                        var piece = pieces[x,y].GetComponent<Piece>();
+                        if(piece.type!=PIECE_TYPE.NEUTRAL)
+                            AgeUpToPiece(piece,piece.playerSide, AgeUpAmount);
+                    }
+                }
+            }
+        }
+
         Player tempPlayer = currentPlayer;
         currentPlayer = otherPlayer;
         otherPlayer = tempPlayer;
@@ -278,21 +294,7 @@ public class ChessManager : Singleton<ChessManager>
         }
         else{
 			// EventHandler.Call_OnMovePieceOnly(piece, ChessManager.Instance.currentPlayer.side);
-            NextPlayer();
-        }
-
-        MoveCount ++;
-        if(MoveCount>=AgeUpMove){
-            MoveCount = 0;
-            for(int x=0; x<8; x++){
-                for(int y=0; y<8; y++){
-                    if(pieces[x,y]!=null){
-                        var piece = pieces[x,y].GetComponent<Piece>();
-                        if(piece.type!=PIECE_TYPE.NEUTRAL)
-                            AgeUpToPiece(piece,piece.playerSide, AgeUpAmount);
-                    }
-                }
-            }
+            NextTurn();
         }
     }
     public void MakeMoves(Moves move){
@@ -320,23 +322,23 @@ public class ChessManager : Singleton<ChessManager>
 
         lastTurnMoveType = MOVE_TYPE.MOVE;
     }
-    public void HugPieces(GameObject piece, Vector2Int gridPoint){
-        Vector2Int startGridPoint = GridForPiece(piece);
+    public void HugPieces(GameObject takerPiece, Vector2Int gridPoint){
+        Vector2Int startGridPoint = GridForPiece(takerPiece);
         pieces[startGridPoint.x, startGridPoint.y] = null;
 
-        GameObject otherPiece = PieceAtGrid(gridPoint);
-        currentPlayer.capturedPieces.Add(otherPiece);
-        currentPlayer.pieces.Remove(piece);
-        otherPlayer.capturedPieces.Add(piece);
-        otherPlayer.pieces.Remove(otherPiece);
+        GameObject takenPiece = PieceAtGrid(gridPoint);
+        currentPlayer.capturedPieces.Add(takenPiece);
+        currentPlayer.pieces.Remove(takerPiece);
+        otherPlayer.capturedPieces.Add(takerPiece);
+        otherPlayer.pieces.Remove(takenPiece);
 
         pieces[gridPoint.x, gridPoint.y] = null;
         GameObject temp = AddPiece(neutralPiece, null, gridPoint.x, gridPoint.y);
-        temp.GetComponent<Neutral>().extraValue = Service.PieceValueDict[otherPiece.GetComponent<Piece>().type];
+        temp.GetComponent<Neutral>().extraValue = Service.PieceValueDict[takenPiece.GetComponent<Piece>().type];
 
-        piece.transform.position = Geometry.PointFromGrid(gridPoint);
-        piece.transform.position += new Vector3(0.3f*currentPlayer.forward, 0, 0.3f*otherPlayer.forward);
-        otherPiece.transform.position += new Vector3(0.3f*otherPlayer.forward, 0, 0.3f*currentPlayer.forward);
+        takerPiece.transform.position = Geometry.PointFromGrid(gridPoint);
+        takerPiece.transform.position += new Vector3(0.3f*currentPlayer.forward, 0, 0.3f*otherPlayer.forward);
+        takenPiece.transform.position += new Vector3(0.3f*otherPlayer.forward, 0, 0.3f*currentPlayer.forward);
 
         lastTurnMoveType = MOVE_TYPE.CAPTURE;
     }

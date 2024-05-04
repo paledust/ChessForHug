@@ -4,7 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public struct PersonData{
     public int Age;
-    public const int BABY_AGE = 5;
+    public const int BABY_AGE = 6;
     public const int YOUTH_AGE = 12;
     public const int TEEN_AGE = 20;
     public const int GROWN_AGE = 40;
@@ -16,7 +16,7 @@ public struct PersonData{
     public bool IsGrown{get{return Age<=GROWN_AGE && Age>TEEN_AGE;}}
     public bool IsMiddle{get{return Age<=MIDDLE_AGE && Age>GROWN_AGE;}}
     public bool IsOld{get{return Age>MIDDLE_AGE;}}
-    public const float Age_Start_Percentage = 0.25f;
+    public const float Age_Start_Percentage = 0.23f;
     public const float Age_RND_Percentage = 0.4f;
 
     public static GENERATION GetGeneration(int age){
@@ -28,12 +28,12 @@ public struct PersonData{
         return GENERATION.OLD;
     }
     public static int InitAge(int age){
-        if(age<=BABY_AGE) return Mathf.FloorToInt(5*Age_Start_Percentage) + Random.Range(0, Mathf.FloorToInt(5*Age_RND_Percentage));
-        else if(age<=YOUTH_AGE) return 5+Mathf.FloorToInt(7*Age_Start_Percentage)+Random.Range(0, Mathf.FloorToInt(7*Age_RND_Percentage));
-        else if(age<=TEEN_AGE) return 12+Mathf.FloorToInt(8*Age_Start_Percentage)+Random.Range(0, Mathf.FloorToInt(8*Age_RND_Percentage));
-        else if(age<=GROWN_AGE) return 20+Mathf.FloorToInt(20*Age_Start_Percentage)+Random.Range(0, Mathf.FloorToInt(20*Age_RND_Percentage));
-        else if(age<=MIDDLE_AGE) return 40+Mathf.FloorToInt(28*Age_Start_Percentage)+Random.Range(0, Mathf.FloorToInt(28*Age_RND_Percentage));
-        else return 68+Mathf.FloorToInt(32*Age_Start_Percentage)+Random.Range(0, Mathf.FloorToInt(32*Age_RND_Percentage));
+        if(age<=BABY_AGE) return Mathf.FloorToInt(BABY_AGE*Age_Start_Percentage) + Random.Range(0, Mathf.FloorToInt(BABY_AGE*Age_RND_Percentage));
+        else if(age<=YOUTH_AGE) return BABY_AGE+Mathf.FloorToInt(6*Age_Start_Percentage)+Random.Range(0, Mathf.FloorToInt(6*Age_RND_Percentage));
+        else if(age<=TEEN_AGE) return YOUTH_AGE+Mathf.FloorToInt(8*Age_Start_Percentage)+Random.Range(0, Mathf.FloorToInt(8*Age_RND_Percentage));
+        else if(age<=GROWN_AGE) return TEEN_AGE+Mathf.FloorToInt(20*Age_Start_Percentage)+Random.Range(0, Mathf.FloorToInt(20*Age_RND_Percentage));
+        else if(age<=MIDDLE_AGE) return GROWN_AGE+Mathf.FloorToInt(28*Age_Start_Percentage)+Random.Range(0, Mathf.FloorToInt(28*Age_RND_Percentage));
+        else return MIDDLE_AGE+Mathf.FloorToInt(32*Age_Start_Percentage)+Random.Range(0, Mathf.FloorToInt(32*Age_RND_Percentage));
     }
 }
 public abstract class Piece : MonoBehaviour
