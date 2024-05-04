@@ -295,7 +295,6 @@ public class ChessManager : Singleton<ChessManager>
             PauseChessGameBeforeEndTurn();
         }
         else{
-			// EventHandler.Call_OnMovePieceOnly(piece, ChessManager.Instance.currentPlayer.side);
             NextTurn();
         }
     }

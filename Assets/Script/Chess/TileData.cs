@@ -6,6 +6,7 @@ public struct TileData
 {
     public CONTEXT_ENVIRONMENT environment;
     public CONTEXT_MOMENT moment;
+    
     private static int[] env_rnd = {0,1,2,3};
     private static int[] mom_rnd = {0,1,2,3};
     private static int env_count = 0;

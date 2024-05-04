@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeetManager : MonoBehaviour
+public class MeetManager : Singleton<MeetManager>
 {
     [SerializeField] private GameObject hugGroupPrefab;
     [SerializeField] private EnvironmentDisplayer envDisplayer;
@@ -20,6 +20,10 @@ public class MeetManager : MonoBehaviour
 
         var hugData = hugEventScript_SO.GetHugData(new HugCondition(){env = contex.environment, moment = contex.moment}, PersonData.GetGeneration(huggerAge), PersonData.GetGeneration(huggeeAge));
         EventHandler.Call_UI_ShowDescrip(hugData.script);
+
+        Neutral neutral_piece = ChessManager.Instance.GetPieceAtGrid(gridPoint).GetComponent<Neutral>();
+        neutral_piece.content = hugData.script;
+        
         StartCoroutine(coroutinePiecesHugSeguence(huggerPiece, huggeePiece, gridPoint));
     }
     IEnumerator coroutinePiecesHugSeguence(GameObject huggerPiece, GameObject huggeePiece,Vector2Int gridPoint){
@@ -27,17 +31,11 @@ public class MeetManager : MonoBehaviour
         huggerPiece.SetActive(false);
         huggeePiece.SetActive(false);
 
-        Animation hugGroupAnime = GameObject.Instantiate(hugGroupPrefab, Geometry.PointFromGrid(gridPoint), Quaternion.Euler(0,Random.Range(0,360f),0)).GetComponent<Animation>();
+        Animation hugGroupAnime = Instantiate(hugGroupPrefab, Geometry.PointFromGrid(gridPoint), Quaternion.Euler(0,Random.Range(0,360f),0)).GetComponent<Animation>();
         hugGroupAnime.Play();
 
         yield return new WaitForSeconds(hugGroupAnime.clip.length);
         EventHandler.Call_OnCapturePiece(huggerPiece.GetComponent<Piece>(), ChessManager.Instance.currentPlayer.side);
-
-        var pieceDataHugger = huggerPiece.GetComponent<Piece>().personData;
-        var pieceDataHuggee = huggeePiece.GetComponent<Piece>().personData;
-        var context = ChessManager.Instance.GetTileData(gridPoint);
-        
         EventHandler.Call_OnBackToChessGame();
-        Debug.Log($"Hugger:{pieceDataHugger.Age} and Huggee:{pieceDataHuggee.Age},\nthey hugged At {context.environment} for {context.moment}.");
     }
 }

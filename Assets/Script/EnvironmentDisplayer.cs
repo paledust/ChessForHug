@@ -4,39 +4,58 @@ using UnityEngine;
 
 public class EnvironmentDisplayer : MonoBehaviour
 {
-[Header("Sprites")]
-    [SerializeField] private SpriteRenderer imageRenderer;
-    [SerializeField] private SpriteRenderer blackScreen;
-    [SerializeField] private float imageFadeTime;
-    [SerializeField] private float imageStayTime;
-[Header("EnvSprites SO")]
-    [SerializeField] private EnvSprites_SO envSprites_SO;
-    private Sprite[] envSprites;
-    private CoroutineExcuter envFader;
-    void Start(){
-        envFader = new CoroutineExcuter(this);
-        imageRenderer.color = new Color(1,1,1,0);
-        blackScreen.color = new Color(0,0,0,0);
-        imageRenderer.enabled = false;
-        blackScreen.enabled = false;
-    }
-    public void LoadEnvironmentSprites(CONTEXT_ENVIRONMENT env){
-        envSprites = envSprites_SO.GetSpritesByEnvironment(env);
-        imageRenderer.sprite = envSprites[0];
-    }
-    public void HideEnvironmentSprites(){
-        envFader.Excute(coroutineFadeEnvElements(false));
-    }
-    IEnumerator coroutineFadeEnvElements(bool isFadeIn){
-        Color imageInitColor = imageRenderer.color;
-        Color blackScreenInitColor = blackScreen.color;
-        Color imageTargetColor = isFadeIn?Color.white:new Color(1,1,1,0);
-        Color blackScreenTargetColor = isFadeIn?Color.black:Color.clear;
+    [SerializeField] private List<DisplayerGroup> displayerGroups;
+[Header("Environment Sphere")]
+    [SerializeField] private MeshRenderer environmentSphere;
+    [SerializeField] private float fadeTime = 1;
 
-        yield return new WaitForLoop(imageFadeTime, (t)=>{
-            float _t = EasingFunc.Easing.SmoothInOut(t);
-            imageRenderer.color = Color.Lerp(imageInitColor, imageTargetColor, _t);
-            blackScreen.color = Color.Lerp(blackScreenInitColor, blackScreenTargetColor, _t);
+    private string ExposerName = "_Exposure";
+    private DisplayerGroup lastGroup;
+    private CoroutineExcuter envSphereFader;
+    private bool isShowEnv = false;
+
+    void Start(){
+        envSphereFader = new CoroutineExcuter(this);
+    }
+    public void ShowEnviornment(CONTEXT_ENVIRONMENT env){
+        if(!isShowEnv){
+            isShowEnv = true;
+            envSphereFader.Excute(coroutineFadeEnvSphere(true));
+        }
+        var group = displayerGroups.Find(x=>x.environment == env);
+        if(lastGroup!=null){
+            if(lastGroup!=group){
+                group.imageFader.ShowEnviornmentSprites();
+                lastGroup.imageFader.HideEnvironmentSprites();
+                lastGroup = group;
+            }
+        }
+        else{
+            group.imageFader.ShowEnviornmentSprites();
+            lastGroup = group;
+        }
+
+    }
+    public void HideEnvironment(){
+        if(isShowEnv){
+            isShowEnv = false;
+            envSphereFader.Excute(coroutineFadeEnvSphere(false));
+            if(lastGroup!=null){
+                lastGroup.imageFader.HideEnvironmentSprites();
+                lastGroup = null;
+            }
+        }
+    }
+    IEnumerator coroutineFadeEnvSphere(bool isFadeIn){
+        float initExpo = environmentSphere.material.GetFloat(ExposerName);
+        float targetExpo = isFadeIn?0.2f:1;
+        yield return new WaitForLoop(fadeTime, (t)=>{
+            environmentSphere.material.SetFloat(ExposerName, Mathf.Lerp(initExpo, targetExpo, EasingFunc.Easing.SmoothInOut(t)));
         });
+    }
+    [System.Serializable]
+    private class DisplayerGroup{
+        public CONTEXT_ENVIRONMENT environment;
+        public EnvironmentImageFader imageFader;
     }
 }
