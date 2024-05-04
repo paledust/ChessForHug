@@ -8,8 +8,12 @@ public class UI_Manager : MonoBehaviour
 {
 [Header("Line")]
     [SerializeField] private RectTransform dataDisplayerGroup;
-    [SerializeField] private Button Back_Button;
     [SerializeField] private GameObject dataDisplayerPrefab;
+
+[Header("Years")]
+    [SerializeField] private RectTransform yearRoot;
+    [SerializeField] private TextMeshProUGUI yearUp;
+    [SerializeField] private TextMeshProUGUI yearDown;
 [Header("Description")]
     [SerializeField] private TypewriterByCharacter descriptionWriter;
     private Dictionary<Transform, UI_DataDisplayer> dataDisplayer_Dict = new Dictionary<Transform, UI_DataDisplayer>();
@@ -19,6 +23,7 @@ public class UI_Manager : MonoBehaviour
         EventHandler.E_UI_HideData += HideData;
         EventHandler.E_UI_CleanDisplayer += CleanDataDisplayer;
         EventHandler.E_UI_ShowDescrip += ShowDescription;
+        EventHandler.E_UI_StepYear += StepYear;
     }
     void OnDisable(){
         EventHandler.E_UI_ShowData -= ShowData;
@@ -26,6 +31,23 @@ public class UI_Manager : MonoBehaviour
         EventHandler.E_UI_HideData -= HideData;
         EventHandler.E_UI_CleanDisplayer -= CleanDataDisplayer;
         EventHandler.E_UI_ShowDescrip -= ShowDescription;
+        EventHandler.E_UI_StepYear -= StepYear;
+    }
+    public void StepYear(float step){
+        StartCoroutine(coroutineStepYear(step));
+    }
+    IEnumerator coroutineStepYear(float step){
+        Vector3 initPos = yearRoot.localPosition;
+        Vector3 targetPos = initPos + Vector3.up*120*step;
+        yield return new WaitForLoop(1, (t)=>{
+            yearRoot.localPosition = Vector3.LerpUnclamped(initPos, targetPos, EasingFunc.Easing.BackEaseInOut(t));
+        });
+        if(targetPos.y >= 120){
+            yearUp.text = yearDown.text;
+            yearDown.text = (int.Parse(yearDown.text)+5).ToString();
+
+            yearRoot.localPosition = Vector3.zero;
+        }
     }
     public void ShowDescription(string content){
         if(content==string.Empty){
@@ -61,21 +83,5 @@ public class UI_Manager : MonoBehaviour
             dataDisplayer_Dict.Remove(root);
             Destroy(displayer);
         }        
-    }
-    public void FadeOutBackButton()=>StartCoroutine(coroutineSwitchBackButton(false));
-    public void FadeInBackButton()=>StartCoroutine(coroutineSwitchBackButton(true));
-    IEnumerator coroutineSwitchBackButton(bool isOn){
-        if(!isOn) Back_Button.interactable = false;
-        Color initColor, targetColor;
-        initColor = targetColor = Color.white;
-        initColor.a = isOn?0:1;
-        targetColor.a = isOn?1:0;
-
-        for(float t=0; t<1; t+=Time.deltaTime*4){
-            Back_Button.image.color = Color.Lerp(initColor, targetColor, EasingFunc.Easing.SmoothInOut(t));
-            yield return null;
-        }
-        Back_Button.image.color = targetColor;
-        if(isOn) Back_Button.interactable = true;
     }
 }

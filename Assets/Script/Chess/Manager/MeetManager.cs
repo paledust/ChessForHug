@@ -26,7 +26,7 @@ public class MeetManager : MonoBehaviour
         huggerPiece.SetActive(false);
         huggeePiece.SetActive(false);
 
-        Animation hugGroupAnime = GameObject.Instantiate(hugGroupPrefab, Geometry.PointFromGrid(gridPoint), Quaternion.identity).GetComponent<Animation>();
+        Animation hugGroupAnime = GameObject.Instantiate(hugGroupPrefab, Geometry.PointFromGrid(gridPoint), Quaternion.Euler(0,Random.Range(0,360f),0)).GetComponent<Animation>();
         hugGroupAnime.Play();
 
         yield return new WaitForSeconds(hugGroupAnime.clip.length);

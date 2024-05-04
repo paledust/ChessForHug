@@ -260,6 +260,8 @@ public class ChessManager : Singleton<ChessManager>
     public async void NextTurn(){
     //Add Turn Count and Age Up Pieces
         TurnCount ++;
+        EventHandler.Call_UI_StepYear(1.0f/AgeUpTurn);
+
         if(TurnCount>=AgeUpTurn){
             TurnCount = 0;
             for(int x=0; x<8; x++){
