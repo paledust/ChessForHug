@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4464707426480042}
   - component: {fileID: 33912770636979602}
   - component: {fileID: 23448017133815252}
+  - component: {fileID: 6888545561502797938}
   m_Layer: 0
   m_Name: KnightWhite
   m_TagString: Untagged
@@ -83,6 +84,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!111 &6888545561502797938
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319198656142558}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 1771299ba4fa799409620352a8d98511, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 1771299ba4fa799409620352a8d98511, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1486526489832934
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bb8f4ac3e57c48318c9e96e43ccfd52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerSide: 0
   type: 3
   personData:
     Age: 41
-    gender: 0

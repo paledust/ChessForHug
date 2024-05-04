@@ -122,6 +122,7 @@ public class ChessManager : Singleton<ChessManager>
 
     public GameObject AddPiece(GameObject prefab, Player player, int col, int row){
         GameObject pieceObject = board.AddPiece(prefab, col, row);
+        pieceObject.GetComponentInChildren<Animation>()?.Play();
         var piece = pieceObject.GetComponent<Piece>();
         piece.InitAge();
     //We need to do this test, because we also want to add neutral piece on board, which doesn't belong to any player.

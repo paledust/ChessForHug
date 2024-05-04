@@ -60,6 +60,7 @@ GameObject:
   - component: {fileID: 4574334154239224}
   - component: {fileID: 33647671303767512}
   - component: {fileID: 23340864294145978}
+  - component: {fileID: 2025076040632584644}
   m_Layer: 0
   m_Name: KnightBlack
   m_TagString: Untagged
@@ -132,3 +133,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!111 &2025076040632584644
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755294381223424}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 1771299ba4fa799409620352a8d98511, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 1771299ba4fa799409620352a8d98511, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0

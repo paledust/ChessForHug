@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4039966110877416}
   - component: {fileID: 33165528208952704}
   - component: {fileID: 23879078153895756}
+  - component: {fileID: 2843856938832522288}
   m_Layer: 0
   m_Name: PawnBlack
   m_TagString: Untagged
@@ -83,6 +84,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!111 &2843856938832522288
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205920418165010}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 1771299ba4fa799409620352a8d98511, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 1771299ba4fa799409620352a8d98511, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1795645163035938
 GameObject:
   m_ObjectHideFlags: 0

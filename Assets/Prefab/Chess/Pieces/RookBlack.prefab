@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4200905255690408}
   - component: {fileID: 33905566611566264}
   - component: {fileID: 23897026787626754}
+  - component: {fileID: 3134454551483123085}
   m_Layer: 0
   m_Name: RookBlack
   m_TagString: Untagged
@@ -83,6 +84,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!111 &3134454551483123085
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011003790848820}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 1771299ba4fa799409620352a8d98511, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 1771299ba4fa799409620352a8d98511, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1218684493727980
 GameObject:
   m_ObjectHideFlags: 0
