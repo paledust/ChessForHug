@@ -18,18 +18,23 @@ public class EnvironmentImageFader : MonoBehaviour
     public void ShowEnviornmentSprites(){
         if(envFader==null) envFader = new CoroutineExcuter(this);
         gameObject.SetActive(true);
-        envFader.Excute(coroutineFadeEnvElements(true));
+        envFader.Excute(coroutineFadeEnvElements(true, imageFadeTime));
+    }
+    public void ShowEnviornmentSprites(float transition){
+        if(envFader==null) envFader = new CoroutineExcuter(this);
+        gameObject.SetActive(true);
+        envFader.Excute(coroutineFadeEnvElements(true, transition));
     }
     public void HideEnvironmentSprites(){
         if(envFader==null) envFader = new CoroutineExcuter(this);
-        envFader.Excute(coroutineFadeEnvElements(false));
+        envFader.Excute(coroutineFadeEnvElements(false, imageFadeTime));
     }
-    IEnumerator coroutineFadeEnvElements(bool isFadeIn){
+    IEnumerator coroutineFadeEnvElements(bool isFadeIn, float transition){
         if(isFadeIn) gameObject.SetActive(true);
         Color imageInitColor = imageRenderer.color;
         Color imageTargetColor = isFadeIn?Color.white:new Color(1,1,1,0);
 
-        yield return new WaitForLoop(imageFadeTime, (t)=>{
+        yield return new WaitForLoop(transition, (t)=>{
             float _t = EasingFunc.Easing.SmoothInOut(t);
             imageRenderer.color = Color.Lerp(imageInitColor, imageTargetColor, _t);
         });

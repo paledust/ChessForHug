@@ -51,7 +51,7 @@ public class UI_Manager : MonoBehaviour
     }
     public void ShowDescription(string content){
         if(content==string.Empty){
-        //Fade away if content is empty
+            descriptionWriter.StopShowingText();
             descriptionWriter.StartDisappearingText();
         }
         else{

@@ -64,7 +64,10 @@ public class TileSelector : MonoBehaviour {
 
 				if(Geometry.ValidPoint(hoverGridPoint)){
 					var lastPiece = chessManager.GetPieceAtGrid(hoverGridPoint);
-					if(lastPiece!=null) EventHandler.Call_UI_HideData(lastPiece.transform);
+					if(lastPiece!=null) {
+						EventHandler.Call_UI_HideData(lastPiece.transform);
+						EventHandler.Call_UI_ShowDescrip(string.Empty);
+					}
 				}
 
 				var piece = chessManager.GetPieceAtGrid(gridPoint);
@@ -72,6 +75,7 @@ public class TileSelector : MonoBehaviour {
 					if(piece.type == PIECE_TYPE.NEUTRAL){
 						var tile = chessManager.GetTileData(gridPoint);
 						envDisplayer.ShowEnviornment(tile.environment);
+						EventHandler.Call_UI_ShowDescrip(piece.GetComponent<Neutral>().content);
 					}
 					else {
 						EventHandler.Call_UI_ShowData(piece.personData.Age, 220, piece.transform);

@@ -20,7 +20,7 @@ public class EnvironmentDisplayer : MonoBehaviour
     public void ShowEnviornment(CONTEXT_ENVIRONMENT env){
         if(!isShowEnv){
             isShowEnv = true;
-            envSphereFader.Excute(coroutineFadeEnvSphere(true));
+            envSphereFader.Excute(coroutineFadeEnvSphere(true, fadeTime));
         }
         var group = displayerGroups.Find(x=>x.environment == env);
         if(lastGroup!=null){
@@ -34,22 +34,39 @@ public class EnvironmentDisplayer : MonoBehaviour
             group.imageFader.ShowEnviornmentSprites();
             lastGroup = group;
         }
-
+    }
+    public void ShowEnviornment(CONTEXT_ENVIRONMENT env, float transition){
+        if(!isShowEnv){
+            isShowEnv = true;
+            envSphereFader.Excute(coroutineFadeEnvSphere(true, transition));
+        }
+        var group = displayerGroups.Find(x=>x.environment == env);
+        if(lastGroup!=null){
+            if(lastGroup!=group){
+                group.imageFader.ShowEnviornmentSprites(transition);
+                lastGroup.imageFader.HideEnvironmentSprites();
+                lastGroup = group;
+            }
+        }
+        else{
+            group.imageFader.ShowEnviornmentSprites(transition);
+            lastGroup = group;
+        }
     }
     public void HideEnvironment(){
         if(isShowEnv){
             isShowEnv = false;
-            envSphereFader.Excute(coroutineFadeEnvSphere(false));
+            envSphereFader.Excute(coroutineFadeEnvSphere(false, fadeTime));
             if(lastGroup!=null){
                 lastGroup.imageFader.HideEnvironmentSprites();
                 lastGroup = null;
             }
         }
     }
-    IEnumerator coroutineFadeEnvSphere(bool isFadeIn){
+    IEnumerator coroutineFadeEnvSphere(bool isFadeIn, float transition){
         float initExpo = environmentSphere.material.GetFloat(ExposerName);
         float targetExpo = isFadeIn?0.2f:1;
-        yield return new WaitForLoop(fadeTime, (t)=>{
+        yield return new WaitForLoop(transition, (t)=>{
             environmentSphere.material.SetFloat(ExposerName, Mathf.Lerp(initExpo, targetExpo, EasingFunc.Easing.SmoothInOut(t)));
         });
     }

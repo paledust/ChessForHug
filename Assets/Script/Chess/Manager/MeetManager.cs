@@ -24,6 +24,7 @@ public class MeetManager : Singleton<MeetManager>
         Neutral neutral_piece = ChessManager.Instance.GetPieceAtGrid(gridPoint).GetComponent<Neutral>();
         neutral_piece.content = hugData.script;
         
+        envDisplayer.ShowEnviornment(contex.environment, 1.5f);
         StartCoroutine(coroutinePiecesHugSeguence(huggerPiece, huggeePiece, gridPoint));
     }
     IEnumerator coroutinePiecesHugSeguence(GameObject huggerPiece, GameObject huggeePiece,Vector2Int gridPoint){
@@ -36,6 +37,7 @@ public class MeetManager : Singleton<MeetManager>
 
         yield return new WaitForSeconds(hugGroupAnime.clip.length);
         EventHandler.Call_OnCapturePiece(huggerPiece.GetComponent<Piece>(), ChessManager.Instance.currentPlayer.side);
+        EventHandler.Call_UI_ShowDescrip(string.Empty);
         EventHandler.Call_OnBackToChessGame();
     }
 }

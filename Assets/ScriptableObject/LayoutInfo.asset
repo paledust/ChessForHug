@@ -50,3 +50,9 @@ MonoBehaviour:
   - key: 82
     prefab: {fileID: 1125735659761782, guid: eafb872984133466d8325974f39dd911, type: 3}
     side: 0
+  - key: 116
+    prefab: {fileID: 591307314258031880, guid: 9e3c8b5f4dd0bb949a9339e9352df040, type: 3}
+    side: 0
+  - key: 84
+    prefab: {fileID: 591307314258031880, guid: 7948487cb39fc5f46ade76188d02753e, type: 3}
+    side: 0

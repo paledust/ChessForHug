@@ -24,7 +24,6 @@ public static class EventHandler
     public static void Call_UI_CleanDisplayer(Transform root)=>E_UI_CleanDisplayer?.Invoke(root);
     public static event Action<string> E_UI_ShowDescrip;
     public static void Call_UI_ShowDescrip(string content)=>E_UI_ShowDescrip?.Invoke(content);
-
     public static event Action<float> E_UI_StepYear;
     public static void Call_UI_StepYear(float step)=>E_UI_StepYear?.Invoke(step);
 #endregion
