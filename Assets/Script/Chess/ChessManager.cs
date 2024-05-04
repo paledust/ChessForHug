@@ -298,6 +298,8 @@ public class ChessManager : Singleton<ChessManager>
         if(lastTurnMoveType == MOVE_TYPE.CAPTURE){
             Moves lastTurnMove = moveStack.Peek();
             EventHandler.Call_OnPiecesHug(lastTurnMove.movePieces, lastTurnMove.takenPieces, lastTurnMove.to);
+            
+            if(!currentPlayer.IsAI) chessPlayer.SetActive(false);
             PauseChessGameBeforeEndTurn();
         }
         else{
