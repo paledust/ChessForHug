@@ -24,8 +24,20 @@ MonoBehaviour:
     - {fileID: 21300000, guid: d4191ded459ee3a46806655e1e56cdad, type: 3}
     - {fileID: 21300000, guid: a94668935aad0e549955d9cb844ec963, type: 3}
   - environment: 1
-    sprites: []
+    sprites:
+    - {fileID: 21300000, guid: d0bf49d950744b14db24248eedde497b, type: 3}
+    - {fileID: 21300000, guid: f6d2c694a3c966b4c8f08dd67a85c6c8, type: 3}
+    - {fileID: 21300000, guid: 1a738c465d3654c458e1ecbc684f1313, type: 3}
+    - {fileID: 21300000, guid: 5b2db8fb5791e444bb2e8aed5eb619d0, type: 3}
   - environment: 2
-    sprites: []
+    sprites:
+    - {fileID: 21300000, guid: b270f08cd6782854f8c94bba3a3aa110, type: 3}
+    - {fileID: 21300000, guid: a00bc2129c8aa66499150f8a4ade8360, type: 3}
+    - {fileID: 21300000, guid: 8c125d7f75e0bb54fac18ae82f5e91f0, type: 3}
+    - {fileID: 21300000, guid: 0d569ac3e5c1a6b489aefac1d1c68e87, type: 3}
   - environment: 3
-    sprites: []
+    sprites:
+    - {fileID: 21300000, guid: f51a491a206fd3745a4939a67ac1fc30, type: 3}
+    - {fileID: 21300000, guid: 6ea2a52dbe4fd7c49be387ffa19f5e54, type: 3}
+    - {fileID: 21300000, guid: e4ace7d8985fd2247b15a9e49bb2ebf3, type: 3}
+    - {fileID: 21300000, guid: 810fd0dd87526374180ccb79be5886dc, type: 3}
