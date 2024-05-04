@@ -9,12 +9,16 @@ public struct PersonData{
     public const int TEEN_AGE = 20;
     public const int GROWN_AGE = 40;
     public const int MIDDLE_AGE = 68;
+    public const int DEATH_AGE = 95;
     public bool IsBaby{get{return Age<=BABY_AGE;}}
     public bool IsYouth{get{return Age<=YOUTH_AGE && Age>BABY_AGE;}}
     public bool IsTeen{get{return Age<=TEEN_AGE && Age>YOUTH_AGE;}}
     public bool IsGrown{get{return Age<=GROWN_AGE && Age>TEEN_AGE;}}
     public bool IsMiddle{get{return Age<=MIDDLE_AGE && Age>GROWN_AGE;}}
     public bool IsOld{get{return Age>MIDDLE_AGE;}}
+    public const float Age_Start_Percentage = 0.25f;
+    public const float Age_RND_Percentage = 0.4f;
+
     public static GENERATION GetGeneration(int age){
         if(age<=BABY_AGE) return GENERATION.BABY;
         else if(age<=YOUTH_AGE) return GENERATION.YOUTH;
@@ -23,12 +27,20 @@ public struct PersonData{
         else if(age<=MIDDLE_AGE) return GENERATION.MIDDLE;
         return GENERATION.OLD;
     }
+    public static int InitAge(int age){
+        if(age<=BABY_AGE) return Mathf.FloorToInt(5*Age_Start_Percentage) + Random.Range(0, Mathf.FloorToInt(5*Age_RND_Percentage));
+        else if(age<=YOUTH_AGE) return 5+Mathf.FloorToInt(7*Age_Start_Percentage)+Random.Range(0, Mathf.FloorToInt(7*Age_RND_Percentage));
+        else if(age<=TEEN_AGE) return 12+Mathf.FloorToInt(8*Age_Start_Percentage)+Random.Range(0, Mathf.FloorToInt(8*Age_RND_Percentage));
+        else if(age<=GROWN_AGE) return 20+Mathf.FloorToInt(20*Age_Start_Percentage)+Random.Range(0, Mathf.FloorToInt(20*Age_RND_Percentage));
+        else if(age<=MIDDLE_AGE) return 40+Mathf.FloorToInt(28*Age_Start_Percentage)+Random.Range(0, Mathf.FloorToInt(28*Age_RND_Percentage));
+        else return 68+Mathf.FloorToInt(32*Age_Start_Percentage)+Random.Range(0, Mathf.FloorToInt(32*Age_RND_Percentage));
+    }
 }
 public abstract class Piece : MonoBehaviour
 {
     public PIECE_TYPE type;
     public PersonData personData;
-
+    public void InitAge()=>personData.Age = PersonData.InitAge(personData.Age);
     protected static Vector2Int[] RookDirections = {new Vector2Int(0,1), new Vector2Int(1, 0), 
         new Vector2Int(0, -1), new Vector2Int(-1, 0)};
     protected static Vector2Int[] BishopDirections = {new Vector2Int(1,1), new Vector2Int(1, -1), 

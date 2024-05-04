@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Hug Event Script_SO
   m_EditorClassIdentifier: 
   environmentScriptDatas:
-  - environment: 1
+  - environment: 0
     envScript: {fileID: 4900000, guid: 39d5287d19b6ea64c955594d4949e6e0, type: 3}
-  - environment: 2
+  - environment: 1
     envScript: {fileID: 4900000, guid: e49aa39f4e1f5a349824438fb8ef661c, type: 3}
-  - environment: 3
+  - environment: 2
     envScript: {fileID: 4900000, guid: 003535b5fe9161641b67fcbe1047a3b2, type: 3}
-  - environment: 4
+  - environment: 3
     envScript: {fileID: 4900000, guid: 2a3f1b7d1fdbee0469b369675aa61271, type: 3}
   momentScriptDatas:
   - moment: 0
