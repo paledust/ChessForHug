@@ -70,7 +70,8 @@ public class ChessManager : Singleton<ChessManager>
 
     public static readonly Dictionary<GENERATION, char> generationToPieceChar_Dict = new Dictionary<GENERATION, char>(){
         {GENERATION.BABY, 'P'}, {GENERATION.YOUTH, 'R'}, {GENERATION.TEEN, 'Q'},
-        {GENERATION.GROWN, 'B'}, {GENERATION.MIDDLE, 'N'}, {GENERATION.OLD, 'K'}
+        {GENERATION.GROWN, 'B'}, {GENERATION.MIDDLE, 'N'}, {GENERATION.OLD, 'K'},
+        {GENERATION.DEAD, 'T'}
     };
 
     private const string DEFAULT_SETUP = "rnbkqbnr\n"+
