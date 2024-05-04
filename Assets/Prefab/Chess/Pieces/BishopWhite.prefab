@@ -130,5 +130,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 2
   personData:
-    Age: 19
-    gender: 1
+    Age: 21
