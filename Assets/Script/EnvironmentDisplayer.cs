@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class EnvironmentDisplayer : MonoBehaviour
 {
+[Header("Sprites")]
     [SerializeField] private SpriteRenderer imageRenderer;
     [SerializeField] private SpriteRenderer blackScreen;
     [SerializeField] private float imageFadeTime;
     [SerializeField] private float imageStayTime;
+[Header("EnvSprites SO")]
+    [SerializeField] private EnvSprites_SO envSprites_SO;
     private Sprite[] envSprites;
     private CoroutineExcuter envFader;
     void Start(){
@@ -18,7 +21,7 @@ public class EnvironmentDisplayer : MonoBehaviour
         blackScreen.enabled = false;
     }
     public void LoadEnvironmentSprites(CONTEXT_ENVIRONMENT env){
-
+        envSprites = envSprites_SO.GetSpritesByEnvironment(env);
     }
     public void HideEnvironmentSprites(){
         envFader.Excute(coroutineFadeEnvElements(false));
