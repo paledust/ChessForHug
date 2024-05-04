@@ -22,6 +22,7 @@ public class EnvironmentDisplayer : MonoBehaviour
     }
     public void LoadEnvironmentSprites(CONTEXT_ENVIRONMENT env){
         envSprites = envSprites_SO.GetSpritesByEnvironment(env);
+        imageRenderer.sprite = envSprites[0];
     }
     public void HideEnvironmentSprites(){
         envFader.Excute(coroutineFadeEnvElements(false));

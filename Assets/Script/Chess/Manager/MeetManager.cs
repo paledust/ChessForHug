@@ -5,6 +5,7 @@ using UnityEngine;
 public class MeetManager : MonoBehaviour
 {
     [SerializeField] private GameObject hugGroupPrefab;
+    [SerializeField] private EnvironmentDisplayer envDisplayer;
     [SerializeField] private HugEventScript_SO hugEventScript_SO;
     void OnEnable(){
         EventHandler.E_OnPiecesHug += StartPiecesHugSequence;
