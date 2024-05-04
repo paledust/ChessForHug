@@ -27,9 +27,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading.Tasks;
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -119,10 +122,8 @@ public class ChessManager : Singleton<ChessManager>
             }
         }
     }
-
     public GameObject AddPiece(GameObject prefab, Player player, int col, int row){
         GameObject pieceObject = board.AddPiece(prefab, col, row);
-        pieceObject.GetComponentInChildren<Animation>()?.Play();
         var piece = pieceObject.GetComponent<Piece>();
         piece.InitAge();
     //We need to do this test, because we also want to add neutral piece on board, which doesn't belong to any player.
@@ -139,13 +140,15 @@ public class ChessManager : Singleton<ChessManager>
 
         return pieceObject;
     }
-    public void AgeUpToPiece(Piece piece, PLAYER_SIDE playerSide, int AddAge){
+    public bool AgeUpToPiece(Piece piece, PLAYER_SIDE playerSide, int AddAge){
         int newAge = piece.personData.Age + AddAge;
         GENERATION originalGen = PersonData.GetGeneration(piece.personData.Age);
         GENERATION newGen = PersonData.GetGeneration(newAge);
 
-        if(originalGen == newGen)
+        if(originalGen == newGen){
             piece.personData.Age = newAge;
+            return false;
+        }
         else{
             char pieceChar = generationToPieceChar_Dict[newGen];
             if(playerSide == PLAYER_SIDE.BLACK) pieceChar = char.ToLower(generationToPieceChar_Dict[newGen]);
@@ -159,9 +162,12 @@ public class ChessManager : Singleton<ChessManager>
             Destroy(piece.gameObject);
 
             GameObject newPiece = AddPiece(piecePrefab, player, gridPoint.x, gridPoint.y);
+            newPiece.GetComponentInChildren<Animation>()?.Play();
             newPiece.GetComponent<Piece>().personData.Age = newAge;
+            return true;
         }
     }
+#region Helper Function
     public void SelectPieceAtGrid(Vector2Int gridPoint){
         GameObject selectedPiece = pieces[gridPoint.x, gridPoint.y];
         if (selectedPiece)
@@ -180,6 +186,7 @@ public class ChessManager : Singleton<ChessManager>
     public void DeselectPiece(GameObject piece){
         board.DeselectPiece(piece);
     }
+
     public int EvaluateBoard(Player player){
         int value = 0;
         Piece piece = null;
@@ -231,20 +238,13 @@ public class ChessManager : Singleton<ChessManager>
 
         return true;
     }
-    void PauseChessGameBeforeEndTurn(){
-        EventHandler.E_OnBackToChessGame += ResumeChessGameBeforeEndTurn;
-    }
-    void ResumeChessGameBeforeEndTurn(){
-        EventHandler.E_OnBackToChessGame -= ResumeChessGameBeforeEndTurn;
-        NextTurn();
-    }
+
     public TileData GetTileData(Vector2Int gridPoint){
         return tileDatas[gridPoint.x, gridPoint.y];
     }
     public bool DoesPieceBelongToCurrentPlayer(GameObject piece){
         return currentPlayer.pieces.Contains(piece);
     }
-
     public void CheckLegalMove(ref List<Vector2Int> moveLocations){
         moveLocations.RemoveAll(tile => tile.x < 0 || tile.x > 7 || tile.y < 0 || tile.y > 7);
         moveLocations.RemoveAll(tile => FriendlyPieceAt(tile));
@@ -258,6 +258,8 @@ public class ChessManager : Singleton<ChessManager>
 
         return locations;
     }
+#endregion
+#region Turn
     public async void NextTurn(){
     //Add Turn Count and Age Up Pieces
         TurnCount ++;
@@ -269,8 +271,11 @@ public class ChessManager : Singleton<ChessManager>
                 for(int y=0; y<8; y++){
                     if(pieces[x,y]!=null){
                         var piece = pieces[x,y].GetComponent<Piece>();
-                        if(piece.type!=PIECE_TYPE.NEUTRAL)
-                            AgeUpToPiece(piece,piece.playerSide, AgeUpAmount);
+                        if(piece.type!=PIECE_TYPE.NEUTRAL){
+                            if(AgeUpToPiece(piece,piece.playerSide, AgeUpAmount)){
+                                await Task.Delay(250);
+                            }
+                        }
                     }
                 }
             }
@@ -299,6 +304,8 @@ public class ChessManager : Singleton<ChessManager>
             NextTurn();
         }
     }
+#endregion
+#region Moves
     public void MakeMoves(Moves move){
         moveStack.Push(move);
         move.Excute();
@@ -350,16 +357,15 @@ public class ChessManager : Singleton<ChessManager>
         pieces[from.x, from.y] = movePiece;
         board.MovePiece(movePiece, from);
     }
-    // public void PromotePawn(GameObject pawn, PLAYER_SIDE side){
-    //     Destroy(pawn.GetComponent<Pawn>());
-    //     pawn.GetComponentInChildren<MeshFilter>().sharedMesh = ((side==PLAYER_SIDE.WHITE)?whiteQueen:blackQueen).GetComponentInChildren<MeshFilter>().sharedMesh;
-    //     pawn.AddComponent<Queen>().type = PIECE_TYPE.QUEEN;
-    // }
-    // public void UndoPawnPromote(GameObject pawn, PLAYER_SIDE side){
-    //     Destroy(pawn.GetComponent<Queen>());
-    //     pawn.GetComponentInChildren<MeshFilter>().sharedMesh = ((side==PLAYER_SIDE.WHITE)?whitePawn:blackPawn).GetComponentInChildren<MeshFilter>().sharedMesh;
-    //     pawn.AddComponent<Pawn>().type = PIECE_TYPE.PAWN;        
-    // }
+#endregion
+    void PauseChessGameBeforeEndTurn(){
+        EventHandler.E_OnBackToChessGame += ResumeChessGameBeforeEndTurn;
+    }
+    void ResumeChessGameBeforeEndTurn(){
+        EventHandler.E_OnBackToChessGame -= ResumeChessGameBeforeEndTurn;
+        NextTurn();
+    }
+
 #if UNITY_EDITOR
     void OnDrawGizmos(){
         if(UnityEditor.EditorApplication.isPlaying){
