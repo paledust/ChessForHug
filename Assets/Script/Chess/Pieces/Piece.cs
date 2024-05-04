@@ -38,6 +38,7 @@ public struct PersonData{
 }
 public abstract class Piece : MonoBehaviour
 {
+    public PLAYER_SIDE playerSide;
     public PIECE_TYPE type;
     public PersonData personData;
     public void InitAge()=>personData.Age = PersonData.InitAge(personData.Age);

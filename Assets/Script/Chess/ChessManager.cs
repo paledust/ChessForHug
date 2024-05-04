@@ -45,6 +45,8 @@ public class ChessManager : Singleton<ChessManager>
     [SerializeField] private CONTROL_TYPE black_Control;
     public Board board;
 [Header("Game")]
+    [SerializeField] private int AgeUpAmount = 5;
+    [SerializeField] private int AgeUpMove = 3;
     [SerializeField] private GameObject chessPlayer;
     [SerializeField] private ChessAI chessAI;
 [Header("Special Piece")]
@@ -61,10 +63,13 @@ public class ChessManager : Singleton<ChessManager>
     private MOVE_TYPE lastTurnMoveType;
     private Stack<Moves> moveStack;
 
-    public static readonly Dictionary<GENERATION, PIECE_TYPE> generationToPieceType_Dict = new Dictionary<GENERATION, PIECE_TYPE>(){
-        {GENERATION.BABY, PIECE_TYPE.PAWN}, {GENERATION.YOUTH, PIECE_TYPE.ROOK}, {GENERATION.TEEN, PIECE_TYPE.QUEEN},
-        {GENERATION.GROWN, PIECE_TYPE.BISHOP}, {GENERATION.MIDDLE, PIECE_TYPE.KNIGHT}, {GENERATION.OLD, PIECE_TYPE.KING}
+    private int MoveCount = 0;
+
+    public static readonly Dictionary<GENERATION, char> generationToPieceChar_Dict = new Dictionary<GENERATION, char>(){
+        {GENERATION.BABY, 'P'}, {GENERATION.YOUTH, 'R'}, {GENERATION.TEEN, 'Q'},
+        {GENERATION.GROWN, 'B'}, {GENERATION.MIDDLE, 'N'}, {GENERATION.OLD, 'K'}
     };
+
     private const string DEFAULT_SETUP = "rnbkqbnr\n"+
                                          "pppppppp\n"+
                                          "xxxxxxxx\n"+
@@ -133,7 +138,7 @@ public class ChessManager : Singleton<ChessManager>
 
         return pieceObject;
     }
-    public void AddAgeToPiece(Piece piece, int AddAge){
+    public void AgeUpToPiece(Piece piece, PLAYER_SIDE playerSide, int AddAge){
         int newAge = piece.personData.Age + AddAge;
         GENERATION originalGen = PersonData.GetGeneration(piece.personData.Age);
         GENERATION newGen = PersonData.GetGeneration(newAge);
@@ -141,10 +146,19 @@ public class ChessManager : Singleton<ChessManager>
         if(originalGen == newGen)
             piece.personData.Age = newAge;
         else{
+            char pieceChar = generationToPieceChar_Dict[newGen];
+            if(playerSide == PLAYER_SIDE.BLACK) pieceChar = char.ToLower(generationToPieceChar_Dict[newGen]);
 
+            GameObject piecePrefab = layoutInfo.GetInfoByKey(pieceChar).prefab;
+            Vector2Int gridPoint = Geometry.GridFromPoint(piece.transform.position);
+
+            var player = playerSide==PLAYER_SIDE.WHITE?white:black;
+            player.pieces.Remove(piece.gameObject);
+            Destroy(piece.gameObject);
+
+            GameObject newPiece = AddPiece(piecePrefab, player, gridPoint.x, gridPoint.y);
+            newPiece.GetComponent<Piece>().personData.Age = newAge;
         }
-        Vector2Int gridPoint = Geometry.GridFromPoint(piece.transform.position);
-        PIECE_TYPE originalType = piece.type;
     }
     public void SelectPieceAtGrid(Vector2Int gridPoint){
         GameObject selectedPiece = pieces[gridPoint.x, gridPoint.y];
@@ -265,6 +279,20 @@ public class ChessManager : Singleton<ChessManager>
         else{
 			// EventHandler.Call_OnMovePieceOnly(piece, ChessManager.Instance.currentPlayer.side);
             NextPlayer();
+        }
+
+        MoveCount ++;
+        if(MoveCount>=AgeUpMove){
+            MoveCount = 0;
+            for(int x=0; x<8; x++){
+                for(int y=0; y<8; y++){
+                    if(pieces[x,y]!=null){
+                        var piece = pieces[x,y].GetComponent<Piece>();
+                        if(piece.type!=PIECE_TYPE.NEUTRAL)
+                            AgeUpToPiece(piece,piece.playerSide, AgeUpAmount);
+                    }
+                }
+            }
         }
     }
     public void MakeMoves(Moves move){
