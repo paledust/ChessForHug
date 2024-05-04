@@ -142,6 +142,8 @@ public class ChessManager : Singleton<ChessManager>
         return pieceObject;
     }
     public bool AgeUpToPiece(Piece piece, PLAYER_SIDE playerSide, int AddAge){
+        if(piece.type == PIECE_TYPE.TOMB) return false;
+
         int newAge = piece.personData.Age + AddAge;
         GENERATION originalGen = PersonData.GetGeneration(piece.personData.Age);
         GENERATION newGen = PersonData.GetGeneration(newAge);
@@ -165,6 +167,12 @@ public class ChessManager : Singleton<ChessManager>
             GameObject newPiece = AddPiece(piecePrefab, player, gridPoint.x, gridPoint.y);
             newPiece.GetComponentInChildren<Animation>()?.Play();
             newPiece.GetComponent<Piece>().personData.Age = newAge;
+
+        //Update Some Info for dead people
+            if(newGen == GENERATION.DEAD){
+                var data = tileDatas[gridPoint.x, gridPoint.y].moment;
+                newPiece.GetComponent<Tomb>().lastContent = "";
+            }
             return true;
         }
     }
