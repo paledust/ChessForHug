@@ -60,6 +60,11 @@ public class ChessManager : Singleton<ChessManager>
 
     private MOVE_TYPE lastTurnMoveType;
     private Stack<Moves> moveStack;
+
+    public static readonly Dictionary<GENERATION, PIECE_TYPE> generationToPieceType_Dict = new Dictionary<GENERATION, PIECE_TYPE>(){
+        {GENERATION.BABY, PIECE_TYPE.PAWN}, {GENERATION.YOUTH, PIECE_TYPE.ROOK}, {GENERATION.TEEN, PIECE_TYPE.QUEEN},
+        {GENERATION.GROWN, PIECE_TYPE.BISHOP}, {GENERATION.MIDDLE, PIECE_TYPE.KNIGHT}, {GENERATION.OLD, PIECE_TYPE.KING}
+    };
     private const string DEFAULT_SETUP = "rnbkqbnr\n"+
                                          "pppppppp\n"+
                                          "xxxxxxxx\n"+
@@ -128,7 +133,19 @@ public class ChessManager : Singleton<ChessManager>
 
         return pieceObject;
     }
+    public void AddAgeToPiece(Piece piece, int AddAge){
+        int newAge = piece.personData.Age + AddAge;
+        GENERATION originalGen = PersonData.GetGeneration(piece.personData.Age);
+        GENERATION newGen = PersonData.GetGeneration(newAge);
 
+        if(originalGen == newGen)
+            piece.personData.Age = newAge;
+        else{
+
+        }
+        Vector2Int gridPoint = Geometry.GridFromPoint(piece.transform.position);
+        PIECE_TYPE originalType = piece.type;
+    }
     public void SelectPieceAtGrid(Vector2Int gridPoint){
         GameObject selectedPiece = pieces[gridPoint.x, gridPoint.y];
         if (selectedPiece)
