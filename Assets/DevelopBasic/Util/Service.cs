@@ -7,8 +7,8 @@ public static class Service
 {
 #region Parameter
     public const string debugTag = "Debug";
-    public static LayerMask InteractableLayer = 1 << LayerMask.NameToLayer("Interactable"); //TO Do: Name whatever the interactable layer should be
-    public static Dictionary<PIECE_TYPE, int> PieceValueDict = new Dictionary<PIECE_TYPE, int>(){
+    public readonly static LayerMask InteractableLayer = 1 << LayerMask.NameToLayer("Interactable"); //TO Do: Name whatever the interactable layer should be
+    public readonly static Dictionary<PIECE_TYPE, int> PieceValueDict = new Dictionary<PIECE_TYPE, int>(){
         {PIECE_TYPE.PAWN, 100},
         {PIECE_TYPE.KNIGHT, 100},
         {PIECE_TYPE.BISHOP, 100},
@@ -16,6 +16,12 @@ public static class Service
         {PIECE_TYPE.QUEEN, 100},
         {PIECE_TYPE.KING, 100},
         {PIECE_TYPE.NEUTRAL, 0}
+    };
+    public readonly static Dictionary<CONTEXT_MOMENT, string> MomentToScriptDict = new Dictionary<CONTEXT_MOMENT, string>(){
+        {CONTEXT_MOMENT.APART, "分别"},
+        {CONTEXT_MOMENT.FORGIVE, "原谅"},
+        {CONTEXT_MOMENT.REUNION, "团聚"},
+        {CONTEXT_MOMENT.FIRST_CONTACT, "初次见面"},
     };
 #endregion
 

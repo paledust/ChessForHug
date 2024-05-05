@@ -85,6 +85,10 @@ public class TileSelector : MonoBehaviour {
 					}
 				}
 				else{
+					var tile = chessManager.GetTileData(gridPoint);
+					if(tile.IsExposed){
+						EventHandler.Call_UI_ShowData(Service.MomentToScriptDict[tile.moment], 220, null);
+					}
 					EventHandler.Call_OnHideEnvironment();
 				}
 

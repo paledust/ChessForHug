@@ -7,6 +7,9 @@ public class MeetManager : Singleton<MeetManager>
     [SerializeField] private GameObject hugGroupPrefab;
     [SerializeField] private EnvironmentDisplayer envDisplayer;
     [SerializeField] private HugEventScript_SO hugEventScript_SO;
+[Header("Reveal Tiles")]
+    [SerializeField] private int revealHugAmount = 3;
+    private int HugCounter = 0;
     void OnEnable(){
         EventHandler.E_OnPiecesHug += StartPiecesHugSequence;
     }
@@ -26,6 +29,11 @@ public class MeetManager : Singleton<MeetManager>
         
         EventHandler.Call_OnShowEnvironment(contex.environment, 1.5f);
         StartCoroutine(coroutinePiecesHugSeguence(huggerPiece, huggeePiece, gridPoint));
+
+        HugCounter++;
+        if(HugCounter>=revealHugAmount){
+            Debug.Log("Reveal Tiles as reward!!");
+        }
     }
     IEnumerator coroutinePiecesHugSeguence(GameObject huggerPiece, GameObject huggeePiece,Vector2Int gridPoint){
         yield return new WaitForSeconds(1f);
