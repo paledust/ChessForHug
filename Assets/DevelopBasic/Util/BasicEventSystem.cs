@@ -22,10 +22,19 @@ public static class EventHandler
     public static void Call_UI_HideData(Transform root)=>E_UI_HideData?.Invoke(root);
     public static event Action<Transform> E_UI_CleanDisplayer;
     public static void Call_UI_CleanDisplayer(Transform root)=>E_UI_CleanDisplayer?.Invoke(root);
-    public static event Action<string> E_UI_ShowDescrip;
-    public static void Call_UI_ShowDescrip(string content)=>E_UI_ShowDescrip?.Invoke(content);
+    public static event Action<string, bool> E_UI_ShowDescrip;
+    public static void Call_UI_ShowDescrip(string content, bool isFocus = false)=>E_UI_ShowDescrip?.Invoke(content, isFocus);
     public static event Action<float> E_UI_StepYear;
     public static void Call_UI_StepYear(float step)=>E_UI_StepYear?.Invoke(step);
+#endregion
+
+#region Environment Display Event
+    public static event Action<CONTEXT_ENVIRONMENT> E_OnShowEnvironment;
+    public static void Call_OnShowEnvironment(CONTEXT_ENVIRONMENT env)=>E_OnShowEnvironment?.Invoke(env);
+    public static event Action<CONTEXT_ENVIRONMENT, float> E_OnShowEnvironment_Custom;
+    public static void Call_OnShowEnvironment(CONTEXT_ENVIRONMENT env, float transition)=>E_OnShowEnvironment_Custom?.Invoke(env, transition);
+    public static event Action E_OnHideEnvironment;
+    public static void Call_OnHideEnvironment()=>E_OnHideEnvironment?.Invoke();
 #endregion
 
 #region Chess Event

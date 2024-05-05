@@ -37,9 +37,7 @@ public class TileSelector : MonoBehaviour {
 	private GameObject tileHighlight;
 	private Vector2Int hoverGridPoint;
 	private ChessManager chessManager;
-[Header("Show Environment")]
-    [SerializeField] private EnvironmentDisplayer envDisplayer;
-	// Use this for initialization
+	
 	void Start () {
 		chessManager = ChessManager.Instance;
 		hoverGridPoint = new Vector2Int(1,1)*-1;
@@ -74,16 +72,16 @@ public class TileSelector : MonoBehaviour {
 				if(piece!=null){
 					if(piece.type == PIECE_TYPE.NEUTRAL){
 						var tile = chessManager.GetTileData(gridPoint);
-						envDisplayer.ShowEnviornment(tile.environment);
+						EventHandler.Call_OnShowEnvironment(tile.environment);
 						EventHandler.Call_UI_ShowDescrip(piece.GetComponent<Neutral>().content);
 					}
 					else {
 						EventHandler.Call_UI_ShowData(piece.personData.Age, 220, piece.transform);
-						envDisplayer.HideEnvironment();
+						EventHandler.Call_OnHideEnvironment();
 					}
 				}
 				else{
-					envDisplayer.HideEnvironment();
+					EventHandler.Call_OnHideEnvironment();
 				}
 
 				hoverGridPoint = gridPoint;

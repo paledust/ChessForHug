@@ -16,6 +16,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI yearDown;
 [Header("Description")]
     [SerializeField] private TypewriterByCharacter descriptionWriter;
+    [SerializeField] private Button back;
     private Dictionary<Transform, UI_DataDisplayer> dataDisplayer_Dict = new Dictionary<Transform, UI_DataDisplayer>();
     void OnEnable(){
         EventHandler.E_UI_ShowData += ShowData;
@@ -25,6 +26,9 @@ public class UI_Manager : MonoBehaviour
         EventHandler.E_UI_ShowDescrip += ShowDescription;
         EventHandler.E_UI_StepYear += StepYear;
     }
+    void Start(){
+        back.interactable = false;
+    }
     void OnDisable(){
         EventHandler.E_UI_ShowData -= ShowData;
         EventHandler.E_UI_ShowNum  -= ShowNum;
@@ -33,28 +37,28 @@ public class UI_Manager : MonoBehaviour
         EventHandler.E_UI_ShowDescrip -= ShowDescription;
         EventHandler.E_UI_StepYear -= StepYear;
     }
+//Unity Event
+    public void OnBackButtonClick(){
+        back.interactable = false;
+        EventHandler.Call_UI_ShowDescrip(string.Empty);
+        EventHandler.Call_OnBackToChessGame();
+    }
+    void OnTextShowed(){
+        descriptionWriter.onTextShowed.RemoveListener(OnTextShowed);
+        back.interactable = true;
+    }
     public void StepYear(float step){
         StartCoroutine(coroutineStepYear(step));
     }
-    IEnumerator coroutineStepYear(float step){
-        Vector3 initPos = yearRoot.localPosition;
-        Vector3 targetPos = initPos + Vector3.up*120*step;
-        yield return new WaitForLoop(1, (t)=>{
-            yearRoot.localPosition = Vector3.LerpUnclamped(initPos, targetPos, EasingFunc.Easing.BackEaseInOut(t));
-        });
-        if(targetPos.y >= 120){
-            yearUp.text = yearDown.text;
-            yearDown.text = (int.Parse(yearDown.text)+5).ToString();
-
-            yearRoot.localPosition = Vector3.zero;
-        }
-    }
-    public void ShowDescription(string content){
+    public void ShowDescription(string content, bool isFocus){
         if(content==string.Empty){
             descriptionWriter.StopShowingText();
             descriptionWriter.StartDisappearingText();
         }
         else{
+            if(isFocus){
+                descriptionWriter.onTextShowed.AddListener(OnTextShowed);
+            }
             descriptionWriter.ShowText(content);
         }
     }
@@ -73,9 +77,8 @@ public class UI_Manager : MonoBehaviour
         dataDisplayer_Dict[root].ShowData(num, root, height);
     }
     public void HideData(Transform root){
-        if(dataDisplayer_Dict.ContainsKey(root)){
+        if(dataDisplayer_Dict.ContainsKey(root))
             dataDisplayer_Dict[root].HideData();
-        }
     }
     public void CleanDataDisplayer(Transform root){
         if(dataDisplayer_Dict.ContainsKey(root)){
@@ -83,5 +86,18 @@ public class UI_Manager : MonoBehaviour
             dataDisplayer_Dict.Remove(root);
             Destroy(displayer);
         }        
+    }
+    IEnumerator coroutineStepYear(float step){
+        Vector3 initPos = yearRoot.localPosition;
+        Vector3 targetPos = initPos + Vector3.up*120*step;
+        yield return new WaitForLoop(1, (t)=>{
+            yearRoot.localPosition = Vector3.LerpUnclamped(initPos, targetPos, EasingFunc.Easing.BackEaseInOut(t));
+        });
+        if(targetPos.y >= 120){
+            yearUp.text = yearDown.text;
+            yearDown.text = (int.Parse(yearDown.text)+5).ToString();
+
+            yearRoot.localPosition = Vector3.zero;
+        }
     }
 }

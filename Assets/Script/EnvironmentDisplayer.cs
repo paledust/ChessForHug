@@ -17,7 +17,17 @@ public class EnvironmentDisplayer : MonoBehaviour
     void Start(){
         envSphereFader = new CoroutineExcuter(this);
     }
-    public void ShowEnviornment(CONTEXT_ENVIRONMENT env){
+    void OnEnable(){
+        EventHandler.E_OnShowEnvironment += ShowEnviornment;
+        EventHandler.E_OnShowEnvironment_Custom += ShowEnviornment;
+        EventHandler.E_OnHideEnvironment += HideEnvironment;
+    }
+    void OnDisable(){
+        EventHandler.E_OnShowEnvironment -= ShowEnviornment;
+        EventHandler.E_OnShowEnvironment_Custom -= ShowEnviornment;
+        EventHandler.E_OnHideEnvironment -= HideEnvironment;
+    }
+    void ShowEnviornment(CONTEXT_ENVIRONMENT env){
         if(!isShowEnv){
             isShowEnv = true;
             envSphereFader.Excute(coroutineFadeEnvSphere(true, fadeTime));
@@ -35,7 +45,7 @@ public class EnvironmentDisplayer : MonoBehaviour
             lastGroup = group;
         }
     }
-    public void ShowEnviornment(CONTEXT_ENVIRONMENT env, float transition){
+    void ShowEnviornment(CONTEXT_ENVIRONMENT env, float transition){
         if(!isShowEnv){
             isShowEnv = true;
             envSphereFader.Excute(coroutineFadeEnvSphere(true, transition));
@@ -53,7 +63,7 @@ public class EnvironmentDisplayer : MonoBehaviour
             lastGroup = group;
         }
     }
-    public void HideEnvironment(){
+    void HideEnvironment(){
         if(isShowEnv){
             isShowEnv = false;
             envSphereFader.Excute(coroutineFadeEnvSphere(false, fadeTime));
