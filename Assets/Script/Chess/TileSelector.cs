@@ -75,6 +75,10 @@ public class TileSelector : MonoBehaviour {
 						EventHandler.Call_OnShowEnvironment(tile.environment);
 						EventHandler.Call_UI_ShowDescrip(piece.GetComponent<Neutral>().content);
 					}
+					else if(piece.type == PIECE_TYPE.TOMB){
+						EventHandler.Call_UI_ShowData(piece.GetComponent<Tomb>().lastContent, 220, piece.transform);
+						EventHandler.Call_OnHideEnvironment();
+					}
 					else {
 						EventHandler.Call_UI_ShowData(piece.personData.Age, 220, piece.transform);
 						EventHandler.Call_OnHideEnvironment();

@@ -6,35 +6,21 @@ public static class ScriptParser
 {
     private const string LF = "<return>";
     private const string CR = "\r";
-    readonly static string[] separators = new string[]{"=="};
-    public static string ParseEnvironmentScript(TextAsset textFile){return ParseEnvironmentScript(textFile.text);}
-    public static string ParseEnvironmentScript(string data){
-        string[] lines = data.Split('\n');
-        string result = lines[Random.Range(0, lines.Length)];
-        result = result.Replace(LF,"\n");
-        result = result.Replace(CR, string.Empty);
-
-        return result+"\n";
+    // readonly static string[] separators = new string[]{"=="};
+    public static string ParseEnvironmentScript(TextAsset textFile){return ParseAndSelectRandomLines(textFile.text);}
+    public static string ParseMomentScript(TextAsset textFile){return ParseAndSelectRandomLines(textFile.text);}
+    public static string ParseFailScript(TextAsset textFile){return ParseAndSelectRandomLines(textFile.text);}
+    public static HugData ParseGenerationScript(TextAsset textFile){
+        string content = ParseAndSelectRandomLines(textFile.text);
+        return new HugData(){rel=CONTEXT_RELATION.FRIEND, script = content};
     }
-
-    public static string ParseMomentScript(TextAsset textFile){return ParseMomentScript(textFile.text);}
-    public static string ParseMomentScript(string data){
+    static string ParseAndSelectRandomLines(string data){
         string[] lines = data.Split('\n');
         string result = lines[Random.Range(0, lines.Length)];
         result = result.Replace(LF,"\n");
         result = result.Replace(CR, string.Empty);
         
-        return result+"\n";
-    }
-
-    public static HugData ParseGenerationScript(TextAsset textFile){return ParseGenerationScript(textFile.text);}
-    public static HugData ParseGenerationScript(string data){
-        string[] lines = data.Split('\n');
-        string result = lines[Random.Range(0, lines.Length)];
-        result = result.Replace(LF,"\n");
-        result = result.Replace(CR, string.Empty)+"\n";
-
-        return new HugData(){rel=CONTEXT_RELATION.FRIEND,script=result};
+        return result+"\n";        
     }
 }
 

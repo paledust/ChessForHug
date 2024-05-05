@@ -31,6 +31,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
+using System.Runtime.Remoting.Contexts;
+
 
 
 
@@ -54,7 +56,8 @@ public class ChessManager : Singleton<ChessManager>
     [SerializeField] private ChessAI chessAI;
 [Header("Special Piece")]
     public GameObject neutralPiece;
-
+[Header("Piece Died")]
+    [SerializeField] private FailScript_SO failScript_SO;
     private GameObject[,] pieces;
     private TileData[,] tileDatas;
 
@@ -171,7 +174,7 @@ public class ChessManager : Singleton<ChessManager>
         //Update Some Info for dead people
             if(newGen == GENERATION.DEAD){
                 var data = tileDatas[gridPoint.x, gridPoint.y].moment;
-                newPiece.GetComponent<Tomb>().lastContent = "";
+                newPiece.GetComponent<Tomb>().lastContent = ScriptParser.ParseFailScript(failScript_SO.GetFailData(data));
             }
             return true;
         }

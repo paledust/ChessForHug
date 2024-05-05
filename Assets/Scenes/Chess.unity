@@ -133,7 +133,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5574974}
   - component: {fileID: 5574973}
-  - component: {fileID: 5574975}
   m_Layer: 0
   m_Name: VC_Cam_LookAtBoard
   m_TagString: Untagged
@@ -195,27 +194,6 @@ Transform:
   m_Father: {fileID: 1596375563}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 34.96, y: -45, z: 0}
---- !u!95 &5574975
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5574972}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &54186245
 GameObject:
   m_ObjectHideFlags: 0
@@ -760,6 +738,7 @@ MonoBehaviour:
   chessAI: {fileID: 1748560194}
   neutralPiece: {fileID: 591307314258031880, guid: 955b740753236384aafe03117884e2ce,
     type: 3}
+  failScript_SO: {fileID: 11400000, guid: c9b3a55c06b44114184fb2dd08658996, type: 2}
 --- !u!4 &516697439
 Transform:
   m_ObjectHideFlags: 0
@@ -939,7 +918,7 @@ GameObject:
   - component: {fileID: 577786048}
   - component: {fileID: 577786049}
   m_Layer: 0
-  m_Name: w
+  m_Name: Lighting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1307,7 +1286,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileHighlightPrefeb: {fileID: 1333511979136996, guid: e860aff6f484c47d7b713cbebd3ee5d3,
     type: 3}
-  envDisplayer: {fileID: 1959913069}
 --- !u!1 &858889265
 GameObject:
   m_ObjectHideFlags: 0
