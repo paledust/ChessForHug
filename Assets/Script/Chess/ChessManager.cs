@@ -174,7 +174,7 @@ public class ChessManager : Singleton<ChessManager>
         //Update Some Info for dead people
             if(newGen == GENERATION.DEAD){
                 var data = tileDatas[gridPoint.x, gridPoint.y].moment;
-                newPiece.GetComponent<Tomb>().lastContent = ScriptParser.ParseFailScript(failScript_SO.GetFailData(data));
+                newPiece.GetComponent<Tomb>().lastContent = $"享年{newPiece.GetComponent<Tomb>().personData.Age}岁\n" + ScriptParser.ParseFailScript(failScript_SO.GetFailData(data));
             }
             return true;
         }
