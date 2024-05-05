@@ -18,6 +18,8 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private TypewriterByCharacter descriptionWriter;
     [SerializeField] private Button back;
     private Dictionary<Transform, UI_DataDisplayer> dataDisplayer_Dict = new Dictionary<Transform, UI_DataDisplayer>();
+    private CoroutineExcuter buttonFader;
+
     void OnEnable(){
         EventHandler.E_UI_ShowData += ShowData;
         EventHandler.E_UI_ShowNum  += ShowNum;
@@ -28,6 +30,8 @@ public class UI_Manager : MonoBehaviour
     }
     void Start(){
         back.interactable = false;
+        back.image.color = new Color(1,1,1,0);
+        buttonFader = new CoroutineExcuter(this);
     }
     void OnDisable(){
         EventHandler.E_UI_ShowData -= ShowData;
@@ -39,13 +43,14 @@ public class UI_Manager : MonoBehaviour
     }
 //Unity Event
     public void OnBackButtonClick(){
-        back.interactable = false;
+        buttonFader.Excute(coroutineHideButton(0.1f));
         EventHandler.Call_UI_ShowDescrip(string.Empty);
         EventHandler.Call_OnBackToChessGame();
+        EventHandler.Call_OnHideEnvironment();
     }
     void OnTextShowed(){
         descriptionWriter.onTextShowed.RemoveListener(OnTextShowed);
-        back.interactable = true;
+        buttonFader.Excute(coroutineShowButton(0.1f));
     }
     public void StepYear(float step){
         StartCoroutine(coroutineStepYear(step));
@@ -99,5 +104,22 @@ public class UI_Manager : MonoBehaviour
 
             yearRoot.localPosition = Vector3.zero;
         }
+    }
+    IEnumerator coroutineShowButton(float duration){
+        Color initColor = Color.white;
+        initColor.a = 0;
+        yield return new WaitForLoop(duration,(t)=>{
+            back.image.color = Color.Lerp(initColor, Color.white, EasingFunc.Easing.SmoothInOut(t));
+        });
+        back.interactable = true;
+    }
+    IEnumerator coroutineHideButton(float duration){
+        back.interactable = false;     
+        Color initColor = Color.white;
+        Color targetColor = initColor;
+        targetColor.a = 0;
+        yield return new WaitForLoop(duration,(t)=>{
+            back.image.color = Color.Lerp(initColor, targetColor, EasingFunc.Easing.SmoothInOut(t));
+        });
     }
 }
