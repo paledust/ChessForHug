@@ -48,7 +48,7 @@ MonoBehaviour:
   playerSide: 0
   type: 0
   personData:
-    Age: 66
+    Age: 69
 --- !u!1 &1704396138873048
 GameObject:
   m_ObjectHideFlags: 0

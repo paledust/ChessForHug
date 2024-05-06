@@ -11,6 +11,8 @@ public static class EventHandler
     public static void Call_BeforeUnloadScene()=>E_BeforeUnloadScene?.Invoke();
     public static event Action E_AfterLoadScene;
     public static void Call_AfterLoadScene()=>E_AfterLoadScene?.Invoke();
+    public static event Action<END_CONDITON> E_OnGameEnd;
+    public static void Call_OnGameEnd(END_CONDITON endCondition)=>E_OnGameEnd?.Invoke(endCondition);
 #endregion
 
 #region UI Event

@@ -9,7 +9,7 @@ public class MeetManager : Singleton<MeetManager>
     [SerializeField] private HugEventScript_SO hugEventScript_SO;
 [Header("Reveal Tiles")]
     [SerializeField] private int revealHugAmount = 3;
-    private int HugCounter = 0;
+    public int HugCounter{get; private set;} = 0;
     void OnEnable(){
         EventHandler.E_OnPiecesHug += StartPiecesHugSequence;
     }
@@ -29,12 +29,6 @@ public class MeetManager : Singleton<MeetManager>
         
         EventHandler.Call_OnShowEnvironment(contex.environment, 1.5f);
         StartCoroutine(coroutinePiecesHugSeguence(huggerPiece, huggeePiece, gridPoint));
-
-        HugCounter++;
-        if(HugCounter>=revealHugAmount){
-            HugCounter = 0;
-            ChessManager.Instance.ExposedRNDTile();
-        }
     }
     IEnumerator coroutinePiecesHugSeguence(GameObject huggerPiece, GameObject huggeePiece,Vector2Int gridPoint){
         yield return new WaitForSeconds(1f);
@@ -46,5 +40,13 @@ public class MeetManager : Singleton<MeetManager>
 
         yield return new WaitForSeconds(hugGroupAnime.clip.length);
         EventHandler.Call_OnCapturePiece(huggerPiece.GetComponent<Piece>(), ChessManager.Instance.currentPlayer.side);
+        HugCounter++;
+        if((HugCounter%revealHugAmount) == 0){
+            ChessManager.Instance.ExposedRNDTile();
+        }
+    //If there are 12 groups in total
+        if(HugCounter>=(ChessManager.Instance.originalPieceCount/2)){
+            EventHandler.Call_OnGameEnd(END_CONDITON.ALL_HUG);
+        }
     }
 }

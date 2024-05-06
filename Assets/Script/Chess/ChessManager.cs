@@ -66,7 +66,9 @@ public class ChessManager : Singleton<ChessManager>
     private MOVE_TYPE lastTurnMoveType;
     private Stack<Moves> moveStack;
 
-    private int TurnCount = 0;
+    [SerializeField, ShowOnly] private int TurnCount = 0;
+    [SerializeField, ShowOnly] private int DeadCount = 0;
+    public int originalPieceCount{get; private set;} = 0;
 
     public static readonly Dictionary<GENERATION, char> generationToPieceChar_Dict = new Dictionary<GENERATION, char>(){
         {GENERATION.BABY, 'P'}, {GENERATION.YOUTH, 'R'}, {GENERATION.TEEN, 'Q'},
@@ -120,6 +122,7 @@ public class ChessManager : Singleton<ChessManager>
                 if(info == null) continue;
 
                 AddPiece(info.prefab, info.side == PLAYER_SIDE.WHITE?white:black, j, 7-i);
+                originalPieceCount++;
             }
         }
     }
@@ -172,6 +175,11 @@ public class ChessManager : Singleton<ChessManager>
             if(newGen == GENERATION.DEAD){
                 var data = tileDatas[gridPoint.x, gridPoint.y].moment;
                 newPiece.GetComponent<Tomb>().lastContent = $"享年{newPiece.GetComponent<Tomb>().personData.Age}岁\n" + ScriptParser.ParseFailScript(failScript_SO.GetFailData(data));
+                DeadCount ++;
+
+                if(MeetManager.Instance.HugCounter*2+DeadCount>=originalPieceCount){
+                    EventHandler.Call_OnGameEnd(END_CONDITON.NO_PIECE);
+                }
             }
             return true;
         }
@@ -252,24 +260,22 @@ public class ChessManager : Singleton<ChessManager>
         return tileDatas[gridPoint.x, gridPoint.y];
     }
     public void ExposedRNDTile(){
-        int[] _rows = new int[8]{0,1,2,3,4,5,6,7};
-        int[] _cols = new int[8]{0,1,2,3,4,5,6,7};
-        Service.Shuffle(ref _rows);
-        Service.Shuffle(ref _cols);
+        int[] index = new int[64];
+        for(int i=0;i<index.Length;i++){
+            index[i] = i;
+        }
+        Service.Shuffle(ref index);
 
         int flag = 0;
-        for(int x=0; x<8; x++){
-            for(int y=0; y<8; y++){
-                Vector2Int gridpoint = new Vector2Int(_rows[x],_cols[y]);
-                if(pieces[gridpoint.x, gridpoint.y]==null && !tileDatas[gridpoint.x,gridpoint.y].IsExposed){
-                    var _marker = Instantiate(tileInfoMarker).GetComponent<TileInfoMarker>();
-                    _marker.transform.position = Geometry.PointFromGrid(gridpoint);
-                    tileDatas[gridpoint.x, gridpoint.y].ExposeTileData(_marker);
-
-                    flag ++;
-                }
-                if(flag >= 3) break;
+        for(int i=0; i<64; i++){
+            Vector2Int _gridpoint = new Vector2Int(index[i]%8,index[i]/8);
+            if(pieces[_gridpoint.x, _gridpoint.y]==null && !tileDatas[_gridpoint.x,_gridpoint.y].IsExposed){
+                var _marker = Instantiate(tileInfoMarker).GetComponent<TileInfoMarker>();
+                _marker.transform.position = Geometry.PointFromGrid(_gridpoint);
+                tileDatas[_gridpoint.x, _gridpoint.y].ExposeTileData(_marker);
+                flag ++;
             }
+
             if(flag >= 3) break;
         }
     }

@@ -18,6 +18,9 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private TypewriterByCharacter descriptionWriter;
     [SerializeField] private Button back;
+
+[Header("Restart")]
+    [SerializeField] private Button restartButton;
     private Dictionary<Transform, UI_DataDisplayer> dataDisplayer_Dict = new Dictionary<Transform, UI_DataDisplayer>();
     private CoroutineExcuter buttonFader;
     private CoroutineExcuter textFader;
@@ -29,6 +32,7 @@ public class UI_Manager : MonoBehaviour
         EventHandler.E_UI_CleanDisplayer += CleanDataDisplayer;
         EventHandler.E_UI_ShowDescrip += ShowDescription;
         EventHandler.E_UI_StepYear += StepYear;
+        EventHandler.E_OnGameEnd += ShowRestartButton;
     }
     void Start(){
         back.interactable = false;
@@ -43,6 +47,7 @@ public class UI_Manager : MonoBehaviour
         EventHandler.E_UI_CleanDisplayer -= CleanDataDisplayer;
         EventHandler.E_UI_ShowDescrip -= ShowDescription;
         EventHandler.E_UI_StepYear -= StepYear;
+        EventHandler.E_OnGameEnd -= ShowRestartButton;
     }
 //Unity Event
     public void OnBackButtonClick(){
@@ -54,6 +59,9 @@ public class UI_Manager : MonoBehaviour
     void OnTextShowed(){
         descriptionWriter.onTextShowed.RemoveListener(OnTextShowed);
         buttonFader.Excute(coroutineShowButton(0.1f));
+    }
+    void ShowRestartButton(END_CONDITON endCondition){
+        StartCoroutine(coroutineRestartButton());
     }
     public void StepYear(float step){
         StartCoroutine(coroutineStepYear(step));
@@ -95,6 +103,16 @@ public class UI_Manager : MonoBehaviour
             dataDisplayer_Dict.Remove(root);
             Destroy(displayer);
         }        
+    }
+    IEnumerator coroutineRestartButton(){
+        Color initCol = restartButton.targetGraphic.color;
+        Color targetCol = initCol;
+        targetCol.a = 1;
+
+        restartButton.gameObject.SetActive(true);
+        yield return new WaitForLoop(0.2f, (t)=>{
+            restartButton.targetGraphic.color = Color.Lerp(initCol, targetCol, EasingFunc.Easing.SmoothInOut(t));
+        });
     }
     IEnumerator coroutineStepYear(float step){
         Vector3 initPos = yearRoot.localPosition;
