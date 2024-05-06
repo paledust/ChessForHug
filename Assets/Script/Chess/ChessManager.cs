@@ -46,12 +46,13 @@ public class ChessManager : Singleton<ChessManager>
     [SerializeField] private CONTROL_TYPE black_Control;
     public Board board;
 [Header("Game")]
-    [SerializeField] private int AgeUpAmount = 5;
+    [SerializeField] public int AgeUpAmount = 5;
     [SerializeField] private int AgeUpTurn = 6;
     [SerializeField] private GameObject chessPlayer;
     [SerializeField] private ChessAI chessAI;
 [Header("Special Piece")]
-    public GameObject neutralPiece;
+    [SerializeField] private GameObject neutralPiece;
+    [SerializeField] private GameObject tileInfoMarker;
 [Header("Piece Died")]
     [SerializeField] private FailScript_SO failScript_SO;
     private GameObject[,] pieces;
@@ -249,6 +250,28 @@ public class ChessManager : Singleton<ChessManager>
 
     public TileData GetTileData(Vector2Int gridPoint){
         return tileDatas[gridPoint.x, gridPoint.y];
+    }
+    public void ExposedRNDTile(){
+        int[] _rows = new int[8]{0,1,2,3,4,5,6,7};
+        int[] _cols = new int[8]{0,1,2,3,4,5,6,7};
+        Service.Shuffle(ref _rows);
+        Service.Shuffle(ref _cols);
+
+        int flag = 0;
+        for(int x=0; x<8; x++){
+            for(int y=0; y<8; y++){
+                Vector2Int gridpoint = new Vector2Int(_rows[x],_cols[y]);
+                if(pieces[gridpoint.x, gridpoint.y]==null && !tileDatas[gridpoint.x,gridpoint.y].IsExposed){
+                    var _marker = Instantiate(tileInfoMarker).GetComponent<TileInfoMarker>();
+                    _marker.transform.position = Geometry.PointFromGrid(gridpoint);
+                    tileDatas[gridpoint.x, gridpoint.y].ExposeTileData(_marker);
+
+                    flag ++;
+                }
+                if(flag >= 3) break;
+            }
+            if(flag >= 3) break;
+        }
     }
     public bool DoesPieceBelongToCurrentPlayer(GameObject piece){
         return currentPlayer.pieces.Contains(piece);

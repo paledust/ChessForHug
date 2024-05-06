@@ -32,7 +32,8 @@ public class MeetManager : Singleton<MeetManager>
 
         HugCounter++;
         if(HugCounter>=revealHugAmount){
-            Debug.Log("Reveal Tiles as reward!!");
+            HugCounter = 0;
+            ChessManager.Instance.ExposedRNDTile();
         }
     }
     IEnumerator coroutinePiecesHugSeguence(GameObject huggerPiece, GameObject huggeePiece,Vector2Int gridPoint){

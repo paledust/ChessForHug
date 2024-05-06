@@ -66,6 +66,11 @@ public class TileSelector : MonoBehaviour {
 						EventHandler.Call_UI_HideData(lastPiece.transform);
 						EventHandler.Call_UI_ShowDescrip(string.Empty);
 					}
+					else{
+						var lastTile = chessManager.GetTileData(hoverGridPoint);
+						if(lastTile.IsExposed)
+							EventHandler.Call_UI_HideData(lastTile.infoMarker.transform);
+					}
 				}
 
 				var piece = chessManager.GetPieceAtGrid(gridPoint);
@@ -86,10 +91,10 @@ public class TileSelector : MonoBehaviour {
 				}
 				else{
 					var tile = chessManager.GetTileData(gridPoint);
-					if(tile.IsExposed){
-						EventHandler.Call_UI_ShowData(Service.MomentToScriptDict[tile.moment], 220, null);
-					}
-					EventHandler.Call_OnHideEnvironment();
+					if(tile.IsExposed)
+						EventHandler.Call_UI_ShowData(Service.MomentToScriptDict[tile.moment], 220, tile.infoMarker.transform);
+					else 
+						EventHandler.Call_OnHideEnvironment();
 				}
 
 				hoverGridPoint = gridPoint;

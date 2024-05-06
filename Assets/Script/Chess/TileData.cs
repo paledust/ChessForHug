@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct TileData
+public class TileData
 {
     public CONTEXT_ENVIRONMENT environment;
     public CONTEXT_MOMENT moment;
-    public bool IsExposed;
+    public TileInfoMarker infoMarker;
+    public bool IsExposed{get; private set;} = false;
     
     private static int[] env_rnd = {0,1,2,3};
     private static int[] mom_rnd = {0,1,2,3};
@@ -27,5 +28,9 @@ public struct TileData
             mom_count = 0;
             Service.Shuffle(ref mom_rnd);
         }
+    }
+    public void ExposeTileData(TileInfoMarker marker){
+        IsExposed = true;
+        infoMarker = marker;
     }
 }

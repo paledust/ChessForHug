@@ -53,7 +53,7 @@ public class UI_DataDisplayer : MonoBehaviour
         Vector2 targetSize = new Vector2(1, height);
         
         yield return new WaitForLoop(duration, (t)=>{
-            canvas.alpha = Mathf.Lerp(initAlpha, 1, EasingFunc.Easing.SmoothInOut(t*2));
+            canvas.alpha = Mathf.Lerp(initAlpha, 1, EasingFunc.Easing.SmoothInOut(Mathf.Clamp01(t*2)));
             lineTrans.sizeDelta = Vector2.Lerp(initSize, targetSize, EasingFunc.Easing.SmoothInOut(t));
         });
     }
@@ -65,7 +65,7 @@ public class UI_DataDisplayer : MonoBehaviour
         yield return new WaitForLoop(duration, (t)=>{
             canvas.alpha = Mathf.Lerp(initAlpha, 1, EasingFunc.Easing.SmoothInOut(Mathf.Clamp01(t*2)));
             lineTrans.sizeDelta = Vector2.Lerp(initSize, targetSize, EasingFunc.Easing.SmoothInOut(t));
-            dataText.text = Mathf.CeilToInt(Mathf.Lerp(0, num, EasingFunc.Easing.QuadEaseOut(t))+0.5f).ToString()+"<size=28>岁";
+            dataText.text = "<size=48>"+Mathf.CeilToInt(Mathf.Lerp(0, num, EasingFunc.Easing.QuadEaseOut(t))+0.5f).ToString()+"<size=28>岁";
         });
     }
     IEnumerator coroutineFadeOut(float duration){

@@ -15,10 +15,12 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI yearUp;
     [SerializeField] private TextMeshProUGUI yearDown;
 [Header("Description")]
+    [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private TypewriterByCharacter descriptionWriter;
     [SerializeField] private Button back;
     private Dictionary<Transform, UI_DataDisplayer> dataDisplayer_Dict = new Dictionary<Transform, UI_DataDisplayer>();
     private CoroutineExcuter buttonFader;
+    private CoroutineExcuter textFader;
 
     void OnEnable(){
         EventHandler.E_UI_ShowData += ShowData;
@@ -31,6 +33,7 @@ public class UI_Manager : MonoBehaviour
     void Start(){
         back.interactable = false;
         back.image.color = new Color(1,1,1,0);
+        textFader = new CoroutineExcuter(this);
         buttonFader = new CoroutineExcuter(this);
     }
     void OnDisable(){
@@ -57,10 +60,11 @@ public class UI_Manager : MonoBehaviour
     }
     public void ShowDescription(string content, bool isFocus){
         if(content==string.Empty){
+            textFader.Excute(coroutineFadeText(0, 0.2f));
             descriptionWriter.StopShowingText();
-            descriptionWriter.StartDisappearingText();
         }
         else{
+            textFader.Excute(coroutineFadeText(1, 0.2f));
             if(isFocus){
                 descriptionWriter.onTextShowed.AddListener(OnTextShowed);
             }
@@ -100,10 +104,19 @@ public class UI_Manager : MonoBehaviour
         });
         if(targetPos.y >= 120){
             yearUp.text = yearDown.text;
-            yearDown.text = (int.Parse(yearDown.text)+5).ToString();
+            yearDown.text = (int.Parse(yearDown.text)+ChessManager.Instance.AgeUpAmount).ToString();
 
             yearRoot.localPosition = Vector3.zero;
         }
+    }
+    IEnumerator coroutineFadeText(float targetAlpha, float duration){
+        Color initColor = descriptionText.color;
+        Color targetColor = initColor;
+        targetColor.a = targetAlpha;
+
+        yield return new WaitForLoop(duration,(t)=>{
+            descriptionText.color = Color.Lerp(initColor, targetColor, EasingFunc.Easing.SmoothInOut(t));
+        });        
     }
     IEnumerator coroutineShowButton(float duration){
         Color initColor = Color.white;
