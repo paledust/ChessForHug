@@ -39,4 +39,6 @@ MonoBehaviour:
     - {fileID: 8300000, guid: dbae1dd08ccfa0648b0a8eaa1f9abcfd, type: 3}
   - audio_group_name: group_move
     audioClips:
-    - {fileID: 8300000, guid: fc4706ad1a9925d45aa7be5f2771e378, type: 3}
+    - {fileID: 8300000, guid: 4db19b20f0415854690142301d2e2a11, type: 3}
+    - {fileID: 8300000, guid: 5362dad571b7c39479d65a389ce74380, type: 3}
+    - {fileID: 8300000, guid: c687a81a946e26b449ef74773a73c716, type: 3}
