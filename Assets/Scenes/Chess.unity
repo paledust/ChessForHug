@@ -3020,7 +3020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29b158d17433a6d4884d43f552012897, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReferenceRatio: {x: 4, y: 3}
+  ReferenceRatio: {x: 5, y: 4}
 --- !u!1 &1724877246
 GameObject:
   m_ObjectHideFlags: 0

@@ -106,9 +106,9 @@ public class GameManager : Singleton<GameManager>
         Application.Quit();
     }
     IEnumerator RestartLevel(string level){
-        yield return FadeInBlackScreen(3f);
+        yield return FadeInBlackScreen(2f);
         isSwitchingScene = true;
-
+        EventHandler.Call_BeforeUnloadScene();
         //TO DO: do something before the last scene is unloaded. e.g: call event of saving 
         yield return SceneManager.UnloadSceneAsync(level);
         yield return null;
@@ -117,7 +117,8 @@ public class GameManager : Singleton<GameManager>
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(level));
         //TO DO: do something after the next scene is loaded. e.g: call event of loading
         yield return FadeOutBlackScreen(transitionDuration);
-
+        EventHandler.Call_AfterLoadScene();
+        
         isSwitchingScene = false;
     }
     IEnumerator RestartLevelImmediatley(string level){

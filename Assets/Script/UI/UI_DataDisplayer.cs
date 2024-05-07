@@ -24,9 +24,11 @@ public class UI_DataDisplayer : MonoBehaviour
         lineTrans.sizeDelta = new Vector2(1, 100);
     }
     void Update(){
-        Vector3 pos = mainCam.WorldToScreenPoint(displayRoot.position+Vector3.up);
-        pos.z = 0;
-        rectTrans.position = pos;
+        if(displayRoot!=null){
+            Vector3 pos = mainCam.WorldToScreenPoint(displayRoot.position+Vector3.up);
+            pos.z = 0;
+            rectTrans.position = pos;
+        }
     }
     public void ShowData(string content, Transform root, float height){
         Initialize(root);

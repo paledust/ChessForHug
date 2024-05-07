@@ -35,6 +35,7 @@ public class UI_Manager : MonoBehaviour
         EventHandler.E_UI_StepYear += StepYear;
         EventHandler.E_OnGameEnd += ShowRestartButton;
         EventHandler.E_UI_ShowYear += ShowYear;
+        EventHandler.E_BeforeUnloadScene += CleanUp;
     }
     void Start(){
         back.interactable = false;
@@ -51,6 +52,7 @@ public class UI_Manager : MonoBehaviour
         EventHandler.E_UI_StepYear -= StepYear;
         EventHandler.E_OnGameEnd -= ShowRestartButton;
         EventHandler.E_UI_ShowYear -= ShowYear;
+        EventHandler.E_BeforeUnloadScene -= CleanUp;
     }
 //Unity Event
     public void OnBackButtonClick(){
@@ -65,7 +67,7 @@ public class UI_Manager : MonoBehaviour
         buttonFader.Excute(coroutineShowButton(0.1f));
     }
     void ShowRestartButton(END_CONDITON endCondition){
-        StartCoroutine(coroutineRestartButton());
+        StartCoroutine(coroutineRestartButton(1));
     }
     public void StepYear(float step){
         StartCoroutine(coroutineStepYear(step));
@@ -108,15 +110,31 @@ public class UI_Manager : MonoBehaviour
             Destroy(displayer);
         }        
     }
-    IEnumerator coroutineRestartButton(){
+    void CleanUp(){
+        foreach(var displayer in dataDisplayer_Dict){
+            Destroy(displayer.Value);
+        }
+        back.interactable = false;
+        back.image.color = new Color(1,1,1,0);
+
+        yearUp.text = "1990";
+        yearDown.text = "1995";
+        yearRoot.localPosition = Vector3.zero;
+
+        dataDisplayer_Dict.Clear();
+        descriptionWriter.ShowText(string.Empty);
+        StartCoroutine(coroutineRestartButton(0));
+    }
+    IEnumerator coroutineRestartButton(float alpha){
         Color initCol = restartButton.targetGraphic.color;
         Color targetCol = initCol;
-        targetCol.a = 1;
+        targetCol.a = alpha;
 
         restartButton.gameObject.SetActive(true);
         yield return new WaitForLoop(0.2f, (t)=>{
             restartButton.targetGraphic.color = Color.Lerp(initCol, targetCol, EasingFunc.Easing.SmoothInOut(t));
         });
+        if(alpha == 0) restartButton.gameObject.SetActive(false);
     }
     IEnumerator coroutineStepYear(float step){
         Vector3 initPos = yearRoot.localPosition;
