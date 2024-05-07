@@ -33,9 +33,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class MoveSelector : MonoBehaviour {
-	public GameObject moveLocationPrefab;
-	public GameObject tileHightlightPrefab;
-	public GameObject attackLocationPrefab;
+	[SerializeField] private GameObject moveLocationPrefab;
+	[SerializeField] private GameObject tileHightlightPrefab;
+	[SerializeField] private GameObject attackLocationPrefab;
+	[SerializeField] private ChessAudio chessAudio;
 
 	private GameObject tileHightlight;
 	private GameObject movingPiece;
@@ -64,6 +65,7 @@ public class MoveSelector : MonoBehaviour {
 
 				var piece = movingPiece.GetComponent<Piece>();
 				ChessManager.Instance.MakeMoves(movingPiece, gridPoint);
+				chessAudio.PlayPutPiece();
 
 				ExitState();
 			}
@@ -112,6 +114,7 @@ public class MoveSelector : MonoBehaviour {
 		movingPiece = null;
 		TileSelector selector = GetComponent<TileSelector>();
 		selector.EnterState();
+		chessAudio.PlayPutPiece();
 
 		foreach(GameObject hightlight in locationHightlights){
 			Destroy(hightlight);

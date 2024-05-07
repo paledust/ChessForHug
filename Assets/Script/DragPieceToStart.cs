@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using SimpleAudioSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,6 +15,12 @@ public class DragPieceToStart : MonoBehaviour
     [SerializeField] private TextMeshProUGUI ageText;
     [SerializeField] private Mesh[] pieceMeshes;
     [SerializeField] private float dragDistance = 8.5f;
+[Header("Audio")]
+    [SerializeField] private float maxVolome = 0.5f;
+    [SerializeField] private float offsetThreashold = 1f;
+    [SerializeField] private AudioSource sfx_loop;
+    [SerializeField] private string sfx_final;
+    [SerializeField] private string sfx_woosh;
 [Header("Pre Meet")]
     [SerializeField] private CinemachineVirtualCamera meetCam;
     [SerializeField] private CanvasGroup ui_canvas;
@@ -26,6 +33,7 @@ public class DragPieceToStart : MonoBehaviour
     private bool isGrabbing = false;
     private bool isHovering = false;
     private bool hugRevealed = false;
+    private GENERATION currentGen;
     private MeshFilter meshFilter;
     private Vector3 initPos;
     private Camera mainCam;
@@ -35,6 +43,7 @@ public class DragPieceToStart : MonoBehaviour
     private CoroutineExcuter preHugFader;
 
     void Start(){
+        currentGen = GENERATION.BABY;
         initPos = transform.position;
         isGrabbing = false;
         mainCam = Camera.main;
@@ -56,8 +65,10 @@ public class DragPieceToStart : MonoBehaviour
                             ageFader.Excute(coroutineFadeAge(1));
                             Cursor.SetCursor(clickTex, Vector2Int.up*32, CursorMode.Auto);
                         }
+                    //On Holding
                         if(Mouse.current.leftButton.isPressed){
                             isGrabbing = true;
+                            sfx_loop.Play();
                             Cursor.SetCursor(null, Vector2Int.zero, CursorMode.Auto);
                         }
                     }
@@ -82,10 +93,19 @@ public class DragPieceToStart : MonoBehaviour
                 pos.x = mainCam.ScreenToWorldPoint(mousePos).x;
                 pos.x = Mathf.Clamp(pos.x, initPos.x, initPos.x + dragDistance);
                 transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime*10);
+                {
+                    float offset = Mathf.Abs(pos.x - transform.position.x);
+                    if(offset>offsetThreashold) sfx_loop.volume = Mathf.Lerp(sfx_loop.volume, maxVolome, Time.deltaTime * 5);
+                    else sfx_loop.volume = Mathf.Lerp(sfx_loop.volume, 0, Time.deltaTime * 5);
+                }
+            //On Release Holding
                 if(!Mouse.current.leftButton.isPressed){
                     isGrabbing = false;
+                    sfx_loop.volume = 0;
+                    sfx_loop.Stop();
                     if(hugRevealed){
                         hugGroup.SetActive(true);
+                        AudioManager.Instance.PlaySoundEffectDefault(sfx_final, 1);
                         preHugGroup.SetActive(false);
                         this.enabled = false;
                         StartCoroutine(coroutineNextLevel());
@@ -98,31 +118,35 @@ public class DragPieceToStart : MonoBehaviour
             float ratio = (transform.position.x - initPos.x)/dragDistance;
             int age = Mathf.CeilToInt(ratio * 100);
             ageText.text = age + "<size=25>岁";
-
-            switch(PersonData.GetGeneration(age)){
-                case GENERATION.BABY:
-                    meshFilter.mesh = pieceMeshes[0];
-                    break;
-                case GENERATION.YOUTH:
-                    meshFilter.mesh = pieceMeshes[1];
-                    break;
-                case GENERATION.TEEN:
-                    meshFilter.mesh = pieceMeshes[2];
-                    break;
-                case GENERATION.GROWN:
-                    meshFilter.mesh = pieceMeshes[3];
-                    break;
-                case GENERATION.MIDDLE:
-                    meshFilter.mesh = pieceMeshes[4];
-                    break;
-                case GENERATION.OLD:
-                    meshFilter.mesh = pieceMeshes[5];
-                    break;
+            if(currentGen!=PersonData.GetGeneration(age)){
+                currentGen = PersonData.GetGeneration(age);
+                switch(PersonData.GetGeneration(age)){
+                    case GENERATION.BABY:
+                        meshFilter.mesh = pieceMeshes[0];
+                        break;
+                    case GENERATION.YOUTH:
+                        meshFilter.mesh = pieceMeshes[1];
+                        break;
+                    case GENERATION.TEEN:
+                        meshFilter.mesh = pieceMeshes[2];
+                        break;
+                    case GENERATION.GROWN:
+                        meshFilter.mesh = pieceMeshes[3];
+                        break;
+                    case GENERATION.MIDDLE:
+                        meshFilter.mesh = pieceMeshes[4];
+                        break;
+                    case GENERATION.OLD:
+                        meshFilter.mesh = pieceMeshes[5];
+                        break;
+                }
             }
 
             if(age >= 99){
                 if(!hugRevealed){
                     hugRevealed = true;
+                    AudioManager.Instance.PlaySoundEffectDefault(sfx_woosh, 1);
+
                     preHugFader.Excute(coroutineFadeEffect(1));
                     meetObject.SetActive(true);
                     for(int i=0; i<pieceRenderers.Length; i++){
