@@ -11,14 +11,14 @@ public class ChessAI : MonoBehaviour
     public async Task MakeMove(){
         GetMoves();
         await Task.Delay(Mathf.FloorToInt(moveDelay*1000));
-        MakeHighestScoreMove();
+        await MakeHighestScoreMove();
     }
     void MakeRandomMove(){
         var rnd = Random.Range(0, moves.Count);
         ChessManager.Instance.MakeMoves(ChessManager.Instance.PieceAtGrid(moves[rnd].from), moves[rnd].to);
     }
 //This will evaluate the board and check which move has the best score
-    void MakeHighestScoreMove(){
+    async Task MakeHighestScoreMove(){
     //Shuffle the moves, so the same move isn't always picked on ties
         Moves[] possibleMoves = moves.ToArray();
         Service.Shuffle<Moves>(ref possibleMoves);
@@ -36,7 +36,7 @@ public class ChessAI : MonoBehaviour
             }
             ChessManager.Instance.UndoMoves();
         }
-        ChessManager.Instance.MakeMoves(ChessManager.Instance.PieceAtGrid(bestMove.from), bestMove.to);
+        await ChessManager.Instance.MakeMovesWithTransition(ChessManager.Instance.PieceAtGrid(bestMove.from), bestMove.to);
     }
     void GetMoves(){
         moves.Clear();

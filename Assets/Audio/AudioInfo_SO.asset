@@ -34,6 +34,9 @@ MonoBehaviour:
   - audio_group_name: group_pick
     audioClips:
     - {fileID: 8300000, guid: fc4706ad1a9925d45aa7be5f2771e378, type: 3}
-    - {fileID: 8300000, guid: 58e7acb3836d07f4e91abffe15a7b45a, type: 3}
     - {fileID: 8300000, guid: 103338ae1b99fb945b871063e42fd0d8, type: 3}
+    - {fileID: 8300000, guid: 58e7acb3836d07f4e91abffe15a7b45a, type: 3}
     - {fileID: 8300000, guid: dbae1dd08ccfa0648b0a8eaa1f9abcfd, type: 3}
+  - audio_group_name: group_move
+    audioClips:
+    - {fileID: 8300000, guid: fc4706ad1a9925d45aa7be5f2771e378, type: 3}

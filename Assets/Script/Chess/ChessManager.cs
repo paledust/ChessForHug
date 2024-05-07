@@ -358,6 +358,25 @@ public class ChessManager : Singleton<ChessManager>
             MakeMoves(new Moves(GridForPiece(piece), gridPoint));
         }
     }
+    public async Task MakeMovesWithTransition(GameObject piece, Vector2Int gridPoint){
+        Vector3 startPoint = Geometry.PointFromGrid(GridForPiece(piece));
+        Vector3 endPoint = Geometry.PointFromGrid(gridPoint);
+        var pieceTrans = piece.transform;
+        if(piece.GetComponent<Piece>().type == PIECE_TYPE.KNIGHT){
+            StartCoroutine(coroutineMovePiece(pieceTrans, startPoint, endPoint));
+        }
+        else{
+            StartCoroutine(coroutineMovePiece(pieceTrans, startPoint, endPoint));
+        }
+        await Task.Delay(1000);
+
+        if(piece.GetComponent<Piece>().type == PIECE_TYPE.PAWN){
+            MakeMoves(new PawnMoves(GridForPiece(piece), gridPoint));
+        }
+        else{
+            MakeMoves(new Moves(GridForPiece(piece), gridPoint));
+        }
+    }
     public void UndoMoves(){
         moveStack.Pop().Undo();
     }
@@ -396,11 +415,6 @@ public class ChessManager : Singleton<ChessManager>
         board.MovePiece(takenPiece, to);
         pieces[from.x, from.y] = movePiece;
         board.MovePiece(movePiece, from);
-        
-        // currentPlayer.capturedPieces.Remove(takenPiece);
-        // currentPlayer.pieces.Add(movePiece);
-        // otherPlayer.capturedPieces.Remove(movePiece);
-        // otherPlayer.pieces.Add(takenPiece);
     }
 #endregion
     void PauseChessGameBeforeEndTurn(){
@@ -410,7 +424,11 @@ public class ChessManager : Singleton<ChessManager>
         EventHandler.E_OnBackToChessGame -= ResumeChessGameBeforeEndTurn;
         NextTurn();
     }
-
+    IEnumerator coroutineMovePiece(Transform pieceTrans, Vector3 startPos, Vector3 endPos){
+        yield return new WaitForLoop(1,(t)=>{
+            pieceTrans.position = Vector3.Lerp(startPos, endPos, EasingFunc.Easing.SmoothInOut(t));
+        });
+    }
 #if UNITY_EDITOR
     void OnDrawGizmos(){
         if(UnityEditor.EditorApplication.isPlaying){
