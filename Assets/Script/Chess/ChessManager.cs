@@ -396,6 +396,11 @@ public class ChessManager : Singleton<ChessManager>
         board.MovePiece(takenPiece, to);
         pieces[from.x, from.y] = movePiece;
         board.MovePiece(movePiece, from);
+        
+        // currentPlayer.capturedPieces.Remove(takenPiece);
+        // currentPlayer.pieces.Add(movePiece);
+        // otherPlayer.capturedPieces.Remove(movePiece);
+        // otherPlayer.pieces.Add(takenPiece);
     }
 #endregion
     void PauseChessGameBeforeEndTurn(){

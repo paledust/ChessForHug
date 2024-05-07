@@ -27,7 +27,7 @@ public class MemoryAudio : MonoBehaviour
     }
     void PlayAmbience(CONTEXT_ENVIRONMENT env, float transition){
         string clip = environmentAmbiences.Find(x=>x.environment == env).amb;
-        AudioManager.Instance.PlayAmbience(clip, true, transition, 1);
+        AudioManager.Instance.PlayAmbience(clip, true, 1);
     }
     void FadeAmbience(){
         AudioManager.Instance.FadeAmbience(0, 0.5f);
