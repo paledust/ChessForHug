@@ -300,7 +300,8 @@ public class ChessManager : Singleton<ChessManager>
     public async void NextTurn(){
     //Add Turn Count and Age Up Pieces
         TurnCount ++;
-        EventHandler.Call_UI_StepYear(1.0f/AgeUpTurn);
+    //Move Year Every two round
+        if(TurnCount % 2 == 0) EventHandler.Call_UI_StepYear(1.0f/AgeUpTurn);
 
         if(TurnCount>=AgeUpTurn){
             TurnCount = 0;

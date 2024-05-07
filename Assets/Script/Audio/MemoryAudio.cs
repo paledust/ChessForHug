@@ -10,10 +10,26 @@ public class MemoryAudio : MonoBehaviour
         public CONTEXT_ENVIRONMENT environment;
         public string amb;
     }
-    [SerializeField] private AudioSource m_audio;
     [SerializeField] private List<EnvironmentAmbience> environmentAmbiences;
-    public void PlayAmbience(CONTEXT_ENVIRONMENT env){
+    void OnEnable(){
+        EventHandler.E_OnShowEnvironment += PlayAmbience;
+        EventHandler.E_OnShowEnvironment_Custom += PlayAmbience;
+        EventHandler.E_OnHideEnvironment += FadeAmbience;
+    }
+    void OnDisable(){
+        EventHandler.E_OnShowEnvironment -= PlayAmbience;
+        EventHandler.E_OnShowEnvironment_Custom -= PlayAmbience;
+        EventHandler.E_OnHideEnvironment -= FadeAmbience;
+    }
+    void PlayAmbience(CONTEXT_ENVIRONMENT env){
         string clip = environmentAmbiences.Find(x=>x.environment == env).amb;
         AudioManager.Instance.PlayAmbience(clip, true, 1);
+    }
+    void PlayAmbience(CONTEXT_ENVIRONMENT env, float transition){
+        string clip = environmentAmbiences.Find(x=>x.environment == env).amb;
+        AudioManager.Instance.PlayAmbience(clip, true, transition, 1);
+    }
+    void FadeAmbience(){
+        AudioManager.Instance.FadeAmbience(0, 0.5f);
     }
 }

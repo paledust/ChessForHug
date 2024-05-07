@@ -12,6 +12,7 @@ public class UI_Manager : MonoBehaviour
 
 [Header("Years")]
     [SerializeField] private RectTransform yearRoot;
+    [SerializeField] private CanvasGroup yearGroup;
     [SerializeField] private TextMeshProUGUI yearUp;
     [SerializeField] private TextMeshProUGUI yearDown;
 [Header("Description")]
@@ -33,6 +34,7 @@ public class UI_Manager : MonoBehaviour
         EventHandler.E_UI_ShowDescrip += ShowDescription;
         EventHandler.E_UI_StepYear += StepYear;
         EventHandler.E_OnGameEnd += ShowRestartButton;
+        EventHandler.E_UI_ShowYear += ShowYear;
     }
     void Start(){
         back.interactable = false;
@@ -48,6 +50,7 @@ public class UI_Manager : MonoBehaviour
         EventHandler.E_UI_ShowDescrip -= ShowDescription;
         EventHandler.E_UI_StepYear -= StepYear;
         EventHandler.E_OnGameEnd -= ShowRestartButton;
+        EventHandler.E_UI_ShowYear -= ShowYear;
     }
 //Unity Event
     public void OnBackButtonClick(){
@@ -56,6 +59,7 @@ public class UI_Manager : MonoBehaviour
         EventHandler.Call_OnBackToChessGame();
         EventHandler.Call_OnHideEnvironment();
     }
+    void ShowYear()=>StartCoroutine(new WaitForLoop(1, (t)=>yearGroup.alpha = Mathf.Lerp(0, 1, EasingFunc.Easing.SmoothInOut(t))));
     void OnTextShowed(){
         descriptionWriter.onTextShowed.RemoveListener(OnTextShowed);
         buttonFader.Excute(coroutineShowButton(0.1f));

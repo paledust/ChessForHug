@@ -1255,13 +1255,13 @@ MonoBehaviour:
   dataDisplayerPrefab: {fileID: 7371137290293304090, guid: 83d8abeda94615948879ad2c86be8b75,
     type: 3}
   yearRoot: {fileID: 196573335}
+  yearGroup: {fileID: 196573338}
   yearUp: {fileID: 1886532366}
   yearDown: {fileID: 580778659}
   descriptionText: {fileID: 1905253533}
   descriptionWriter: {fileID: 1905253537}
   back: {fileID: 1307405139}
   restartButton: {fileID: 2075716334}
-  restartText: {fileID: 1607342323}
 --- !u!1 &1662856920
 GameObject:
   m_ObjectHideFlags: 0
@@ -1303,6 +1303,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2046844768}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1712502316 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4759861360168245595, guid: 12e0e346df9c8f049906162f53c5e766,
+    type: 3}
+  m_PrefabInstance: {fileID: 2046844768}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b035faf50d0c4547ab64d28c6066350, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1886532364
 GameObject:
   m_ObjectHideFlags: 0
@@ -1753,7 +1765,7 @@ GameObject:
   - component: {fileID: 2075716335}
   - component: {fileID: 2075716334}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Restart Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1823,7 +1835,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1607342323}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1712502316}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: RestartLevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &2075716335
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -28,6 +28,8 @@ public static class EventHandler
     public static void Call_UI_ShowDescrip(string content, bool isFocus = false)=>E_UI_ShowDescrip?.Invoke(content, isFocus);
     public static event Action<float> E_UI_StepYear;
     public static void Call_UI_StepYear(float step)=>E_UI_StepYear?.Invoke(step);
+    public static event Action E_UI_ShowYear;
+    public static void Call_UI_ShowYear()=>E_UI_ShowYear?.Invoke();
 #endregion
 
 #region Environment Display Event

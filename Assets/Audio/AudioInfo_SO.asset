@@ -20,6 +20,8 @@ MonoBehaviour:
     audio_clip: {fileID: 8300000, guid: 5ba6d09578b575545b8b0ca6db044019, type: 3}
   - audio_name: amb_home
     audio_clip: {fileID: 8300000, guid: 738b96f8c556c014c88ec47331f28738, type: 3}
+  - audio_name: amb_street
+    audio_clip: {fileID: 8300000, guid: d9fea595e94122549b1f1384d5d6c0f3, type: 3}
   sfx_info_list:
   - audio_name: sfx_confirm
     audio_clip: {fileID: 8300000, guid: 265ddcc1b7961cb48aec21003d4418cb, type: 3}
@@ -32,6 +34,6 @@ MonoBehaviour:
   - audio_group_name: group_pick
     audioClips:
     - {fileID: 8300000, guid: fc4706ad1a9925d45aa7be5f2771e378, type: 3}
-    - {fileID: 8300000, guid: 103338ae1b99fb945b871063e42fd0d8, type: 3}
     - {fileID: 8300000, guid: 58e7acb3836d07f4e91abffe15a7b45a, type: 3}
+    - {fileID: 8300000, guid: 103338ae1b99fb945b871063e42fd0d8, type: 3}
     - {fileID: 8300000, guid: dbae1dd08ccfa0648b0a8eaa1f9abcfd, type: 3}

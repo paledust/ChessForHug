@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using SimpleSaveSystem;
+using SimpleAudioSystem;
 
 //Please make sure "GameManager" is excuted before every custom script
 public class GameManager : Singleton<GameManager>
@@ -80,6 +81,7 @@ public class GameManager : Singleton<GameManager>
         StartCoroutine(EndGameCoroutine(currentLevel));
     }
     public void RestartLevel(){
+        AudioManager.Instance.PlaySoundEffectDefault("sfx_confirm", 1);
         string currentLevel = SceneManager.GetActiveScene().name;
         StartCoroutine(RestartLevel(currentLevel));
     }
