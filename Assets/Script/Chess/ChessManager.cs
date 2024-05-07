@@ -55,6 +55,8 @@ public class ChessManager : Singleton<ChessManager>
     [SerializeField] private GameObject tileInfoMarker;
 [Header("Piece Died")]
     [SerializeField] private FailScript_SO failScript_SO;
+[Header("Audio")]
+    [SerializeField] private ChessAudio chessAudio;
     private GameObject[,] pieces;
     private TileData[,] tileDatas;
 
@@ -359,11 +361,12 @@ public class ChessManager : Singleton<ChessManager>
         }
     }
     public async Task MakeMovesWithTransition(GameObject piece, Vector2Int gridPoint){
+        chessAudio.PlayMovePiece();
         Vector3 startPoint = Geometry.PointFromGrid(GridForPiece(piece));
         Vector3 endPoint = Geometry.PointFromGrid(gridPoint);
         var pieceTrans = piece.transform;
         if(piece.GetComponent<Piece>().type == PIECE_TYPE.KNIGHT){
-            StartCoroutine(coroutineMovePiece(pieceTrans, startPoint, endPoint));
+            StartCoroutine(coroutineMoveKnight(pieceTrans, startPoint, endPoint));
         }
         else{
             StartCoroutine(coroutineMovePiece(pieceTrans, startPoint, endPoint));
@@ -427,6 +430,15 @@ public class ChessManager : Singleton<ChessManager>
     IEnumerator coroutineMovePiece(Transform pieceTrans, Vector3 startPos, Vector3 endPos){
         yield return new WaitForLoop(1,(t)=>{
             pieceTrans.position = Vector3.Lerp(startPos, endPos, EasingFunc.Easing.SmoothInOut(t));
+        });
+    }
+    IEnumerator coroutineMoveKnight(Transform pieceTrans, Vector3 startPos, Vector3 endPos){
+        Vector3 tempPos = pieceTrans.position;
+        yield return new WaitForLoop(1,(t)=>{
+            tempPos.x = Mathf.Lerp(startPos.x, endPos.x, EasingFunc.Easing.SmoothInOut(t));
+            tempPos.z = Mathf.Lerp(startPos.z, endPos.z, EasingFunc.Easing.SmoothInOut(t));
+            tempPos.y = Mathf.Lerp(startPos.y, startPos.y+2, 1-(2*t-1f)*(2*t-1f));
+            pieceTrans.position = tempPos;
         });
     }
 #if UNITY_EDITOR

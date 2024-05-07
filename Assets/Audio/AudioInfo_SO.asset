@@ -22,6 +22,8 @@ MonoBehaviour:
     audio_clip: {fileID: 8300000, guid: 738b96f8c556c014c88ec47331f28738, type: 3}
   - audio_name: amb_street
     audio_clip: {fileID: 8300000, guid: d9fea595e94122549b1f1384d5d6c0f3, type: 3}
+  - audio_name: amb_roomtone
+    audio_clip: {fileID: 8300000, guid: da5c1b572b0a97444bd9924fdb59f635, type: 3}
   sfx_info_list:
   - audio_name: sfx_confirm
     audio_clip: {fileID: 8300000, guid: 265ddcc1b7961cb48aec21003d4418cb, type: 3}
