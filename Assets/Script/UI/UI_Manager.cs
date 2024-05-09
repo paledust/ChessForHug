@@ -19,12 +19,13 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private TypewriterByCharacter descriptionWriter;
     [SerializeField] private Button back;
-
 [Header("Restart")]
     [SerializeField] private Button restartButton;
+    [SerializeField] private CanvasGroup restartCanvas;
     private Dictionary<Transform, UI_DataDisplayer> dataDisplayer_Dict = new Dictionary<Transform, UI_DataDisplayer>();
     private CoroutineExcuter buttonFader;
     private CoroutineExcuter textFader;
+    private CoroutineExcuter restartFader;
 
     void OnEnable(){
         EventHandler.E_UI_ShowData += ShowData;
@@ -42,6 +43,7 @@ public class UI_Manager : MonoBehaviour
         back.image.color = new Color(1,1,1,0);
         textFader = new CoroutineExcuter(this);
         buttonFader = new CoroutineExcuter(this);
+        restartFader = new CoroutineExcuter(this);
     }
     void OnDisable(){
         EventHandler.E_UI_ShowData -= ShowData;
@@ -56,7 +58,8 @@ public class UI_Manager : MonoBehaviour
     }
 //Unity Event
     public void OnBackButtonClick(){
-        buttonFader.Excute(coroutineHideButton(0.1f));
+        back.interactable = false;
+        buttonFader.Excute(CommonCoroutine.CoroutineFadeUI(back.targetGraphic, 0, 0.1f));
         EventHandler.Call_UI_ShowDescrip(string.Empty);
         EventHandler.Call_OnBackToChessGame();
         EventHandler.Call_OnHideEnvironment();
@@ -64,7 +67,7 @@ public class UI_Manager : MonoBehaviour
     void ShowYear()=>StartCoroutine(new WaitForLoop(1, (t)=>yearGroup.alpha = Mathf.Lerp(0, 1, EasingFunc.Easing.SmoothInOut(t))));
     void OnTextShowed(){
         descriptionWriter.onTextShowed.RemoveListener(OnTextShowed);
-        buttonFader.Excute(coroutineShowButton(0.1f));
+        buttonFader.Excute(CommonCoroutine.CoroutineFadeUI(back.targetGraphic, 1, 0.1f, ()=>back.interactable = true));
     }
     void ShowRestartButton(END_CONDITON endCondition){
         StartCoroutine(coroutineRestartButton(1));
@@ -74,11 +77,14 @@ public class UI_Manager : MonoBehaviour
     }
     public void ShowDescription(string content, bool isFocus){
         if(content==string.Empty){
-            textFader.Excute(coroutineFadeText(0, 0.2f));
+            textFader.Excute(CommonCoroutine.CoroutineFadeUI(descriptionText, 0, 0.2f));
+            restartFader.Excute(CommonCoroutine.CoroutineFadeUI(restartCanvas, 1, 0.2f, ()=>restartCanvas.interactable=true));
             descriptionWriter.StopShowingText();
         }
         else{
-            textFader.Excute(coroutineFadeText(1, 0.2f));
+            restartCanvas.interactable = false;
+            textFader.Excute(CommonCoroutine.CoroutineFadeUI(descriptionText, 1, 0.2f));
+            restartFader.Excute(CommonCoroutine.CoroutineFadeUI(restartCanvas, 0, 0.2f));
             if(isFocus){
                 descriptionWriter.onTextShowed.AddListener(OnTextShowed);
             }
@@ -144,35 +150,9 @@ public class UI_Manager : MonoBehaviour
         });
         if(targetPos.y >= 120){
             yearUp.text = yearDown.text;
-            yearDown.text = (int.Parse(yearDown.text)+ChessManager.Instance.AgeUpAmount).ToString();
+            yearDown.text = (int.Parse(yearDown.text)+ChessManager.Instance.GetCurrentAgeIncreasement()).ToString();
 
             yearRoot.localPosition = Vector3.zero;
         }
-    }
-    IEnumerator coroutineFadeText(float targetAlpha, float duration){
-        Color initColor = descriptionText.color;
-        Color targetColor = initColor;
-        targetColor.a = targetAlpha;
-
-        yield return new WaitForLoop(duration,(t)=>{
-            descriptionText.color = Color.Lerp(initColor, targetColor, EasingFunc.Easing.SmoothInOut(t));
-        });        
-    }
-    IEnumerator coroutineShowButton(float duration){
-        Color initColor = Color.white;
-        initColor.a = 0;
-        yield return new WaitForLoop(duration,(t)=>{
-            back.image.color = Color.Lerp(initColor, Color.white, EasingFunc.Easing.SmoothInOut(t));
-        });
-        back.interactable = true;
-    }
-    IEnumerator coroutineHideButton(float duration){
-        back.interactable = false;     
-        Color initColor = Color.white;
-        Color targetColor = initColor;
-        targetColor.a = 0;
-        yield return new WaitForLoop(duration,(t)=>{
-            back.image.color = Color.Lerp(initColor, targetColor, EasingFunc.Easing.SmoothInOut(t));
-        });
     }
 }

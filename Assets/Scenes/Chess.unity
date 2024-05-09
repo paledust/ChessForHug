@@ -185,7 +185,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574972}
-  m_LocalRotation: {x: 0.2752327, y: -0.36530733, z: 0.11400513, w: 0.88192993}
+  m_LocalRotation: {x: 0.2752327, y: -0.3653073, z: 0.11400512, w: 0.88192993}
   m_LocalPosition: {x: 13.6, y: 15, z: -13.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1053,12 +1053,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   imageRenderer: {fileID: 576842929}
   imageFadeTime: 0.4
-  imageStayTime: 3
   envSprites:
   - {fileID: 21300000, guid: f51a491a206fd3745a4939a67ac1fc30, type: 3}
   - {fileID: 21300000, guid: 6ea2a52dbe4fd7c49be387ffa19f5e54, type: 3}
   - {fileID: 21300000, guid: e4ace7d8985fd2247b15a9e49bb2ebf3, type: 3}
   - {fileID: 21300000, guid: 810fd0dd87526374180ccb79be5886dc, type: 3}
+  spriteStayTime: 2.5
+  spriteSwapTime: 3
 --- !u!1 &577786047
 GameObject:
   m_ObjectHideFlags: 0
@@ -1572,12 +1573,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   imageRenderer: {fileID: 858889267}
   imageFadeTime: 0.4
-  imageStayTime: 3
   envSprites:
   - {fileID: 21300000, guid: d0bf49d950744b14db24248eedde497b, type: 3}
   - {fileID: 21300000, guid: f6d2c694a3c966b4c8f08dd67a85c6c8, type: 3}
   - {fileID: 21300000, guid: 1a738c465d3654c458e1ecbc684f1313, type: 3}
   - {fileID: 21300000, guid: 5b2db8fb5791e444bb2e8aed5eb619d0, type: 3}
+  spriteStayTime: 2.5
+  spriteSwapTime: 3
 --- !u!1 &892110088
 GameObject:
   m_ObjectHideFlags: 0
@@ -2658,12 +2660,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   imageRenderer: {fileID: 1482539230}
   imageFadeTime: 0.4
-  imageStayTime: 3
   envSprites:
   - {fileID: 21300000, guid: b270f08cd6782854f8c94bba3a3aa110, type: 3}
   - {fileID: 21300000, guid: a00bc2129c8aa66499150f8a4ade8360, type: 3}
   - {fileID: 21300000, guid: 8c125d7f75e0bb54fac18ae82f5e91f0, type: 3}
   - {fileID: 21300000, guid: 0d569ac3e5c1a6b489aefac1d1c68e87, type: 3}
+  spriteStayTime: 2.5
+  spriteSwapTime: 3
 --- !u!1 &1566210601 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1686292578704742, guid: 39a2cd61c4c1c4144b0758fefde2e154,
@@ -2758,7 +2761,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3aad3015838fc0f4d8ec490790028991, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e61408a5772ed7a4e8489f05ad68bdf5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
@@ -2783,12 +2786,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   imageRenderer: {fileID: 1585925507}
   imageFadeTime: 0.4
-  imageStayTime: 3
   envSprites:
   - {fileID: 21300000, guid: e61408a5772ed7a4e8489f05ad68bdf5, type: 3}
   - {fileID: 21300000, guid: 3aad3015838fc0f4d8ec490790028991, type: 3}
   - {fileID: 21300000, guid: d89ac5e825d0e094383123ddca8cd98c, type: 3}
   - {fileID: 21300000, guid: d4191ded459ee3a46806655e1e56cdad, type: 3}
+  spriteStayTime: 2.5
+  spriteSwapTime: 3
 --- !u!1 &1596375562
 GameObject:
   m_ObjectHideFlags: 0
@@ -2901,7 +2905,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1668271432}
-  m_LocalRotation: {x: 0.2752327, y: -0.36530733, z: 0.11400513, w: 0.88192993}
+  m_LocalRotation: {x: 0.2752327, y: -0.3653073, z: 0.11400512, w: 0.88192993}
   m_LocalPosition: {x: 13.6, y: 15, z: -13.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

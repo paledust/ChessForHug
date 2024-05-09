@@ -46,7 +46,7 @@ public class ChessManager : Singleton<ChessManager>
     [SerializeField] private CONTROL_TYPE black_Control;
     public Board board;
 [Header("Game")]
-    [SerializeField] public int AgeUpAmount = 5;
+    [SerializeField] private int AgeUpAmount = 5;
     [SerializeField] private int AgeUpTurn = 6;
     [SerializeField] private GameObject chessPlayer;
     [SerializeField] private ChessAI chessAI;
@@ -288,6 +288,7 @@ public class ChessManager : Singleton<ChessManager>
         moveLocations.RemoveAll(tile => tile.x < 0 || tile.x > 7 || tile.y < 0 || tile.y > 7);
         moveLocations.RemoveAll(tile => FriendlyPieceAt(tile));
     }
+    public int GetCurrentAgeIncreasement(){return AgeUpAmount;}
     public List<Vector2Int> MovesForPiece(GameObject pieceObject){
         Piece piece = pieceObject.GetComponent<Piece>();
         Vector2Int gridPoint = GridForPiece(pieceObject);

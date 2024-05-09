@@ -34,6 +34,7 @@ Shader "AmplifyShaders/Sprite EmissiveDissolve"
 		_DistortStrength("DistortStrength", Float) = 0
 		_DistortXSpeed("DistortXSpeed", Float) = 0
 		_DistortYSpeed("DistortYSpeed", Float) = 0
+		_ImageBrightness("ImageBrightness", Float) = 1
 
 	}
 
@@ -92,6 +93,7 @@ Shader "AmplifyShaders/Sprite EmissiveDissolve"
 			uniform float _EnableExternalAlpha;
 			uniform sampler2D _MainTex;
 			uniform sampler2D _AlphaTex;
+			uniform float _ImageBrightness;
 			uniform float4 _FillColor;
 			uniform sampler2D _DistortTex;
 			uniform float _DistortXSpeed;
@@ -217,7 +219,7 @@ Shader "AmplifyShaders/Sprite EmissiveDissolve"
 				float smoothstepResult110 = smoothstep( _NoiseMin1 , _NoiseMax1 , tex2D( _NoiseTex, panner109 ).r);
 				float noisePattern117 = smoothstepResult110;
 				float3 lerpResult176 = lerp( temp_output_120_0 , desaturateVar175 , noisePattern117);
-				float4 appendResult122 = (float4(lerpResult176 , (appendResult40).w));
+				float4 appendResult122 = (float4(( _ImageBrightness * lerpResult176 ) , (appendResult40).w));
 				
 				fixed4 c = ( appendResult122 * IN.color );
 				c.rgb *= c.a;
@@ -314,12 +316,14 @@ Node;AmplifyShaderEditor.RangedFloatNode;177;226.5935,-519.1523;Inherit;False;Pr
 Node;AmplifyShaderEditor.RegisterLocalVarNode;117;-435.785,-1361.999;Inherit;False;noisePattern;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.GetLocalVarNode;118;208,-432;Inherit;False;117;noisePattern;1;0;OBJECT;;False;1;FLOAT;0
 Node;AmplifyShaderEditor.DesaturateOpNode;175;416,-560;Inherit;False;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.ComponentMaskNode;121;208,-320;Inherit;False;False;False;False;True;1;0;FLOAT4;0,0,0,0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.LerpOp;176;656,-624;Inherit;False;3;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT;0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.DynamicAppendNode;122;832,-432;Inherit;False;FLOAT4;4;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0
-Node;AmplifyShaderEditor.VertexColorNode;179;929.8684,-276.5215;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;178;1057.068,-462.1216;Inherit;False;2;2;0;FLOAT4;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;FLOAT4;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;166;1296,-464;Float;False;True;-1;2;ASEMaterialInspector;0;10;AmplifyShaders/Sprite EmissiveDissolve;0f8ba0101102bb14ebf021ddadce9b49;True;SubShader 0 Pass 0;0;0;SubShader 0 Pass 0;2;False;True;3;1;False;;10;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;True;5;Queue=Transparent=Queue=0;IgnoreProjector=True;RenderType=Transparent=RenderType;PreviewType=Plane;CanUseSpriteAtlas=True;False;False;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;0;;0;0;Standard;0;0;1;True;False;;False;0
+Node;AmplifyShaderEditor.RangedFloatNode;194;624,-720;Inherit;False;Property;_ImageBrightness;ImageBrightness;25;0;Create;True;0;0;0;False;0;False;1;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.ComponentMaskNode;121;208,-320;Inherit;False;False;False;False;True;1;0;FLOAT4;0,0,0,0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;195;816,-688;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.DynamicAppendNode;122;1072,-432;Inherit;False;FLOAT4;4;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0
+Node;AmplifyShaderEditor.VertexColorNode;179;1040,-336;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;178;1312,-432;Inherit;False;2;2;0;FLOAT4;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;FLOAT4;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;166;1584,-432;Float;False;True;-1;2;ASEMaterialInspector;0;10;AmplifyShaders/Sprite EmissiveDissolve;0f8ba0101102bb14ebf021ddadce9b49;True;SubShader 0 Pass 0;0;0;SubShader 0 Pass 0;2;False;True;3;1;False;;10;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;True;5;Queue=Transparent=Queue=0;IgnoreProjector=True;RenderType=Transparent=RenderType;PreviewType=Plane;CanUseSpriteAtlas=True;False;False;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;0;;0;0;Standard;0;0;1;True;False;;False;0
 WireConnection;190;0;184;0
 WireConnection;190;1;189;0
 WireConnection;183;0;182;0
@@ -404,14 +408,16 @@ WireConnection;120;0;40;0
 WireConnection;117;0;110;0
 WireConnection;175;0;120;0
 WireConnection;175;1;177;0
-WireConnection;121;0;40;0
 WireConnection;176;0;120;0
 WireConnection;176;1;175;0
 WireConnection;176;2;118;0
-WireConnection;122;0;176;0
+WireConnection;121;0;40;0
+WireConnection;195;0;194;0
+WireConnection;195;1;176;0
+WireConnection;122;0;195;0
 WireConnection;122;3;121;0
 WireConnection;178;0;122;0
 WireConnection;178;1;179;0
 WireConnection;166;0;178;0
 ASEEND*/
-//CHKSM=093F83957E544375275A15B60D645F7443823D9E
+//CHKSM=B5BF70DF844A529E556C74ADCB727AA5CD9E6142

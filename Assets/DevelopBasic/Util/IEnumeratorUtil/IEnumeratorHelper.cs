@@ -69,6 +69,22 @@ public static class CommonCoroutine{
         yield return new WaitForSeconds(delay);
         GameObject.Destroy(gameObject);
     }
+    public static IEnumerator CoroutineFadeUI(UnityEngine.UI.Graphic graphic, float targetalpha, float duration, Action Callback=null){
+        Color startColor = graphic.color;
+        Color targetColor = startColor;
+        targetColor.a = targetalpha;
+        yield return new WaitForLoop(duration, (t)=>
+            graphic.color = Color.Lerp(startColor, targetColor, Easing.SmoothInOut(t))
+        );
+        Callback?.Invoke();
+    }
+    public static IEnumerator CoroutineFadeUI(CanvasGroup canvasGroup, float targetalpha, float duration, Action Callback=null){
+        float initAlpha = canvasGroup.alpha;
+        yield return new WaitForLoop(duration, (t)=>
+            canvasGroup.alpha = Mathf.Lerp(initAlpha, targetalpha, Easing.SmoothInOut(t))
+        );
+        Callback?.Invoke();
+    }
 }
 
 public class CoroutineExcuter
